@@ -120,9 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8da17b0cb895da1469dc08e5f3b5ca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bounceForce: 1.12
-  _bounceDuration: 0.25
-  _bounceDecreaseSpeed: 1
+  _bounceForce: 1.13
+  _bounceDuration: 0.2
+  _bounceDecreaseSpeed: 1.5
 --- !u!61 &8347112346847542858
 BoxCollider2D:
   m_ObjectHideFlags: 0
