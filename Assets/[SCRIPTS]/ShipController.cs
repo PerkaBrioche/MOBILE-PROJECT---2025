@@ -33,7 +33,13 @@ public class ShipController : MonoBehaviour
     
     public void SetTiles(TilesController tilesController)
     {
+        if (_tilesController != null)
+        {
+            _tilesController.ChangeCollider(true);
+        }
+        
         _tilesController = tilesController;
+        _tilesController.ChangeCollider(false);
     }
     
     public TilesController GetTiles()

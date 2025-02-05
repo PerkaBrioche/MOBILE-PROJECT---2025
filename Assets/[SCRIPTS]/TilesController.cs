@@ -111,8 +111,10 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         {
             if (tilesControllers[i - 1] != null)
             {
+                print(tilesControllers[i - 1].name);
                 tilesControllers[i] = directionFunc(tilesControllers[i - 1]);
             }
+            
         }
 
         foreach (var tile in tilesControllers)
@@ -121,6 +123,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
             {
                 Debug.LogError("LA TILE EST NULL WTF");
                 continue;
+            }
+
+            if (tile._boxCollider2D.enabled == false)
+            {
+                break;
             }
             
             tile.HighLightTiles();
