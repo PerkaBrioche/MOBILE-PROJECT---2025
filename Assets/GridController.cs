@@ -109,6 +109,14 @@ public class GridController : MonoBehaviour
     {
         
     }
+
+    public void ResetAllTiles()
+    {
+        foreach (var tiles in _tilesControllers)
+        {
+            tiles.ResetTiles();
+        }
+    } 
     
     
     
