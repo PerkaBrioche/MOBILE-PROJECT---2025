@@ -23,11 +23,16 @@ public class TouchManager : MonoBehaviour
     private ShipController _ActualshipController = null;
     private TilesController _ActualtilesController;
     [SerializeField] private GridController _gridController;
+    
+    private bool _isHighLighted;
+    
+    // HOLD
 
     [SerializeField] private GameObject draggablePrefab;
     private bool _isDragging = false;
     private IDraggable currentDraggable;
     private GameObject currentDraggedObject;
+    
 
     private void Awake()
     {
@@ -112,41 +117,36 @@ public class TouchManager : MonoBehaviour
         {
             Debug.LogError("No IBounce Interface Found");
         }
-        
-        if (actualCollider.TryGetComponent(out ShipController sc))
-
-
-
 
         if (actualCollider.TryGetComponent(out TilesController tC))
         {
-            if(_ActualtilesController == null)
-            {
-                _ActualtilesController = tC;
-            }
-            
-            if (_ActualshipController != null)
+            if (_isHighLighted)
             {
                 if (tC.isHighLighted())
                 {
-                    // ON DEPLACE LE PERSO
-                    
-                    tC.ChangeCollider(false);
-                    _ActualtilesController.ChangeCollider(true);
-                    
-                    // OLD BECOME NEW
-                    _ActualtilesController = tC;
                     _ActualshipController.SetNewPosition(tC);
                 }
                 _gridController.ResetAllTiles();
                 _ActualshipController = null;
-
             }
+
+
+
         }
         if(actualCollider.TryGetComponent(out ShipController sc))
         {
-            sc.GetPath();
-            _ActualshipController = sc;
+            if (_ActualshipController == null)
+            {
+                _isHighLighted = true;
+                sc.GetPath();
+                _ActualshipController = sc;
+            }
+            else
+            {
+                _gridController.ResetAllTiles();
+                _ActualshipController = null;
+            }
+
         }
         else
         {
