@@ -144,14 +144,9 @@ public class TouchManager : MonoBehaviour
             currentDraggedObject = hitCollider.gameObject;
             currentDraggable = draggable;
         }
-        else if (draggablePrefab != null)
+        else
         {
-            currentDraggedObject = Instantiate(draggablePrefab, _actualTouchedPosition, Quaternion.identity);
-            currentDraggable = currentDraggedObject.GetComponent<IDraggable>();
-            if (currentDraggable == null)
-            {
-                Debug.LogError("probleme de prefab");
-            }
+            _isDragging = false;
         }
         currentDraggable?.OnBeginDrag();
     }
