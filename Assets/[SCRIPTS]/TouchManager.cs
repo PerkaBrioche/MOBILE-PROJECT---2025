@@ -6,18 +6,13 @@ using UnityEngine.InputSystem;
 public class TouchManager : MonoBehaviour
 {
     private PlayerInput _playerInput;
-
     private InputAction _touchPosition;
     private InputAction _touchPress;
     private InputAction _holdPress;
-
     private Vector3 _actualTouchedPosition;
-    
     private float _holdTime = 0.4f;
     private float _actualholdTime = 0f;
-    
     private Collider2D actualCollider;
-    
     private bool _IsHolding = false;
 
     private ShipController _ActualshipController = null;
@@ -30,8 +25,16 @@ public class TouchManager : MonoBehaviour
 
     [SerializeField] private GameObject draggablePrefab;
     private bool _isDragging = false;
+    private bool _isScrolling = false;
     private IDraggable currentDraggable;
     private GameObject currentDraggedObject;
+    
+    [Header("Scrolling Settings")]
+    [SerializeField] private bool canScroll = true;
+    [SerializeField] private float scrollMinY = -5f;
+    [SerializeField] private float scrollMaxY = 5f;
+    private Vector3 _scrollStartTouchPos;
+    private float _scrollStartCameraY;
     
 
     private void Awake()
@@ -61,10 +64,6 @@ public class TouchManager : MonoBehaviour
     private void Update()
     {
         // UPDATE LA POSITION 
-      //  Vector2 touchedPosition = _touchPosition.ReadValue<Vector2>();
-      //  _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPosition);
-      
-        // ICI SI IL HOLD ON PEUT FAIT QUELQUE CHOSE
         if (_IsHolding)
         {
             if (_isDragging && currentDraggable != null)
@@ -73,6 +72,19 @@ public class TouchManager : MonoBehaviour
                 _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPos);
                 _actualTouchedPosition.z = 0f;
                 currentDraggable.OnDrag(_actualTouchedPosition);
+            }
+            else if (_isScrolling && canScroll)
+            {
+                Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
+                Vector3 currentTouchWorldPos = Camera.main.ScreenToWorldPoint(touchedPos);
+                currentTouchWorldPos.z = 0f;
+                float deltaY = currentTouchWorldPos.y - _scrollStartTouchPos.y;
+                float newCameraY = Mathf.Clamp(_scrollStartCameraY - deltaY * 0.75f, scrollMinY, scrollMaxY);
+                Camera.main.transform.position = new Vector3(
+                    Camera.main.transform.position.x,
+                    newCameraY,
+                    Camera.main.transform.position.z
+                );
             }
         }
         else
@@ -217,12 +229,10 @@ public class TouchManager : MonoBehaviour
     {
         // ON RETOURNE L'OOBJET APPUYER
         Collider2D hit = Physics2D.OverlapPoint(_actualTouchedPosition);
-
         if (hit != null)
         {
             return hit;
         }
-
         Debug.DrawLine(_actualTouchedPosition, _actualTouchedPosition + Vector3.right * 0.1f, Color.magenta, 3f);
         return null;
     }
@@ -230,7 +240,6 @@ public class TouchManager : MonoBehaviour
     private void OnHoldStarted(InputAction.CallbackContext context)
     {
         _IsHolding = true;
-        _isDragging = true;
         Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
         _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPos);
         _actualTouchedPosition.z = 0f;
@@ -239,27 +248,33 @@ public class TouchManager : MonoBehaviour
         {
             currentDraggedObject = hitCollider.gameObject;
             currentDraggable = draggable;
+            _isDragging = true;
+            _isScrolling = false;
+            currentDraggable.OnBeginDrag();
+            Debug.Log("Début du drag sur l'unité : " + currentDraggedObject.name);
         }
-        else if (draggablePrefab != null)
+        else
         {
-            currentDraggedObject = Instantiate(draggablePrefab, _actualTouchedPosition, Quaternion.identity);
-            currentDraggable = currentDraggedObject.GetComponent<IDraggable>();
-            if (currentDraggable == null)
+            _isDragging = false;
+            if (canScroll)
             {
-                Debug.LogError("probleme de prefab");
+                _isScrolling = true;
+                _scrollStartTouchPos = _actualTouchedPosition;
+                _scrollStartCameraY = Camera.main.transform.position.y;
+                Debug.Log("Début du scroll de la scène.");
             }
         }
-        currentDraggable?.OnBeginDrag();
     }
     
     private void OnHoldCanceled(InputAction.CallbackContext context)
     {
         _IsHolding = false;
-        _isDragging = false;
-        if (currentDraggable != null)
+        if (_isDragging && currentDraggable != null)
         {
             currentDraggable.OnEndDrag();
         }
+        _isDragging = false;
+        _isScrolling = false;
         currentDraggable = null;
         currentDraggedObject = null;
     }
