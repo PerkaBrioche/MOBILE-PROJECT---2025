@@ -134,44 +134,103 @@ public class TouchManager : MonoBehaviour
             Debug.LogError("No IBounce Interface Found");
         }
 
+        ///// TILES CONTROLLER /////
         if (actualCollider.TryGetComponent(out TilesController tC))
         {
+            Debug.Log("CLICKED ON TILES CONTROLLER");
             if (_isHighLighted)
             {
                 if (tC.isHighLighted())
                 {
-                    _ActualshipController.SetNewPosition(tC);
+                    if(_ActualshipController != null)
+                    {
+                        if(tC.IsAnAttackTile())
+                        {
+                            // TILES D'ATTAQUE
+                            Reset();
+                        }
+                        else
+                        {
+                            // TILES DE DEPLACEMENT
+                            _ActualshipController.SetNewPosition(tC);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("NO SHIP CONTROLLER SELECTED");
+                    }
                 }
-                _gridController.ResetAllTiles();
-                _ActualshipController = null;
             }
-
-
-
+            Reset();
         }
+        
+        /// SHIPPPP CONTROLLER /////
         if(actualCollider.TryGetComponent(out ShipController sc))
         
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
+            Debug.Log("CLICKED ON SHIP CONTROLLER");
+
             if (_ActualshipController == null)
             {
-                _isHighLighted = true;
+                // SI AUCUN VAISSEAU N'EST SELECTIONNER
+                if(sc.IsAnEnemy())
+                {
+                    // VAISSEAU ENNEMI SELECTIONNER
+                }
+                else
+                {
+                    // VAISSEAU ALLIE SELECTIONNER
+                    _isHighLighted = true;
+                }
                 sc.GetPath();
                 _ActualshipController = sc;
             }
             else
             {
-                _gridController.ResetAllTiles();
-                _ActualshipController = null;
-            }
+                // SI UN VAISSEAU EST DEJA SELECTIONNER
+                if(sc.IsAnEnemy())
+                {
+                    if (sc.GetTiles().HasAnEnemy() && sc.GetTiles().IsAnAttackTile())
+                    {
+                        // SI LE VAISSEAU EST UN ENNEMI LANCER UN COMBAT
+                        
+                        sc.Die();
+                    }
+                    Reset();
 
+                }
+                else
+                {
+                    if(_ActualshipController == sc)
+                    {
+                        // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
+                        Reset();
+                    }
+                    else
+                    {
+                        Reset();
+                        sc.GetPath();
+                        _ActualshipController = sc;
+                        // SI LE VAISSEAU SELECTIONNER EST DIFFERENT
+                    }
+
+                }
+            }
         }
         else
         {
-            Debug.LogError("No ShipController Found");
         }
     }
-    
+
+    private void Reset()
+    {
+        _gridController.ResetAllTiles();
+        _ActualshipController = null;
+        _ActualtilesController = null;
+        _isHighLighted = false;
+    }
+
     private Collider2D GetCollider()
     {
         // ON RETOURNE L'OOBJET APPUYER

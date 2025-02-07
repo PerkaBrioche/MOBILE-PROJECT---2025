@@ -50,8 +50,6 @@ public class bounce : MonoBehaviour
             transform.localScale = newScaleObject;
             yield return null;
         }
-        print("BOUNCE ENDED");
-
         if (stay) {yield break;}
         while (alpha > 0)
         {
@@ -79,19 +77,4 @@ public class bounce : MonoBehaviour
             yield return null;
         }
     }
-    
-    // private IEnumerator ResetRotation(Vector3 originalRotation)
-    // {
-    //     float alpha = 1;
-    //     Vector3 targetRotation = originalRotation;
-    //     print(targetRotation);
-    //     Vector3 actualRotation =  transform.rotation.eulerAngles;
-    //     while (alpha > 0)
-    //     {
-    //         alpha -= Time.deltaTime * _bounceDecreaseSpeed;
-    //         Vector3 newRotationObject = Vector3.Lerp(targetRotation, actualRotation, alpha);
-    //         transform.rotation = Quaternion.Euler(newRotationObject);
-    //         yield return null;
-    //     }
-    // }
 }
