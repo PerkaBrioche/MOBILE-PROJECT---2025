@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.95, y: 0.95, z: 0.95}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -120,9 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8da17b0cb895da1469dc08e5f3b5ca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bounceForce: 1.13
+  _bounceForce: 1.45
   _bounceDuration: 0.2
-  _bounceDecreaseSpeed: 1.5
+  _bounceDecreaseSpeed: 1.6
 --- !u!61 &8347112346847542858
 BoxCollider2D:
   m_ObjectHideFlags: 0

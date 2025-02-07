@@ -148,12 +148,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a41de3c60080fe4ca76cf6cf0ab21d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  right: 3
-  left: 3
-  up: 5
-  down: 3
+  _myStats: {fileID: 11400000, guid: e1a270747217482488a8b060b18fb8be, type: 2}
   _speed: 1.2
-  _tilesController: {fileID: 0}
+  _myTilesController: {fileID: 0}
 --- !u!114 &135626024118479483
 MonoBehaviour:
   m_ObjectHideFlags: 0

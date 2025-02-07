@@ -16,5 +16,7 @@ MonoBehaviour:
   hp: 200
   atk: 150
   def: 0.6
-  walkDist: 3
   atkRange: 1
+  canMooveAndShoot: 0
+  _walkDistance: 3
+  _attackRange: 1

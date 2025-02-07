@@ -1,50 +1,104 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class ShipController : MonoBehaviour
+public class ShipController : MonoBehaviour, bounce.IBounce
 {
     
-    [Header("DEPLACEMENT TILES")]
-    [SerializeField] private int right;
-    [SerializeField] private int left;
-    [SerializeField] private int up;
-    [SerializeField] private int down;
+    [SerializeField] private UnitStats _myStats;
+
 
     [Space(20)] [SerializeField] private float _speed;
     
-    [SerializeField] private TilesController _tilesController;
+    [SerializeField] private TilesController _myTilesController;
     
-    
+    private bounce _bounce;
+
+    private bool isEnemy;
+    private BoxCollider2D _boxCollider2D;
+    public void Bounce()
+    {
+        _bounce.StartBounce();
+    }
+    private void Awake()
+    {
+        _bounce = GetComponent<bounce>();
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+    }
 
     public void GetPath()
     {
-        if(_tilesController == null)
+        if(_myTilesController == null)
         {
-            Debug.LogError("TilesController is null");
             return;
         }
         
-        _tilesController.GetTiles(up, _tilesController => _tilesController.upTile);
-        _tilesController.GetTiles(down, _tilesController => _tilesController.downTile);
-        _tilesController.GetTiles(left, _tilesController => _tilesController.leftTile);
-        _tilesController.GetTiles(right, _tilesController => _tilesController.rightTile);
+        GetTilesPath();
     }
-    
-    public void SetTiles(TilesController tilesController)
+
+    private void GetTilesPath()
     {
-        if (_tilesController != null)
+        int distance = _myStats.WalkDistance + _myStats.AttackRange;
+        if(distance > 0)
         {
-            _tilesController.ChangeCollider(true);
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, _myStats.WalkDistance);
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile , _myStats.WalkDistance);
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile , _myStats.WalkDistance);
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, _myStats.WalkDistance);
         }
         
-        _tilesController = tilesController;
-        _tilesController.ChangeCollider(false);
+        int diagonal = (distance) - 1;
+        if(_myTilesController.upTile != null && diagonal > 0)
+        {
+            _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.upTile != null ? _tilesController.upTile.rightTile : null , (_myStats.WalkDistance-1));
+        }
+        if(_myTilesController.upTile != null && diagonal > 0)
+        {
+            _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.upTile != null ? _tilesController.upTile.leftTile : null , (_myStats.WalkDistance-1));
+        }
+        if(_myTilesController.downTile != null && diagonal > 0)
+        {
+            _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.downTile != null ? _tilesController.downTile.leftTile : null ,(_myStats.WalkDistance-1));
+        }
+        if(_myTilesController.downTile != null && diagonal > 0)
+        {
+            _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.downTile != null ? _tilesController.downTile.rightTile : null ,(_myStats.WalkDistance-1));
+        }
+    }
+    
+
+    public void Initialize( bool enemy = false)
+    {
+        isEnemy = enemy;
+    }
+    
+    public void SetTiles(TilesController newTiles)
+    {
+        
+        Debug.LogError("SET TILES");
+
+        if (_myTilesController != null)
+        {
+            _myTilesController.ChangeCollider(true);
+            _myTilesController.SetShipController(null);
+            _myTilesController.SetHasAnEnemy(false);
+            _myTilesController.SetHasAnAlly(false);
+        }
+        
+        // NOUVELLE TILES
+        _myTilesController = newTiles;
+        
+        _myTilesController.SetHasAnEnemy(isEnemy);
+        _myTilesController.SetHasAnAlly(!isEnemy);
+        _myTilesController.ChangeCollider(false);
+        _myTilesController.SetShipController(this);
+
     }
     
     public TilesController GetTiles()
     {
-        return _tilesController;
+        return _myTilesController;
     }
     
     public void SetNewPosition(TilesController neswtiles)
@@ -73,4 +127,28 @@ public class ShipController : MonoBehaviour
             _speed = 1;
         }
     }
+    
+    public void TakeDamage(int damage)
+    {
+        
+    }
+    
+    public void Die()
+    {
+        Destroy(gameObject);
+        _myTilesController.ChangeCollider(true);
+        _myTilesController.SetHasAnEnemy(false);
+    }
+    
+    public void ChangeCollider(bool state)
+    {
+        _boxCollider2D.enabled = state;
+    }
+    
+    public bool IsAnEnemy()
+    {
+        return isEnemy;
+    }
+    
+
 }

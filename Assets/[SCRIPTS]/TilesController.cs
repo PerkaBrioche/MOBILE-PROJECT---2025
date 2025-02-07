@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -18,7 +19,10 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     public TilesController leftTile => _leftTile;
     public TilesController rightTile => _rightTile;
 
+
     private bool _isHighLighted;
+    private bool _isAttackTiles;
+    private bool _isRangeTiles;
 
 
     [Space(20)] [Foldout("References")] [SerializeField]
@@ -29,6 +33,13 @@ public class TilesController : MonoBehaviour, bounce.IBounce
 
     private Color _myColor;
     private Color _originalColor;
+
+    private bool hasAnEnemy = false;
+    private bool hasAlly = false;
+    
+    private ShipController _shipController;
+
+    private float _timeBeetweenReveal = 0.2f;
 
     public enum TileColor
     {
@@ -46,7 +57,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         _myColor = _spriteRenderer.color;
         _originalColor = _myColor;
         _bounce = GetComponent<bounce>();
-        
         
         GetAdjacentTiles();
     }
@@ -87,54 +97,99 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         return null;
     }
 
-    public void HighLightTiles()
+    public void HighLightTiles(float seconds, bool attackTiles)
     {
-        ChangeTilesColor(Color.green);
-        _bounce.StartBouncePARAM(0, 0, true);
-        SetHighlight(true);
+        var color = Color.white;
+        if(attackTiles)
+        {
+            SetIsAttackTile(true);
+            color = Color.red;
+        }
+        else
+        {
+            SetIsRangeTile(false);
+            color = Color.green;
+        }
+        
+        StartCoroutine(RevealTiles(color, seconds));
     }
 
     public void ResetTiles()
     {
-        print("RESET TILES");
         ChangeTilesColor(_originalColor);
         _bounce.ResetTransform();
         SetHighlight(false);
+        
+        SetIsAttackTile(false);
+        SetIsRangeTile(false);
     }
 
-    public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc)
+    public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance)
     {
+        float seconds = 0.05f;
         TilesController[] tilesControllers = new TilesController[distance];
         tilesControllers[0] = directionFunc(this);
-
+        
         for (int i = 1; i < distance; i++)
         {
             if (tilesControllers[i - 1] != null)
             {
-                print(tilesControllers[i - 1].name);
                 tilesControllers[i] = directionFunc(tilesControllers[i - 1]);
             }
             
         }
-
+        
+        
         foreach (var tile in tilesControllers)
         {
             if (tile == null)
             {
-                Debug.LogError("LA TILE EST NULL WTF");
                 continue;
             }
+    
+            seconds += 0.05f;
 
-            if (tile._boxCollider2D.enabled == false)
+            if(walkDistance > 0)
             {
+                // GREEN TILES
+                if (tile.HasAnAlly())
+                {
+                    break;
+                }
+
+                if (tile.HasAnEnemy())
+                {
+                    tile.HighLightTiles(seconds, true);
+                    break;
+                }
+                tile.HighLightTiles(seconds, false);
+                walkDistance--;
+            }
+            else
+            {
+                // RED TILES
+                if (tile.HasAnAlly())
+                {
+                    continue;
+                }
+                tile.HighLightTiles(seconds, true);
                 break;
             }
-            
-            tile.HighLightTiles();
         }
         
     }
+    private IEnumerator RevealTiles(Color color, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        ChangeTilesColor(color);
+        _bounce.StartBouncePARAM(0, 0, true);
+        SetHighlight(true);
+    }
+
+    #region GETTERS AND SETTERS
+
     
+
     public bool isHighLighted()
     {
         return _isHighLighted;
@@ -150,6 +205,58 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         _boxCollider2D.enabled = enabled;
     }
     
+    public bool HasAnEnemy()
+    {
+        return hasAnEnemy;
+    }
+    public void SetHasAnEnemy(bool enemy)
+    {
+        hasAnEnemy = enemy;
+    }
     
+    public void SetShipController(ShipController shipController)
+    {
+        _shipController = shipController;
+    }
+    
+    public ShipController GetShipController()
+    {
+        return _shipController;
+    }
+    
+    public bool HasAnAlly()
+    {
+        return hasAlly;
+    }
+    public void SetHasAnAlly(bool ally)
+    {
+        hasAlly = ally;
+    }
+    
+
+    
+    public bool IsAnAttackTile()
+    {
+        return _isAttackTiles;
+    }
+    public void SetIsAttackTile(bool attack)
+    {
+        _isAttackTiles = attack;
+    }
+    
+    public bool IsRangeTile()
+    {
+        return _isRangeTiles;
+    }
+    
+    public void SetIsRangeTile(bool range)
+    {
+        _isRangeTiles = range;
+    }
+    
+    
+    
+    #endregion
+
 
 }
