@@ -10,5 +10,6 @@ public class MenuOpener : MonoBehaviour
         {
             menuPanel.SetActive(true);
         }
+        
     }
 }
