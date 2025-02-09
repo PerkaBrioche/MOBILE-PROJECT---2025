@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -42,28 +43,78 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         int distance = _myStats.WalkDistance + _myStats.AttackRange;
         if(distance > 0)
         {
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, _myStats.WalkDistance);
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile , _myStats.WalkDistance);
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile , _myStats.WalkDistance);
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, _myStats.WalkDistance);
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, _myStats.WalkDistance
+                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile , _myStats.WalkDistance
+                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile , _myStats.WalkDistance
+                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, _myStats.WalkDistance
+                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
         }
         
+        // DIAGONAL
         int diagonal = (distance) - 1;
-        if(_myTilesController.upTile != null && diagonal > 0)
+        if (diagonal > 0)
         {
-            _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.upTile != null ? _tilesController.upTile.rightTile : null , (_myStats.WalkDistance-1));
-        }
-        if(_myTilesController.upTile != null && diagonal > 0)
-        {
-            _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.upTile != null ? _tilesController.upTile.leftTile : null , (_myStats.WalkDistance-1));
-        }
-        if(_myTilesController.downTile != null && diagonal > 0)
-        {
-            _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.downTile != null ? _tilesController.downTile.leftTile : null ,(_myStats.WalkDistance-1));
-        }
-        if(_myTilesController.downTile != null && diagonal > 0)
-        {
-            _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.downTile != null ? _tilesController.downTile.rightTile : null ,(_myStats.WalkDistance-1));
+            _myTilesController.GetTiles(
+                diagonal, 
+                t => t.upTile != null ? t.upTile.rightTile : null,
+                _myStats.WalkDistance - 1,
+                diagonal > 1 
+                    ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.downTile } 
+                    : null, true
+            );
+            
+            _myTilesController.GetTiles(
+                diagonal, 
+                t => t.upTile != null ? t.upTile.leftTile : null,
+                _myStats.WalkDistance - 1,
+                diagonal > 1 
+                    ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.downTile } 
+                    : null, true
+            );
+            
+            _myTilesController.GetTiles(
+                diagonal, 
+                t => t.downTile != null ? t.downTile.rightTile : null,
+                _myStats.WalkDistance - 1,
+                diagonal > 1 
+                    ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.upTile } 
+                    : null, true
+            );
+            
+            _myTilesController.GetTiles(
+                diagonal, 
+                t => t.downTile != null ? t.downTile.leftTile : null,
+                _myStats.WalkDistance - 1,
+                diagonal > 1 
+                    ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.upTile } 
+                    : null, true
+            );
+
+            // DIAGONAL 
+            //     
+            //     // UP right
+            //     _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.rightTile != null ? _tilesController.rightTile.upTile : null ,  (_myStats.WalkDistance-1), _myTilesController.upTile);
+            //     _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.rightTile != null ? _tilesController.rightTile.upTile : null ,  (_myStats.WalkDistance-1), _myTilesController.rightTile);
+            //     
+            //     
+            //     // UP left
+            //     
+            //     _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.leftTile != null ? _tilesController.leftTile.upTile : null ,  (_myStats.WalkDistance-1), _myTilesController.upTile);
+            //     _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.leftTile != null ? _tilesController.leftTile.upTile : null ,  (_myStats.WalkDistance-1), _myTilesController.leftTile);
+            //
+            //     // DOWN right
+            //     
+            //     _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.rightTile != null ? _tilesController.rightTile.downTile : null ,  (_myStats.WalkDistance-1), _myTilesController.downTile);
+            //     _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.rightTile != null ? _tilesController.rightTile.downTile : null ,  (_myStats.WalkDistance-1), _myTilesController.rightTile);
+            //     
+            //     // DOWN left
+            //     
+            //     _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.leftTile != null ? _tilesController.leftTile.downTile : null ,  (_myStats.WalkDistance-1), _myTilesController.downTile);
+            //     _myTilesController.GetTiles(diagonal, _tilesController => _tilesController.leftTile != null ? _tilesController.leftTile.downTile : null ,  (_myStats.WalkDistance-1), _myTilesController.leftTile);
+            // }
         }
     }
     

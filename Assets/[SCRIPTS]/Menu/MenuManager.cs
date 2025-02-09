@@ -37,6 +37,7 @@ public class MenuManager : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+    
 //    ⠀⣠⣤⣶⣶⣦⣄⡀  ⠀⢀⣤⣴⣶⣶⣤⣀⠀
 //    ⣼⣿⣿⣿⣿⣿⣿⣷⣤⣾⣿⣿⣿⣿⣿⣿⣧
 //    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -44,6 +45,8 @@ public class MenuManager : MonoBehaviour
 //    ⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⠀
 //    ⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀
 //    ⠀⠀⠀⠀⠀⠉⢿⣿⣿⣿⠟⠋⠀⠀⠀⠀⠀
-//    ⠀⠀⠀⠀⠀⠀⠀⠙⠻⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//    ⠀⠀⠀⠀⠀⠀⠀⠙⠻⠁⠀⠀⠀
+//          ^^^^^^
+//         GAB + MAX⠀⠀⠀⠀⠀⠀⠀⠀⠀
     
 }
