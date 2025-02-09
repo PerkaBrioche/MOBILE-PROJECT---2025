@@ -384,7 +384,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6930066891120638349, guid: b2bfe92e4a5638847be10a76bd6b70f2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.03
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 6930066891120638349, guid: b2bfe92e4a5638847be10a76bd6b70f2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -444,7 +444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
-  _tilesController: {fileID: 630973507}
+  _tilesController: {fileID: 237411689}
   isEnemy: 1
 --- !u!1001 &358426820
 PrefabInstance:
@@ -1033,6 +1033,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gridController: {fileID: 972619573}
   draggablePrefab: {fileID: 0}
+  canScroll: 0
+  scrollMinY: -5
+  scrollMaxY: 5
 --- !u!114 &623668762
 MonoBehaviour:
   m_ObjectHideFlags: 0

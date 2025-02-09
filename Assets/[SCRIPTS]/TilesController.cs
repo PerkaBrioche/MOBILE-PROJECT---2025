@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -99,6 +100,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
 
     public void HighLightTiles(float seconds, bool attackTiles)
     {
+        SetHighlight(true);
         var color = Color.white;
         if(attackTiles)
         {
@@ -124,19 +126,20 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         SetIsRangeTile(false);
     }
 
-    public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance)
+    public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance, List<Func<TilesController, TilesController>> sideFuncs = null, bool diagonal = false)
     {
-        float seconds = 0.05f;
+        int attackRange = distance - walkDistance;
+        int baseWalkDistance = walkDistance;
+        float seconds = 0f;
         TilesController[] tilesControllers = new TilesController[distance];
         tilesControllers[0] = directionFunc(this);
-        
+
         for (int i = 1; i < distance; i++)
         {
             if (tilesControllers[i - 1] != null)
             {
                 tilesControllers[i] = directionFunc(tilesControllers[i - 1]);
             }
-            
         }
         
         
@@ -146,9 +149,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
             {
                 continue;
             }
-    
-            seconds += 0.05f;
-
+            seconds += 0.07f;
             if(walkDistance > 0)
             {
                 // GREEN TILES
@@ -156,13 +157,26 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 {
                     break;
                 }
-
                 if (tile.HasAnEnemy())
                 {
+                    // RED TILES
                     tile.HighLightTiles(seconds, true);
                     break;
                 }
                 tile.HighLightTiles(seconds, false);
+
+                if(walkDistance != 1)
+                {
+                    CheckTiles(sideFuncs, tile, seconds, false);
+                }
+                else
+                {
+                    if (baseWalkDistance == 3)
+                    {
+                        CheckTiles(sideFuncs, tile, seconds, false);
+                    }
+                }
+
                 walkDistance--;
             }
             else
@@ -170,20 +184,77 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 // RED TILES
                 if (tile.HasAnAlly())
                 {
-                    continue;
+                    break;
                 }
-                tile.HighLightTiles(seconds, true);
-                break;
+                
+
+                if (diagonal) // DIAGONAL
+                {
+                    if(tile == tilesControllers[distance-1]) // DERNIERE CASE
+                    {
+                        if (attackRange == 1 && (baseWalkDistance+1) < 2) // UNE SEULE CASE DE BASE ET UNE CASE DE DEPLACEMENT
+                        {
+                        }
+                        else if (attackRange == 2 && (baseWalkDistance+1) == 2 )
+                        {
+                            break;
+                        }
+                        else // PLUSIEURS CASES DE BASE
+                        {
+                            CheckTiles(sideFuncs, tile, seconds, true);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        CheckTiles(sideFuncs, tile, seconds, true);
+                    }
+                }
+                else
+                {
+                    if(tile != tilesControllers[distance-1])
+                    {
+                        CheckTiles(sideFuncs, tile, seconds, true);
+                    }
+                    else
+                    {
+                        if ((baseWalkDistance) == 3)
+                        {
+                            CheckTiles(sideFuncs, tile, seconds, true);
+                        }
+                    }
+                }
+                tile.HighLightTiles(seconds, true); 
+                    
             }
         }
-        
     }
+    
+    private void CheckTiles(List<Func<TilesController, TilesController>> sideFuncs, TilesController tile, float seconds, bool attack)
+    {
+        if (sideFuncs == null)
+            return;
+    
+        foreach (var func in sideFuncs)
+        {
+            TilesController adjacent = func(tile);
+            if (adjacent != null && !adjacent.isHighLighted() && !adjacent.HasAnAlly())
+            {
+                if (adjacent.HasAnEnemy())
+                {
+                    adjacent.HighLightTiles(seconds, true);
+                    break;
+                }
+                adjacent.HighLightTiles(seconds, attack);
+            }
+        }
+    }
+    
     private IEnumerator RevealTiles(Color color, float seconds)
     {
         yield return new WaitForSeconds(seconds);
         ChangeTilesColor(color);
         _bounce.StartBouncePARAM(0, 0, true);
-        SetHighlight(true);
     }
 
     #region GETTERS AND SETTERS
