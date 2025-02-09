@@ -194,6 +194,7 @@ public class TouchManager : MonoBehaviour
                     if (sc.GetTiles().HasAnEnemy() && sc.GetTiles().IsAnAttackTile())
                     {
                         // SI LE VAISSEAU EST UN ENNEMI LANCER UN COMBAT
+                        // POUR TOI MAXIME <3
                         
                         sc.Die();
                     }
