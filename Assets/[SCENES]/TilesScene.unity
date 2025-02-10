@@ -796,6 +796,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01d965bbd4f1a5d498909247d29b757e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  draggablePrefab: {fileID: 0}
+  canScroll: 1
+  scrollMinY: -5
+  scrollMaxY: 5
 --- !u!114 &623668762
 MonoBehaviour:
   m_ObjectHideFlags: 0
