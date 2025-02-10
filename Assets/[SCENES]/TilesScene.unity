@@ -1036,6 +1036,11 @@ MonoBehaviour:
   canScroll: 0
   scrollMinY: -5
   scrollMaxY: 5
+  _gridController: {fileID: 972619573}
+  draggablePrefab: {fileID: 0}
+  canScroll: 0
+  scrollMinY: -5
+  scrollMaxY: 5
   canScroll: 0
   scrollMinY: -5
   scrollMaxY: 5

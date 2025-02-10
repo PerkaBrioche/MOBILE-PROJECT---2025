@@ -14,6 +14,15 @@ public class TouchManager : MonoBehaviour
     private float _actualholdTime = 0f;
     private Collider2D actualCollider;
     private bool _IsHolding = false;
+
+    private ShipController _ActualshipController = null;
+    private TilesController _ActualtilesController;
+    [SerializeField] private GridController _gridController;
+    
+    private bool _isHighLighted;
+    
+    // HOLD
+
     [SerializeField] private GameObject draggablePrefab;
     private bool _isDragging = false;
     private bool _isScrolling = false;
@@ -26,6 +35,7 @@ public class TouchManager : MonoBehaviour
     [SerializeField] private float scrollMaxY = 5f;
     private Vector3 _scrollStartTouchPos;
     private float _scrollStartCameraY;
+    
 
     private ShipController _ActualshipController = null;
     private TilesController _ActualtilesController;
@@ -164,6 +174,8 @@ public class TouchManager : MonoBehaviour
             Reset();
         }
         
+        /// SHIPPPP CONTROLLER /////
+        if(actualCollider.TryGetComponent(out ShipController sc))
         /// SHIPPPP CONTROLLER /////
         if(actualCollider.TryGetComponent(out ShipController sc))
         
