@@ -14,12 +14,6 @@ public class TouchManager : MonoBehaviour
     private float _actualholdTime = 0f;
     private Collider2D actualCollider;
     private bool _IsHolding = false;
-
-    private ShipController _ActualshipController = null;
-    private TilesController _ActualtilesController;
-    [SerializeField] private GridController _gridController;
-    
-    private bool _isHighLighted;
     
     // HOLD
 
@@ -42,14 +36,6 @@ public class TouchManager : MonoBehaviour
     [SerializeField] private GridController _gridController;
     
     private bool _isHighLighted;
-    
-    // HOLD
-
-    [SerializeField] private GameObject draggablePrefab;
-    private bool _isDragging = false;
-    private IDraggable currentDraggable;
-    private GameObject currentDraggedObject;
-    
 
     private void Awake()
     {
@@ -174,10 +160,7 @@ public class TouchManager : MonoBehaviour
             Reset();
         }
         
-        /// SHIPPPP CONTROLLER /////
-        if(actualCollider.TryGetComponent(out ShipController sc))
-        /// SHIPPPP CONTROLLER /////
-        if(actualCollider.TryGetComponent(out ShipController sc))
+        /// SHIPPPP CONTROLLER //////// SHIPPPP CONTROLLER /////
         
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
