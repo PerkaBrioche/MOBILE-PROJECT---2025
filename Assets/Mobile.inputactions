@@ -1,5 +1,5 @@
 {
-    "name": "InputSystem_Actions",
+    "name": "Mobile",
     "maps": [
         {
             "name": "Player",
@@ -986,6 +986,74 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Mobile",
+            "id": "dba75c12-1efc-4be4-ba0b-bdb45847ea98",
+            "actions": [
+                {
+                    "name": "TouchPosition",
+                    "type": "Value",
+                    "id": "12c264a6-5752-468f-97b3-12d7c65be19d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SinglePress",
+                    "type": "Button",
+                    "id": "ff32b9dd-9eff-44f9-b61f-8f74287fd64e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HoldPress",
+                    "type": "Button",
+                    "id": "78b98462-5a14-4240-b3c2-ffbecaad88c6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ba0ad590-94aa-4906-9ea9-dd7cb47c9338",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Touch",
+                    "action": "TouchPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9b2d05db-fc4d-4132-95a7-96d3b1a8ae03",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Touch",
+                    "action": "SinglePress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "99efc2fd-cb1d-4252-b13f-a350ce8ba32f",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HoldPress",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
