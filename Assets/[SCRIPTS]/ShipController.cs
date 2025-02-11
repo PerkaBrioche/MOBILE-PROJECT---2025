@@ -164,10 +164,11 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     
     public void TakeDamage(int damage)
     {
-        int finalDamage = Mathf.CeilToInt(damage * runtimeStats.DEF);
+        int finalDamage = Mathf.RoundToInt(damage * runtimeStats.DEF);
         runtimeStats.HP -= finalDamage;
         if(runtimeStats.HP <= 0)
             Die();
+        // pas utilisé, je garde ça la juste temporairement
     }
     
     public void Die()

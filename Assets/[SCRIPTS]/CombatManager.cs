@@ -58,7 +58,7 @@ public class CombatManager : MonoBehaviour
         if (anim != null)
             anim.SetTrigger("Attack");
         yield return new WaitForSeconds(1f);
-        int damage = Mathf.CeilToInt(_attackerShip.runtimeStats.ATK * _targetShip.runtimeStats.DEF);
+        int damage = Mathf.RoundToInt(_attackerShip.runtimeStats.ATK * _targetShip.runtimeStats.DEF);
         if (damage < 1) damage = 1;
         _targetShip.runtimeStats.HP -= damage;
         float defDisplay = 10f - (10f * _targetShip.runtimeStats.DEF);
