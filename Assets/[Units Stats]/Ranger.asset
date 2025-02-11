@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Ranger
   m_EditorClassIdentifier: 
   _unitName: Ranger
-  hp: 200
-  atk: 120
+  hp: 20
+  atk: 12
   def: 0.8
   atkRange: 2
   canMooveAndShoot: 0

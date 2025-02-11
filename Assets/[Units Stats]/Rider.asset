@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Rider
   m_EditorClassIdentifier: 
   _unitName: Rider
-  hp: 200
-  atk: 150
+  hp: 20
+  atk: 15
   def: 0.6
   atkRange: 1
   canMooveAndShoot: 0

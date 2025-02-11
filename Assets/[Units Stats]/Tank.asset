@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Tank
   m_EditorClassIdentifier: 
   _unitName: Tank
-  hp: 300
-  atk: 200
-  def: 0.5
+  hp: 30
+  atk: 25
+  def: 1
   atkRange: 1
   canMooveAndShoot: 0
   _walkDistance: 1

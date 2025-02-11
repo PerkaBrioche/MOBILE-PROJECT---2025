@@ -6,7 +6,6 @@ public class UnitStats : ScriptableObject
     [Header("Informations générales")]
     [SerializeField] private string _unitName;
     public string UnitName
-    
     {
         get { return _unitName; }
         set { _unitName = value; }
@@ -59,6 +58,8 @@ public class UnitStats : ScriptableObject
     {
         get { return _attackRange; }
     }
+}
+
     // [SerializeField] private int right;
     // public int Right
     // {
@@ -102,5 +103,3 @@ public class UnitStats : ScriptableObject
     //     get { return downLeft; }
     // }
     
-    
-}
