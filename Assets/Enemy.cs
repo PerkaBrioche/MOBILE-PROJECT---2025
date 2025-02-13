@@ -9,7 +9,8 @@ public class Enemy : MonoBehaviour
     
     private bool canAction = true;
     private GridController _gridController;
-
+    
+    
     private void Awake()
     {
         _gridController = FindObjectOfType<GridController>();
@@ -48,7 +49,6 @@ public class Enemy : MonoBehaviour
             Move(fowardTile);
         }
     }
-    
     
     public virtual void EndTurn()
     {

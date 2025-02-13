@@ -126,7 +126,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         SetIsRangeTile(false);
     }
 
-    public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance, List<Func<TilesController, TilesController>> sideFuncs = null, bool diagonal = false)
+    public TilesController[] GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance, List<Func<TilesController, TilesController>> sideFuncs = null, bool diagonal = false)
     {
         int attackRange = distance - walkDistance;
         int baseWalkDistance = walkDistance;
@@ -160,6 +160,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 if (tile.HasAnEnemy()) // SI ENNEMI SUR LA TILES
                 {
                     // RED TILES
+                    
                     tile.HighLightTiles(seconds, true);
                     break;
                 }
@@ -229,6 +230,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                     
             }
         }
+        return tilesControllers;
     }
     
     private void CheckTiles(List<Func<TilesController, TilesController>> sideFuncs, TilesController tile, float seconds, bool attack)
