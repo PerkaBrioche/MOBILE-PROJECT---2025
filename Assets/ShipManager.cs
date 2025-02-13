@@ -29,27 +29,30 @@ public class ShipManager : MonoBehaviour
         {
             return;
         }
-        _isCooldown = true;
-        StartCoroutine(UpdateCooldown());
+
         UpdateLists();
+        
+        if (HasPlayedAllShips())
+        {
+            TurnManager.Instance.CheckUnlockButton();
+        }
     }
 
     private void UpdateLists()
     {
         ClearShips();
-        var AllShips = GameObject.FindGameObjectsWithTag("Ship");
+        var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);
         foreach (var ship in AllShips)
         {
-            var shipController = ship.GetComponent<ShipController>();
-            if (shipController.IsAnEnemy())
+            if (ship.IsAnEnemy())
             {
                 // ADDS ENEMY SHIPS
-                _listEnemyShips.Add(shipController);
+                _listEnemyShips.Add(ship);
             }
             else
             {
                 // ADDS ALLY SHIPS
-                _listaAllyShips.Add(shipController);
+                _listaAllyShips.Add(ship);
             }
         }
     }
@@ -80,5 +83,63 @@ public class ShipManager : MonoBehaviour
     {
         _listaAllyShips.Clear();
         _listEnemyShips.Clear();
+    }
+
+    public bool HasPlayedAllShips()
+    {
+        foreach (var ship in _listaAllyShips)
+        {
+            if(!ship.IsLocked())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public void ResetAllShips()
+    {
+        var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);
+        foreach (var ships in AllShips)
+        {
+            ships.ResetShip();
+        }
+    }
+    
+    public ShipController GetEnemyShip(int index)
+    {
+        return _listEnemyShips[index];
+    }
+    public ShipController GetAllyShip(int index)
+    {
+        return _listaAllyShips[index];
+    }
+    public int GetEnemyShipsCount()
+    {
+        return _listEnemyShips.Count;
+    }
+    
+    public List<ShipController> GetEnemyShips()
+    {
+        return _listEnemyShips;
+    }
+
+    public void ChangeShipsCamp()
+    {
+        var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);
+        foreach (var ships in AllShips)
+        {
+            ships.ChangeCamp();
+        }
+    }
+    
+    public List<ShipController> GetAllyShips()
+    {
+        return _listaAllyShips;
+    }
+    
+    public int GetAllyShip()
+    {
+        return _listaAllyShips.Count;
     }
 }

@@ -6,6 +6,7 @@ public class ShipSpawner : MonoBehaviour
 {
     [Header("PUT THE SHIP PREFAB HERE")]
     [SerializeField] private GameObject _shipPrefab;
+    [SerializeField] private UnitStats _shipStats;
     [Header("PUT THE TILES HERE")]
     [SerializeField] TilesController _tilesController;
     [Header("IS AN ENEMY ?")]
@@ -22,12 +23,8 @@ public class ShipSpawner : MonoBehaviour
     public void SpawnShip()
     {
         var ship = Instantiate(_shipPrefab, _tilesController.transform.position, Quaternion.identity);
-        if (isEnemy)
-        {
-            ship.tag = "Enemy";
-        }
         _shipController = ship.GetComponent<ShipController>();
-        _shipController.Initialize(isEnemy);
+        _shipController.Initialize(isEnemy, _shipStats);
         _shipController.SetTiles(_tilesController);
     }
 }
