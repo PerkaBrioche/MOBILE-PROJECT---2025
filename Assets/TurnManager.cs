@@ -19,8 +19,6 @@ public class TurnManager : MonoBehaviour
 
     private bool _actualisedCamp = false;
     
-    
-    
     private void Awake()
     {
         if (Instance == null)
@@ -62,8 +60,8 @@ public class TurnManager : MonoBehaviour
         StartCoroutine(waitForSwapCamp());
         ShipManager.Instance.ChangeShipsCamp();
         UpdateText("Enemy Turn", Color.red);
-        _isEnemyTurn = true;
         _enemyTurn = 0;
+        _isEnemyTurn = true;
     }
     
     public void EndEnemyTurn()
@@ -97,6 +95,7 @@ public class TurnManager : MonoBehaviour
 
     public void EnemyEndATurn()
     {
+        print("ENEMY END A TURN");
         _enemyTurn++;
         _waitingForEnemy = false;
     }
@@ -107,14 +106,21 @@ public class TurnManager : MonoBehaviour
         {
             if (!_waitingForEnemy && _actualisedCamp)
             {
-                if (_enemyTurn >= ShipManager.Instance.GetAllyShip())
+                if (_enemyTurn >= ShipManager.Instance.GetActualAllyShips().Count)
                 {
+                    print( "END ENEMY TURN WARNING");
                     EndEnemyTurn();
                     _waitingForEnemy = false;
                     return;
                 }
+                else
+                {
+                    print("PAS ASSEZ DE TURN, ENEMY TURN = " + _enemyTurn + " / " + ShipManager.Instance.GetActualEnemyShipsCount());
+                    print("ALLY = " + ShipManager.Instance.GetActualAllyShips().Count);
+                    
+                }
                 _waitingForEnemy = true;
-                if(ShipManager.Instance.GetAllyShip(_enemyTurn).TryGetComponent(out Enemy enemy))
+                if(ShipManager.Instance.GetActualAllyShip(_enemyTurn).TryGetComponent(out Enemy enemy))
                 {
                     enemy.SetMyTurn();
                 }
@@ -151,7 +157,11 @@ public class TurnManager : MonoBehaviour
 
     private bool CheckEndGame()
     {
-        if (ShipManager.Instance.GetEnemyShipsCount() > 0)
+
+        var ally = ShipManager.Instance.GetAllyShipsOrinalCamp();
+        var enemy = ShipManager.Instance.GetEnemyShipsOrinalCamp();
+        
+        if (enemy.Count > 0)
         {
         }
         else
@@ -160,7 +170,7 @@ public class TurnManager : MonoBehaviour
             return true;
         }
         
-        if(ShipManager.Instance.GetAllyShip() > 0)
+        if(ally.Count > 0)
         {
         }
         else

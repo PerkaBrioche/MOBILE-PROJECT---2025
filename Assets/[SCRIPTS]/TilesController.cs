@@ -126,14 +126,16 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         SetIsRangeTile(false);
     }
 
-    public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance, List<Func<TilesController, TilesController>> sideFuncs = null, bool diagonal = false, bool enemyTiles = false)
+    public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance, List<Func<TilesController, TilesController>> sideFuncs = null, bool diagonal = false)
     {
+        bool isEnemy = false;
+        print(isEnemy);
         int attackRange = distance - walkDistance;
         int baseWalkDistance = walkDistance;
         float seconds = 0f;
         TilesController[] tilesControllers = new TilesController[distance];
         tilesControllers[0] = directionFunc(this);
-
+        
         for (int i = 1; i < distance; i++)
         {
             if (tilesControllers[i - 1] != null)
@@ -143,7 +145,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         }
         if (TurnManager.Instance.IsEnemyTurn())
         {
-            print("RECUP TILES");
             EnemyManager.Instance.AddTiles(tilesControllers);
         }
         
@@ -157,11 +158,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
             if(walkDistance > 0) // GREEN TILES
             {
                 
-                if (tile.HasAnAlly()) // SI ALLIE SUR LA TILES
+                if (tile.HasAnAlly() && !isEnemy) // SI ALLIE SUR LA TILES
                 {
                     break;
                 }
-                if (tile.HasAnEnemy()) // SI ENNEMI SUR LA TILES
+                if (tile.HasAnEnemy() && !isEnemy) // SI ENNEMI SUR LA TILES
                 {
                     // RED TILES
                     
@@ -188,7 +189,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
             else
             {
                 // RED TILES
-                if (tile.HasAnAlly())
+                if (tile.HasAnAlly() && !isEnemy)
                 {
                     break;
                 }
@@ -240,6 +241,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     
     private void CheckTiles(List<Func<TilesController, TilesController>> sideFuncs, TilesController tile, float seconds, bool attack)
     {
+        bool isEnemy = false;
         if (sideFuncs == null)
             return;
     
@@ -248,7 +250,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
             TilesController adjacent = func(tile);
             if (adjacent != null && !adjacent.isHighLighted() && !adjacent.HasAnAlly())
             {
-                if (adjacent.HasAnEnemy())
+                if (adjacent.HasAnEnemy() && !isEnemy)
                 {
                     adjacent.HighLightTiles(seconds, true);
                     break;

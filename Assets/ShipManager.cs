@@ -25,17 +25,25 @@ public class ShipManager : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown("c"))
+        {
+            print("CHANGED CAMP");
+            ChangeShipsCamp();
+        }
+        
+#endif
         if (_isCooldown)
         {
             return;
         }
-
-        UpdateLists();
-        
+        if(!TurnManager.Instance.IsPlayerTurn()) { return;}
         if (HasPlayedAllShips())
         {
             TurnManager.Instance.CheckUnlockButton();
         }
+
+
     }
 
     private void UpdateLists()
@@ -87,6 +95,7 @@ public class ShipManager : MonoBehaviour
 
     public bool HasPlayedAllShips()
     {
+        UpdateLists();
         foreach (var ship in _listaAllyShips)
         {
             if(!ship.IsLocked())
@@ -108,19 +117,23 @@ public class ShipManager : MonoBehaviour
     
     public ShipController GetEnemyShip(int index)
     {
+        UpdateLists();
         return _listEnemyShips[index];
     }
-    public ShipController GetAllyShip(int index)
+    public ShipController GetActualAllyShip(int index)
     {
+        UpdateLists();
         return _listaAllyShips[index];
     }
-    public int GetEnemyShipsCount()
+    public int GetActualEnemyShipsCount()
     {
+        UpdateLists();
         return _listEnemyShips.Count;
     }
     
-    public List<ShipController> GetEnemyShips()
+    public List<ShipController> GetActualEnemyShips()
     {
+        UpdateLists();
         return _listEnemyShips;
     }
 
@@ -133,13 +146,45 @@ public class ShipManager : MonoBehaviour
         }
     }
     
-    public List<ShipController> GetAllyShips()
+    public List<ShipController> GetActualAllyShips()
     {
+        UpdateLists();
         return _listaAllyShips;
     }
     
     public int GetAllyShip()
     {
+        UpdateLists();
         return _listaAllyShips.Count;
     }
+
+    public List<ShipController> GetAllyShipsOrinalCamp()
+    {
+        var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);
+        List<ShipController> allyShips = new List<ShipController>();
+        foreach (var ship in AllShips)
+        {
+            if (!ship.IsOriginCampEnemy())
+            {
+                allyShips.Add(ship);
+            }
+        }
+        return allyShips;
+    }
+    
+    public List<ShipController> GetEnemyShipsOrinalCamp()
+    {
+        var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);
+        List<ShipController> enemyShips = new List<ShipController>();
+        foreach (var ship in AllShips)
+        {
+            if (ship.IsOriginCampEnemy())
+            {
+                enemyShips.Add(ship);
+            }
+        }
+        return enemyShips;
+    }
+    
+    
 }

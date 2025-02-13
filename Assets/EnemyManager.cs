@@ -28,7 +28,6 @@ public class EnemyManager : MonoBehaviour
     
     public TilesController[] GetTiles()
     {
-        print(_enemyTiles.Count);
         return _enemyTiles.ToArray();
     }
     

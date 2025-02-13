@@ -162,7 +162,7 @@ public class TouchManager : MonoBehaviour
         
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
-            sc.GetInfos();
+        //    sc.GetInfos();
             if (_ActualshipController == null) // SI AUCUN VAISSEAU N'EST SELECTIONNER
             {
                 if(sc.IsAnEnemy()) // VAISSEAU ENNEMI SELECTIONNER
@@ -198,9 +198,8 @@ public class TouchManager : MonoBehaviour
                 }
                 else
                 {
-                    if(_ActualshipController == sc)
+                    if(_ActualshipController == sc)  // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
                     {
-                        // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
                         _ActualshipController.SetLockMode(true);
                         Reset();
                     }
@@ -220,7 +219,7 @@ public class TouchManager : MonoBehaviour
         }
     }
 
-    private void Reset()
+    public void Reset()
     {
         _gridController.ResetAllTiles();
         _ActualshipController = null;

@@ -26,6 +26,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private bool _isInLockDown;
 
     private bool _isMooving;
+    private bool _isOriginCampEnemy;
 
     [Header("OTHERS")] [SerializeField] private GameObject _shipLock;
     [SerializeField] private SpriteRenderer _RawNumber;
@@ -66,13 +67,13 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         if (distance > 0)
         {
             _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile }, isEnemy);
+                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
             _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile }, isEnemy);
+                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
             _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile }, isEnemy);
+                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
             _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile }, isEnemy);
+                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
         }
 
         // DIAGONAL
@@ -85,7 +86,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 _myStats.WalkDistance - 1,
                 diagonal > 1
                     ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.downTile }
-                    : null, true, isEnemy
+                    : null, true
             );
 
             _myTilesController.GetTiles(
@@ -94,7 +95,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 _myStats.WalkDistance - 1,
                 diagonal > 1
                     ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.downTile }
-                    : null, true, isEnemy
+                    : null, true
             );
 
             _myTilesController.GetTiles(
@@ -103,7 +104,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 _myStats.WalkDistance - 1,
                 diagonal > 1
                     ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.upTile }
-                    : null, true, isEnemy
+                    : null, true
             );
 
             _myTilesController.GetTiles(
@@ -112,7 +113,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 _myStats.WalkDistance - 1,
                 diagonal > 1
                     ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.upTile }
-                    : null, true, isEnemy
+                    : null, true
             );
         }
     }
@@ -122,6 +123,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         isEnemy = IsEnemy;
         _myStats = stats;
+        SetOriginCamp(IsEnemy);
     }
 
     public void SetTiles(TilesController newTiles)
@@ -176,7 +178,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         if (TurnManager.Instance.IsEnemyTurn())
         {
-            TurnManager.Instance.EnemyEndATurn();
+            if(transform.TryGetComponent(out Enemy enemy))
+            {
+                enemy.SetMyTurn();
+            }
         }
         SetMoving(false);
 
@@ -359,5 +364,15 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     public void SetMoving(bool state)
     {
         _isMooving = state;
+    }
+    
+    private void SetOriginCamp(bool state)
+    {
+        _isOriginCampEnemy = state;
+    }
+    
+    public bool IsOriginCampEnemy()
+    {
+        return _isOriginCampEnemy;
     }
 }

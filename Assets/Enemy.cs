@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -31,37 +33,66 @@ public class Enemy : MonoBehaviour
     }
 
 
-    private void CheckPath()
+    public void CheckPath()
     {
         _tilesDetected = EnemyManager.Instance.GetTiles();
-        print(_tilesDetected.Length);
         bool canMoove = true;
+        List<ShipController> enemyOnTile = new List<ShipController>();
+        enemyOnTile.Clear();
         foreach (var tile in _tilesDetected)
         {
             if (tile == null)
             {
                 continue;
             }
-            if (tile.HasAnEnemy() && tile.IsAnAttackTile())
+            if (tile.HasAnEnemy())
             {
-                Attack(tile.GetShipController());
-                TurnManager.Instance.EnemyEndATurn();
+                enemyOnTile.Add(tile.GetShipController());
                 canMoove = false;
             }
         }
-
         if (canMoove)
         {
+            if (_shipController.HasMoved() || _shipController.IsLocked())
+            {
+                _shipController.SetLockMode(true);
+                TurnManager.Instance.EnemyEndATurn();
+                EndTurn();
+                return;
+            }
             MoveFoward();
         }
-        
+        else if (enemyOnTile.Count > 0)
+        {
+            // GET THE LOWEST ENEMY LIFE
+            print("TOTAL ENEMY DETECTED = " + enemyOnTile.Count);
+
+            ShipController lowestLife = null;
+            foreach (var enemy in enemyOnTile)
+            {
+                if (lowestLife == null)
+                {
+                    lowestLife = enemy;
+                }
+                else
+                {
+                    if (enemy.GetStats().HP < lowestLife.GetStats().HP)
+                    {
+                        lowestLife = enemy;
+                    }
+                }
+            }
+            Attack(lowestLife);
+            _shipController.SetLockMode(true);
+            TurnManager.Instance.EnemyEndATurn();
+        } 
         EndTurn();
+
     }
     
     public virtual void Attack(ShipController sc)
     {
         sc.Die();
-        Debug.Log("Enemy attack");
     }
 
     public virtual void Move(TilesController tilesController)
@@ -71,7 +102,15 @@ public class Enemy : MonoBehaviour
 
     public virtual void MoveFoward()
     {
-        var fowardTile = _shipController.GetTiles().downTile;
+        int distance = _unitStats.WalkDistance;
+        TilesController fowardTile = _shipController.GetTiles().downTile;
+        for (int i = 1; i < distance; i++)
+        {
+            if (fowardTile != null)
+            {
+                fowardTile = fowardTile.downTile;
+            }
+        }
         if (fowardTile != null)
         {
             Move(fowardTile);
@@ -81,6 +120,7 @@ public class Enemy : MonoBehaviour
     public virtual void EndTurn()
     {
         _gridController.ResetAllTiles();
+        EnemyManager.Instance.ClearTiles();
     }
     
     private IEnumerator Wait(float time)
