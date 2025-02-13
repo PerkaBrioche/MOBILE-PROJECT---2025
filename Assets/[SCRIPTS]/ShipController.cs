@@ -66,13 +66,13 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         if (distance > 0)
         {
             _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
+                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile }, isEnemy);
             _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
+                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile }, isEnemy);
             _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
+                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile }, isEnemy);
             _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
+                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile }, isEnemy);
         }
 
         // DIAGONAL
@@ -85,7 +85,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 _myStats.WalkDistance - 1,
                 diagonal > 1
                     ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.downTile }
-                    : null, true
+                    : null, true, isEnemy
             );
 
             _myTilesController.GetTiles(
@@ -94,7 +94,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 _myStats.WalkDistance - 1,
                 diagonal > 1
                     ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.downTile }
-                    : null, true
+                    : null, true, isEnemy
             );
 
             _myTilesController.GetTiles(
@@ -103,7 +103,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 _myStats.WalkDistance - 1,
                 diagonal > 1
                     ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.upTile }
-                    : null, true
+                    : null, true, isEnemy
             );
 
             _myTilesController.GetTiles(
@@ -112,7 +112,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 _myStats.WalkDistance - 1,
                 diagonal > 1
                     ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.upTile }
-                    : null, true
+                    : null, true, isEnemy
             );
         }
     }
@@ -152,7 +152,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         StartCoroutine(TranslationPosition(neswtiles.transform.position));
         SetTiles(neswtiles);
-
         SetHasMoved(true);
         CheckLock();
     }
@@ -258,7 +257,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _hasAttacked = attack;
         CheckLock();
-        if (!_isInLockDown && !_myStats.CanMooveAndShoot)
+        if (!_isInLockDown && _myStats.CooldownAttack > 0)
         {
             _isInLockDown = true;
         }
@@ -310,12 +309,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         if (_isInLockDown)
         {
             _currentLockAttack--;
-            UpdateNumImage(_currentLockAttack);
             if (_currentLockAttack <= 0)
             {
                 _isInLockDown = false;
                 _currentLockAttack = _myStats.CooldownAttack;
             }
+            UpdateNumImage(_currentLockAttack);
         }
     }
 

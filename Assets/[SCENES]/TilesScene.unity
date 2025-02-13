@@ -2250,7 +2250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
-  _shipStats: {fileID: 11400000, guid: e1a270747217482488a8b060b18fb8be, type: 2}
+  _shipStats: {fileID: 11400000, guid: 07431dd51d00d584a809188c6649e13c, type: 2}
   _tilesController: {fileID: 1449205821}
   isEnemy: 1
 --- !u!1001 &812262888
@@ -6120,11 +6120,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2136137187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afca0f82b37d38d4e8f2e327dbd4c9c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 505ca0d620600034aa7fa4f187b2c110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _turnText: {fileID: 2054955308}
-  _turnButton: {fileID: 427364538}
 --- !u!1001 &2722628505059602454
 PrefabInstance:
   m_ObjectHideFlags: 0

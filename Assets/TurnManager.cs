@@ -50,19 +50,10 @@ public class TurnManager : MonoBehaviour
     {
         _isPlayerTurn = false;
         LockButtonTurn();
-        if (ShipManager.Instance.GetEnemyShipsCount() > 0)
+        if (!CheckEndGame())
         {
             StartEnemyTurn();
         }
-        else
-        {
-            GameEnd();
-        }
-    }
-
-    private void GameEnd()
-    {
-        UpdateText("VICTORY", Color.green);
     }
     
     public void StartEnemyTurn()
@@ -79,7 +70,10 @@ public class TurnManager : MonoBehaviour
     {
         _isEnemyTurn = false;
         ShipManager.Instance.ResetAllShips();
-        StartPlayerTurn();
+        if (!CheckEndGame())
+        {
+            StartPlayerTurn();
+        }
     }
     
     private void UpdateText(string text, Color color)
@@ -90,7 +84,6 @@ public class TurnManager : MonoBehaviour
 
     private void UnlockButtonTurn()
     {
-        print("UNLOCK BUTTON");
         _turnButton.interactable = true;
     }
     
@@ -154,5 +147,39 @@ public class TurnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         _actualisedCamp = true;
+    }
+
+    private bool CheckEndGame()
+    {
+        if (ShipManager.Instance.GetEnemyShipsCount() > 0)
+        {
+        }
+        else
+        {
+            WinGame();
+            return true;
+        }
+        
+        if(ShipManager.Instance.GetAllyShip() > 0)
+        {
+        }
+        else
+        {
+            LoseGame();
+            return true;
+        }
+        
+        return false;
+        
+    }
+
+    private void WinGame()
+    {
+        UpdateText("VICTORY", Color.green);
+    }
+    
+    public void LoseGame()
+    {
+        UpdateText("DEFEAT", Color.red);
     }
 }

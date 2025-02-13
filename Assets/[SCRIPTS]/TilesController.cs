@@ -126,7 +126,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         SetIsRangeTile(false);
     }
 
-    public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance, List<Func<TilesController, TilesController>> sideFuncs = null, bool diagonal = false)
+    public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance, List<Func<TilesController, TilesController>> sideFuncs = null, bool diagonal = false, bool enemyTiles = false)
     {
         int attackRange = distance - walkDistance;
         int baseWalkDistance = walkDistance;
@@ -141,7 +141,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 tilesControllers[i] = directionFunc(tilesControllers[i - 1]);
             }
         }
-        
+        if (TurnManager.Instance.IsEnemyTurn())
+        {
+            print("RECUP TILES");
+            EnemyManager.Instance.AddTiles(tilesControllers);
+        }
         
         foreach (var tile in tilesControllers)
         {
@@ -230,6 +234,8 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                     
             }
         }
+
+
     }
     
     private void CheckTiles(List<Func<TilesController, TilesController>> sideFuncs, TilesController tile, float seconds, bool attack)

@@ -29,17 +29,44 @@ public class Enemy : MonoBehaviour
         _shipController.GetPath();
         StartCoroutine(Wait(1f));
     }
+
+
+    private void CheckPath()
+    {
+        _tilesDetected = EnemyManager.Instance.GetTiles();
+        print(_tilesDetected.Length);
+        bool canMoove = true;
+        foreach (var tile in _tilesDetected)
+        {
+            if (tile == null)
+            {
+                continue;
+            }
+            if (tile.HasAnEnemy() && tile.IsAnAttackTile())
+            {
+                Attack(tile.GetShipController());
+                TurnManager.Instance.EnemyEndATurn();
+                canMoove = false;
+            }
+        }
+
+        if (canMoove)
+        {
+            MoveFoward();
+        }
+        
+        EndTurn();
+    }
     
     public virtual void Attack(ShipController sc)
     {
-        sc.TakeDamage(_unitStats.ATK);
+        sc.Die();
         Debug.Log("Enemy attack");
     }
 
     public virtual void Move(TilesController tilesController)
     {
         _shipController.SetNewPosition(tilesController);
-        _gridController.ResetAllTiles();
     }
 
     public virtual void MoveFoward()
@@ -53,13 +80,13 @@ public class Enemy : MonoBehaviour
     
     public virtual void EndTurn()
     {
-        Debug.Log("Enemy end turn");
+        _gridController.ResetAllTiles();
     }
     
     private IEnumerator Wait(float time)
     {
-        yield return new WaitForSeconds(time);
-        MoveFoward();
+        yield return new WaitForSeconds(time); 
+        CheckPath();
     }
 }
 
