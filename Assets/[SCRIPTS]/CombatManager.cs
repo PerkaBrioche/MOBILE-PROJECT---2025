@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
@@ -9,6 +10,10 @@ public class CombatManager : MonoBehaviour
     public Transform rightCombatPoint;
     public float moveSpeed = 2f;
     public float attackDelay = 1f;
+    public UnityEngine.RectTransform topBorder;
+    public UnityEngine.RectTransform bottomBorder;
+    public float borderAnimationDuration = 0.3f;
+    public float targetBorderHeight = 100f;
 
     private ShipController _attackerShip;
     private ShipController _targetShip;
@@ -19,13 +24,22 @@ public class CombatManager : MonoBehaviour
         if (tm != null) tm.SetInteractionEnabled(false);
         _attackerShip = attacker;
         _targetShip = target;
-        GameObject attackerVisual = Instantiate(attacker.gameObject, leftStartPoint.position, Quaternion.identity);
-        GameObject targetVisual = Instantiate(target.gameObject, rightStartPoint.position, Quaternion.identity);
+        StartCoroutine(CombatSequence());
+    }
+
+    private IEnumerator CombatSequence()
+    {
+        yield return StartCoroutine(AnimateBordersIn());
+        GameObject attackerVisual = Instantiate(_attackerShip.gameObject, leftStartPoint.position, Quaternion.identity);
+        GameObject targetVisual = Instantiate(_targetShip.gameObject, rightStartPoint.position, Quaternion.identity);
         if (attackerVisual.TryGetComponent<ShipController>(out ShipController sc1))
             sc1.enabled = false;
         if (targetVisual.TryGetComponent<ShipController>(out ShipController sc2))
             sc2.enabled = false;
-        StartCoroutine(ApproachAndBattle(attackerVisual, targetVisual));
+        yield return StartCoroutine(ApproachAndBattle(attackerVisual, targetVisual));
+        yield return StartCoroutine(AnimateBordersOut());
+        TouchManager tm = FindObjectOfType<TouchManager>();
+        if (tm != null) tm.SetInteractionEnabled(true);
     }
 
     private IEnumerator ApproachAndBattle(GameObject attackerVisual, GameObject targetVisual)
@@ -58,19 +72,52 @@ public class CombatManager : MonoBehaviour
         if (anim != null)
             anim.SetTrigger("Attack");
         yield return new WaitForSeconds(1f);
-        int damage = Mathf.RoundToInt(_attackerShip.runtimeStats.ATK * _targetShip.runtimeStats.DEF);
+        int damage = _attackerShip.runtimeStats.ATK - _targetShip.runtimeStats.DEF;
         if (damage < 1) damage = 1;
         _targetShip.runtimeStats.HP -= damage;
-        float defDisplay = 10f - (10f * _targetShip.runtimeStats.DEF);
-        Debug.Log(_attackerShip.runtimeStats.UnitName + " inflige " + damage + " dégâts à " + _targetShip.runtimeStats.UnitName 
-            + " (défense affichée : " + defDisplay + "). HP restant : " + _targetShip.runtimeStats.HP);
+        Debug.Log(_attackerShip.runtimeStats.UnitName + " inflige " + damage + " dégâts à " + _targetShip.runtimeStats.UnitName + ". HP restant : " + _targetShip.runtimeStats.HP);
         yield return new WaitForSeconds(0.5f);
         Destroy(attackerVisual);
         Destroy(targetVisual);
         if (_targetShip.runtimeStats.HP <= 0)
             _targetShip.Die();
-        TouchManager tm = FindObjectOfType<TouchManager>();
-        if (tm != null) tm.SetInteractionEnabled(true);
-        yield return null;
+    }
+
+    private IEnumerator AnimateBordersIn()
+    {
+        float elapsed = 0f;
+        Vector2 topStart = topBorder.sizeDelta;
+        Vector2 bottomStart = bottomBorder.sizeDelta;
+        Vector2 topTarget = new Vector2(topStart.x, targetBorderHeight);
+        Vector2 bottomTarget = new Vector2(bottomStart.x, targetBorderHeight);
+        while (elapsed < borderAnimationDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / borderAnimationDuration;
+            topBorder.sizeDelta = Vector2.Lerp(topStart, topTarget, t);
+            bottomBorder.sizeDelta = Vector2.Lerp(bottomStart, bottomTarget, t);
+            yield return null;
+        }
+        topBorder.sizeDelta = topTarget;
+        bottomBorder.sizeDelta = bottomTarget;
+    }
+
+    private IEnumerator AnimateBordersOut()
+    {
+        float elapsed = 0f;
+        Vector2 topStart = topBorder.sizeDelta;
+        Vector2 bottomStart = bottomBorder.sizeDelta;
+        Vector2 topTarget = new Vector2(topStart.x, 0f);
+        Vector2 bottomTarget = new Vector2(bottomStart.x, 0f);
+        while (elapsed < borderAnimationDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / borderAnimationDuration;
+            topBorder.sizeDelta = Vector2.Lerp(topStart, topTarget, t);
+            bottomBorder.sizeDelta = Vector2.Lerp(bottomStart, bottomTarget, t);
+            yield return null;
+        }
+        topBorder.sizeDelta = topTarget;
+        bottomBorder.sizeDelta = bottomTarget;
     }
 }
