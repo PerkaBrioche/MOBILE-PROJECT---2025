@@ -41,11 +41,7 @@ public class UnitStats : ScriptableObject
         set { atkRange = value; }
     }
 
-    [SerializeField] private bool canMooveAndShoot;
-    public bool CanMooveAndShoot
-    { 
-        get { return canMooveAndShoot; }
-    }
+
     
     [Header("DEPLACEMENT HORIZONTAL ET VERTICAL")]
     
@@ -59,48 +55,21 @@ public class UnitStats : ScriptableObject
     {
         get { return _attackRange; }
     }
-    // [SerializeField] private int right;
-    // public int Right
-    // {
-    //     get { return right; }
-    // }
-    // [SerializeField] private int left;
-    // public int Left
-    // {
-    //     get { return left; }
-    // }
-    // [SerializeField] private int up;
-    // public int Up
-    // {
-    //     get { return up; }
-    // }
-    // [SerializeField] private int down;
-    // public int Down
-    // {
-    //     get { return down; }
-    // }
-    //
-    // [Header("DEPLACEMENT DIAGONAL")]
-    // [SerializeField] private int upRight;
-    // public int UpRight
-    // {
-    //     get { return upRight; }
-    // }
-    // [SerializeField] private int upLeft;
-    // public int UpLeft
-    // {
-    //     get { return upLeft; }
-    // }
-    // [SerializeField] private int downRight;
-    // public int DownRight
-    // {
-    //     get { return downRight; }
-    // }
-    // [SerializeField] private int downLeft;
-    // public int DownLeft
-    // {
-    //     get { return downLeft; }
-    // }
+    
+    [Space(10)]
+    [Header("OTHERS")]
+
+    [SerializeField] private bool canMooveAndShoot;
+    public bool CanMooveAndShoot
+    { 
+        get { return canMooveAndShoot; }
+    }
+    [SerializeField] private int _cooldownAttack;
+    public int CooldownAttack
+    {
+        get { return _cooldownAttack; }
+    }
+
     
     
 }

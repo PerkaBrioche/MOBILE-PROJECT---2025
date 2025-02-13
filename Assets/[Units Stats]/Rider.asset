@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
   m_Name: Rider
   m_EditorClassIdentifier: 
-  _unitName: Rider
+  _unitName: Rider ??
   hp: 200
   atk: 150
   def: 0.6
   atkRange: 1
-  canMooveAndShoot: 0
-  _walkDistance: 3
+  canMooveAndShoot: 1
+  _walkDistance: 2
   _attackRange: 1

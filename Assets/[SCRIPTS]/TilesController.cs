@@ -150,21 +150,24 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 continue;
             }
             seconds += 0.07f;
-            if(walkDistance > 0)
+            if(walkDistance > 0) // GREEN TILES
             {
-                // GREEN TILES
-                if (tile.HasAnAlly())
+                
+                if (tile.HasAnAlly()) // SI ALLIE SUR LA TILES
                 {
                     break;
                 }
-                if (tile.HasAnEnemy())
+                if (tile.HasAnEnemy()) // SI ENNEMI SUR LA TILES
                 {
                     // RED TILES
+                    
                     tile.HighLightTiles(seconds, true);
                     break;
                 }
+                
                 tile.HighLightTiles(seconds, false);
 
+                
                 if(walkDistance != 1)
                 {
                     CheckTiles(sideFuncs, tile, seconds, false);
@@ -176,7 +179,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                         CheckTiles(sideFuncs, tile, seconds, false);
                     }
                 }
-
                 walkDistance--;
             }
             else
