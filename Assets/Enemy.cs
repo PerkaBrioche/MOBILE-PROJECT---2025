@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour
     private bool canAction = true;
     private GridController _gridController;
     
+    private TilesController[] _tilesDetected;
+    
     
     private void Awake()
     {
@@ -24,7 +26,6 @@ public class Enemy : MonoBehaviour
     
     public virtual void SetMyTurn()
     {
-        Debug.Log("Enemy turn");
         _shipController.GetPath();
         StartCoroutine(Wait(1f));
     }
