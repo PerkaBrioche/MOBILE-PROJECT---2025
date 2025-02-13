@@ -8,6 +8,16 @@ using UnityEngine.UI;
 
 public class ShipController : MonoBehaviour, bounce.IBounce
 {
+    [System.Serializable]
+    public struct RuntimeStats {
+        public string UnitName;
+        public int HP;
+        public int ATK;
+        public int DEF;
+        public int WalkDistance;
+        public int AttackRange;
+    }
+    public RuntimeStats runtimeStats;
 
     private UnitStats _myStats;
     [Space(20)] private float _speed = 1.2f;
@@ -29,10 +39,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     [Header("OTHERS")] [SerializeField] private GameObject _shipLock;
     [SerializeField] private SpriteRenderer _RawNumber;
-
     [SerializeField] private List<Sprite> _numbers;
-
-
 
     private void Start()
     {
@@ -56,7 +63,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             return;
         }
-
         GetTilesPath();
     }
 
@@ -65,63 +71,31 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         int distance = _myStats.WalkDistance + _myStats.AttackRange;
         if (distance > 0)
         {
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, _myStats.WalkDistance
-                , new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
         }
-
-        // DIAGONAL
-        int diagonal = (distance) - 1;
+        int diagonal = distance - 1;
         if (diagonal > 0)
         {
-            _myTilesController.GetTiles(
-                diagonal,
-                t => t.upTile != null ? t.upTile.rightTile : null,
-                _myStats.WalkDistance - 1,
-                diagonal > 1
-                    ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.downTile }
-                    : null, true
-            );
-
-            _myTilesController.GetTiles(
-                diagonal,
-                t => t.upTile != null ? t.upTile.leftTile : null,
-                _myStats.WalkDistance - 1,
-                diagonal > 1
-                    ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.downTile }
-                    : null, true
-            );
-
-            _myTilesController.GetTiles(
-                diagonal,
-                t => t.downTile != null ? t.downTile.rightTile : null,
-                _myStats.WalkDistance - 1,
-                diagonal > 1
-                    ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.upTile }
-                    : null, true
-            );
-
-            _myTilesController.GetTiles(
-                diagonal,
-                t => t.downTile != null ? t.downTile.leftTile : null,
-                _myStats.WalkDistance - 1,
-                diagonal > 1
-                    ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.upTile }
-                    : null, true
-            );
+            _myTilesController.GetTiles(diagonal, t => t.upTile != null ? t.upTile.rightTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.downTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.upTile != null ? t.upTile.leftTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.downTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.rightTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.upTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.leftTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.upTile } : null, true);
         }
     }
-
 
     public void Initialize(bool IsEnemy, UnitStats stats)
     {
         isEnemy = IsEnemy;
         _myStats = stats;
+        runtimeStats.UnitName = _myStats.UnitName;
+        runtimeStats.HP = _myStats.HP;
+        runtimeStats.ATK = _myStats.ATK;
+        runtimeStats.DEF = Mathf.RoundToInt(_myStats.DEF);
+        runtimeStats.WalkDistance = _myStats.WalkDistance;
+        runtimeStats.AttackRange = _myStats.AttackRange;
     }
 
     public void SetTiles(TilesController newTiles)
@@ -133,14 +107,11 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _myTilesController.SetHasAnEnemy(false);
             _myTilesController.SetHasAnAlly(false);
         }
-
-        // NOUVELLE TILES
         _myTilesController = newTiles;
         _myTilesController.SetHasAnEnemy(isEnemy);
         _myTilesController.SetHasAnAlly(!isEnemy);
         _myTilesController.ChangeCollider(false);
         _myTilesController.SetShipController(this);
-
     }
 
     public TilesController GetTiles()
@@ -152,7 +123,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         StartCoroutine(TranslationPosition(neswtiles.transform.position));
         SetTiles(neswtiles);
-
         SetHasMoved(true);
         CheckLock();
     }
@@ -169,7 +139,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             yield return null;
         }
         yield return null;
-        
         EndMovement();
     }
 
@@ -180,7 +149,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             TurnManager.Instance.EnemyEndATurn();
         }
         SetMoving(false);
-
     }
 
     private void OnValidate()
@@ -193,7 +161,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void TakeDamage(int damage)
     {
-
     }
 
     public void Die()
@@ -240,7 +207,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             return true;
         }
-
         return false;
     }
 
@@ -250,7 +216,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             return true;
         }
-
         return false;
     }
 
@@ -278,15 +243,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 SetLockMode(true);
                 return;
             }
-
             if (_hasMoved && _hasAttacked)
             {
                 SetLockMode(true);
                 return;
             }
-            
             SetLockMode(false);
-            
         }
         else
         {
@@ -295,9 +257,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 SetLockMode(true);
                 return;
             }
-
             SetLockMode(false);
-            
         }
     }
 
@@ -306,7 +266,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _hasMoved = false;
         _hasAttacked = false;
         SetLockMode(false);
-
         if (_isInLockDown)
         {
             _currentLockAttack--;
@@ -345,10 +304,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         print("IsLocked = " + _isLocked);
         print("IsInLockDown = " + _isInLockDown);
     }
-    
+
     public void ChangeCamp()
     {
-        isEnemy =! isEnemy;
+        isEnemy = !isEnemy;
         SetTiles(_myTilesController);
     }
 
@@ -356,7 +315,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         return _isMooving;
     }
-    
+
     public void SetMoving(bool state)
     {
         _isMooving = state;

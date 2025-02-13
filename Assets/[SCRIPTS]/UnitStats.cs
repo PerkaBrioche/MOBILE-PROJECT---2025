@@ -6,7 +6,6 @@ public class UnitStats : ScriptableObject
     [Header("Informations générales")]
     [SerializeField] private string _unitName;
     public string UnitName
-    
     {
         get { return _unitName; }
         set { _unitName = value; }
@@ -41,10 +40,7 @@ public class UnitStats : ScriptableObject
         set { atkRange = value; }
     }
 
-
-    
     [Header("DEPLACEMENT HORIZONTAL ET VERTICAL")]
-    
     [SerializeField] private int _walkDistance;
     public int WalkDistance
     {
@@ -58,7 +54,6 @@ public class UnitStats : ScriptableObject
     
     [Space(10)]
     [Header("OTHERS")]
-
     [SerializeField] private bool canMooveAndShoot;
     public bool CanMooveAndShoot
     { 
@@ -69,7 +64,4 @@ public class UnitStats : ScriptableObject
     {
         get { return _cooldownAttack; }
     }
-
-    
-    
 }
