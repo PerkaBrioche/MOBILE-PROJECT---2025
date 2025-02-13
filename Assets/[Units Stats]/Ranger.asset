@@ -17,6 +17,6 @@ MonoBehaviour:
   atk: 12
   def: 0.8
   atkRange: 2
-  canMooveAndShoot: 0
+  canMooveAndShoot: 1
   _walkDistance: 2
   _attackRange: 2

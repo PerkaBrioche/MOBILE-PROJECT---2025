@@ -15,6 +15,8 @@ public class TouchManager : MonoBehaviour
     private Collider2D actualCollider;
     private bool _IsHolding = false;
     
+    // HOLD
+
     [SerializeField] private GameObject draggablePrefab;
     private bool _isDragging = false;
     private bool _isScrolling = false;
@@ -28,17 +30,12 @@ public class TouchManager : MonoBehaviour
     private Vector3 _scrollStartTouchPos;
     private float _scrollStartCameraY;
     
+
     private ShipController _ActualshipController = null;
     private TilesController _ActualtilesController;
     [SerializeField] private GridController _gridController;
     
     private bool _isHighLighted;
-    private bool interactionEnabled = true;
-
-    public void SetInteractionEnabled(bool enabled)
-    {
-        interactionEnabled = enabled;
-    }
 
     private void Awake()
     {
@@ -53,7 +50,6 @@ public class TouchManager : MonoBehaviour
         _touchPress.performed += OnTouched;
         _holdPress.started += OnHoldStarted;
         _holdPress.canceled += OnHoldCanceled;
-        Debug.Log("Touch Action Enabled");
     }
 
     private void OnDisable()
@@ -61,11 +57,11 @@ public class TouchManager : MonoBehaviour
         _touchPress.performed -= OnTouched;
         _holdPress.started -= OnHoldStarted;
         _holdPress.canceled -= OnHoldCanceled;
-        Debug.Log("Touch Action Disabled");
     }
 
     private void Update()
     {
+        // UPDATE LA POSITION 
         if (_IsHolding)
         {
             if (_isDragging && currentDraggable != null)
@@ -103,15 +99,19 @@ public class TouchManager : MonoBehaviour
 
     private void OnHolding(InputAction.CallbackContext context)
     {
+        // ICI ON JOUE UNE ACTIONS LORSQU'ON RESTE APPUYER SUR UN OBJET
     }
 
     private void GetTouchPositon(InputAction.CallbackContext context)
     {
+        
     }
     
     private void OnTouched(InputAction.CallbackContext context)
     {
-        if (!interactionEnabled) return;
+        if(!TurnManager.Instance.IsPlayerTurn()){return;} // CHECK SI C'EST AU JOUEUR
+        
+        // LORSQUE LE JOUEUR APPUIE *UNE FOIS* SUR L'ECRAN
         Vector2 touchedPosition = _touchPosition.ReadValue<Vector2>();
         _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPosition);       
         actualCollider = GetCollider();
@@ -119,70 +119,89 @@ public class TouchManager : MonoBehaviour
         {
             return;
         }
+        
+        // INTERFACE BOUNCE QUI SERA REMPLACER PAR INTERACTABLE
         if (actualCollider.TryGetComponent(out bounce.IBounce Ib))
         {
             Ib.Bounce();
         }
         else
         {
-            Debug.LogError("No IBounce Interface Found");
         }
+
+        ///// TILES CONTROLLER /////
         if (actualCollider.TryGetComponent(out TilesController tC))
         {
-            Debug.Log("CLICKED ON TILES CONTROLLER");
             if (_isHighLighted)
             {
                 if (tC.isHighLighted())
                 {
-                    if (_ActualshipController != null)
+                    
+                    if(_ActualshipController != null) // VAISSEAU SELECTIONNER
                     {
-                        if (tC.IsAnAttackTile())
+                        if(tC.IsAnAttackTile())
                         {
+                            // TILES D'ATTAQUE
                             Reset();
                         }
                         else
                         {
-                            _ActualshipController.SetNewPosition(tC);
+                            // TILES DE DEPLACEMENT
+                            if (_ActualshipController.CanMove())
+                            {
+                                _ActualshipController.SetNewPosition(tC);
+                            }
                         }
-                    }
-                    else
-                    {
-                        Debug.LogError("NO SHIP CONTROLLER SELECTED");
                     }
                 }
             }
             Reset();
         }
+        
+        /// SHIPPPP CONTROLLER ////
+        
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
-            Debug.Log("CLICKED ON SHIP CONTROLLER");
-            if (_ActualshipController == null)
+            sc.GetInfos();
+            if (_ActualshipController == null) // SI AUCUN VAISSEAU N'EST SELECTIONNER
             {
-                if(sc.IsAnEnemy())
+                if(sc.IsAnEnemy()) // VAISSEAU ENNEMI SELECTIONNER
                 {
                 }
-                else
+                else // VAISSEAU ALLIE SELECTIONNER
                 {
                     _isHighLighted = true;
                 }
                 sc.GetPath();
                 _ActualshipController = sc;
             }
-            else
+            else  // SI UN VAISSEAU EST DEJA SELECTIONNER
             {
+                
                 if(sc.IsAnEnemy())
                 {
-                    CombatManager cm = FindObjectOfType<CombatManager>();
-                    if(cm != null && _ActualshipController != null)
+                    if (_ActualshipController.IsAnEnemy())
                     {
-                        cm.StartCombat(_ActualshipController, sc);
+                        Reset();
+                        return;
+                    }
+                    if (sc.GetTiles().HasAnEnemy() && sc.GetTiles().IsAnAttackTile() && _ActualshipController.CanAttack() && !_ActualshipController.IsInLockDown())
+                    {
+                        // SI LE VAISSEAU EST UN ENNEMI LANCER UN COMBAT
+                        // POUR TOI MAXIME <3
+                        
+                        _ActualshipController.SetHasAttacked(true);
+                        sc.Die();
                     }
                     Reset();
+
                 }
                 else
                 {
                     if(_ActualshipController == sc)
                     {
+                        // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
+                        _ActualshipController.SetLockMode(true);
                         Reset();
                     }
                     else
@@ -190,13 +209,14 @@ public class TouchManager : MonoBehaviour
                         Reset();
                         sc.GetPath();
                         _ActualshipController = sc;
+                        // SI LE VAISSEAU SELECTIONNER EST DIFFERENT
                     }
+
                 }
             }
         }
         else
         {
-            Debug.Log("NO SHIP CONTROLLER SELECTED");
         }
     }
 
@@ -210,12 +230,12 @@ public class TouchManager : MonoBehaviour
 
     private Collider2D GetCollider()
     {
+        // ON RETOURNE L'OOBJET APPUYER
         Collider2D hit = Physics2D.OverlapPoint(_actualTouchedPosition);
         if (hit != null)
         {
             return hit;
         }
-        Debug.DrawLine(_actualTouchedPosition, _actualTouchedPosition + Vector3.right * 0.1f, Color.magenta, 3f);
         return null;
     }
     
@@ -233,7 +253,6 @@ public class TouchManager : MonoBehaviour
             _isDragging = true;
             _isScrolling = false;
             currentDraggable.OnBeginDrag();
-            Debug.Log("Début du drag sur l'unité : " + currentDraggedObject.name);
         }
         else
         {
@@ -243,7 +262,6 @@ public class TouchManager : MonoBehaviour
                 _isScrolling = true;
                 _scrollStartTouchPos = _actualTouchedPosition;
                 _scrollStartCameraY = Camera.main.transform.position.y;
-                Debug.Log("Début du scroll de la scène.");
             }
         }
     }
