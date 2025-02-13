@@ -1,38 +1,48 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
-    public GameObject characterPrefab;
     public Transform leftStartPoint;
     public Transform rightStartPoint;
     public Transform leftCombatPoint;
     public Transform rightCombatPoint;
     public float moveSpeed = 2f;
     public float attackDelay = 1f;
+    public UnityEngine.RectTransform topBorder;
+    public UnityEngine.RectTransform bottomBorder;
+    public float borderAnimationDuration = 0.3f;
+    public float targetBorderHeight = 100f;
 
-    private GameObject leftUnit;
-    private GameObject rightUnit;
-    private Character leftCharacter;
-    private Character rightCharacter;
+    private ShipController _attackerShip;
+    private ShipController _targetShip;
 
-    public void StartCombat(UnitStats stats1, UnitStats stats2)
+    public void StartCombat(ShipController attacker, ShipController target)
     {
-        if (characterPrefab == null)
-        {
-            Debug.LogError("Prefab manquant");
-            return;
-        }
-        leftUnit = Instantiate(characterPrefab, leftStartPoint.position, Quaternion.identity);
-        rightUnit = Instantiate(characterPrefab, rightStartPoint.position, Quaternion.identity);
-        leftCharacter = leftUnit.GetComponent<Character>();
-        rightCharacter = rightUnit.GetComponent<Character>();
-        leftCharacter.Stats = stats1;
-        rightCharacter.Stats = stats2;
-        StartCoroutine(ApproachAndBattle());
+        TouchManager tm = FindObjectOfType<TouchManager>();
+        if (tm != null) tm.SetInteractionEnabled(false);
+        _attackerShip = attacker;
+        _targetShip = target;
+        StartCoroutine(CombatSequence());
     }
 
-    private IEnumerator ApproachAndBattle()
+    private IEnumerator CombatSequence()
+    {
+        yield return StartCoroutine(AnimateBordersIn());
+        GameObject attackerVisual = Instantiate(_attackerShip.gameObject, leftStartPoint.position, Quaternion.identity);
+        GameObject targetVisual = Instantiate(_targetShip.gameObject, rightStartPoint.position, Quaternion.identity);
+        if (attackerVisual.TryGetComponent<ShipController>(out ShipController sc1))
+            sc1.enabled = false;
+        if (targetVisual.TryGetComponent<ShipController>(out ShipController sc2))
+            sc2.enabled = false;
+        yield return StartCoroutine(ApproachAndBattle(attackerVisual, targetVisual));
+        yield return StartCoroutine(AnimateBordersOut());
+        TouchManager tm = FindObjectOfType<TouchManager>();
+        if (tm != null) tm.SetInteractionEnabled(true);
+    }
+
+    private IEnumerator ApproachAndBattle(GameObject attackerVisual, GameObject targetVisual)
     {
         bool leftReached = false;
         bool rightReached = false;
@@ -40,60 +50,74 @@ public class CombatManager : MonoBehaviour
         {
             if (!leftReached)
             {
-                leftUnit.transform.position = Vector3.MoveTowards(leftUnit.transform.position, leftCombatPoint.position, moveSpeed * Time.deltaTime);
-                if (Vector3.Distance(leftUnit.transform.position, leftCombatPoint.position) < 0.01f)
-                {
+                attackerVisual.transform.position = Vector3.MoveTowards(attackerVisual.transform.position, leftCombatPoint.position, moveSpeed * Time.deltaTime);
+                if (Vector3.Distance(attackerVisual.transform.position, leftCombatPoint.position) < 0.01f)
                     leftReached = true;
-                }
             }
             if (!rightReached)
             {
-                rightUnit.transform.position = Vector3.MoveTowards(rightUnit.transform.position, rightCombatPoint.position, moveSpeed * Time.deltaTime);
-                if (Vector3.Distance(rightUnit.transform.position, rightCombatPoint.position) < 0.01f)
-                {
+                targetVisual.transform.position = Vector3.MoveTowards(targetVisual.transform.position, rightCombatPoint.position, moveSpeed * Time.deltaTime);
+                if (Vector3.Distance(targetVisual.transform.position, rightCombatPoint.position) < 0.01f)
                     rightReached = true;
-                }
             }
             yield return null;
         }
         yield return new WaitForSeconds(0.5f);
-        yield return StartCoroutine(Battle());
+        yield return StartCoroutine(Battle(attackerVisual, targetVisual));
     }
 
-    private IEnumerator Battle()
+    private IEnumerator Battle(GameObject attackerVisual, GameObject targetVisual)
     {
-        bool leftTurn = true;
-        while (leftCharacter.Stats.HP > 0 && rightCharacter.Stats.HP > 0)
+        Animator anim = attackerVisual.GetComponent<Animator>();
+        if (anim != null)
+            anim.SetTrigger("Attack");
+        yield return new WaitForSeconds(1f);
+        int damage = _attackerShip.runtimeStats.ATK - _targetShip.runtimeStats.DEF;
+        if (damage < 1) damage = 1;
+        _targetShip.runtimeStats.HP -= damage;
+        Debug.Log(_attackerShip.runtimeStats.UnitName + " inflige " + damage + " dégâts à " + _targetShip.runtimeStats.UnitName + ". HP restant : " + _targetShip.runtimeStats.HP);
+        yield return new WaitForSeconds(0.5f);
+        Destroy(attackerVisual);
+        Destroy(targetVisual);
+        if (_targetShip.runtimeStats.HP <= 0)
+            _targetShip.Die();
+    }
+
+    private IEnumerator AnimateBordersIn()
+    {
+        float elapsed = 0f;
+        Vector2 topStart = topBorder.sizeDelta;
+        Vector2 bottomStart = bottomBorder.sizeDelta;
+        Vector2 topTarget = new Vector2(topStart.x, targetBorderHeight);
+        Vector2 bottomTarget = new Vector2(bottomStart.x, targetBorderHeight);
+        while (elapsed < borderAnimationDuration)
         {
-            if (leftTurn)
-            {
-                int damage = leftCharacter.Stats.ATK - Mathf.FloorToInt(rightCharacter.Stats.DEF);
-                if (damage <= 0) damage = 1;
-                rightCharacter.Stats.HP -= damage;
-                Debug.Log(leftCharacter.Stats.UnitName + " inflige " + damage + " dégâts à " + rightCharacter.Stats.UnitName + ". HP restant: " + rightCharacter.Stats.HP);
-            }
-            else
-            {
-                int damage = rightCharacter.Stats.ATK - Mathf.FloorToInt(leftCharacter.Stats.DEF);
-                if (damage <= 0) damage = 1;
-                leftCharacter.Stats.HP -= damage;
-                Debug.Log(rightCharacter.Stats.UnitName + " inflige " + damage + " dégâts à " + leftCharacter.Stats.UnitName + ". HP restant: " + leftCharacter.Stats.HP);
-            }
-            leftTurn = !leftTurn;
-            yield return new WaitForSeconds(attackDelay);
+            elapsed += Time.deltaTime;
+            float t = elapsed / borderAnimationDuration;
+            topBorder.sizeDelta = Vector2.Lerp(topStart, topTarget, t);
+            bottomBorder.sizeDelta = Vector2.Lerp(bottomStart, bottomTarget, t);
+            yield return null;
         }
-        if (leftCharacter.Stats.HP <= 0 && rightCharacter.Stats.HP <= 0)
+        topBorder.sizeDelta = topTarget;
+        bottomBorder.sizeDelta = bottomTarget;
+    }
+
+    private IEnumerator AnimateBordersOut()
+    {
+        float elapsed = 0f;
+        Vector2 topStart = topBorder.sizeDelta;
+        Vector2 bottomStart = bottomBorder.sizeDelta;
+        Vector2 topTarget = new Vector2(topStart.x, 0f);
+        Vector2 bottomTarget = new Vector2(bottomStart.x, 0f);
+        while (elapsed < borderAnimationDuration)
         {
-            Debug.Log("Match nul");
+            elapsed += Time.deltaTime;
+            float t = elapsed / borderAnimationDuration;
+            topBorder.sizeDelta = Vector2.Lerp(topStart, topTarget, t);
+            bottomBorder.sizeDelta = Vector2.Lerp(bottomStart, bottomTarget, t);
+            yield return null;
         }
-        else if (leftCharacter.Stats.HP <= 0)
-        {
-            Debug.Log(rightCharacter.Stats.UnitName + " gagne le combat");
-        }
-        else if (rightCharacter.Stats.HP <= 0)
-        {
-            Debug.Log(leftCharacter.Stats.UnitName + " gagne le combat");
-        }
-        yield return null;
+        topBorder.sizeDelta = topTarget;
+        bottomBorder.sizeDelta = bottomTarget;
     }
 }

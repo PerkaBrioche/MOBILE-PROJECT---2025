@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Patroller
   m_EditorClassIdentifier: 
   _unitName: Patroller
-  hp: 250
-  atk: 150
+  hp: 25
+  atk: 15
   def: 0.7
   atkRange: 1
   canMooveAndShoot: 1

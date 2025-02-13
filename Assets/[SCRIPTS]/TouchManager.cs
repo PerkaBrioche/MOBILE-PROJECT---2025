@@ -14,27 +14,24 @@ public class TouchManager : MonoBehaviour
     private float _actualholdTime = 0f;
     private Collider2D actualCollider;
     private bool _IsHolding = false;
-    
-    // HOLD
 
     [SerializeField] private GameObject draggablePrefab;
     private bool _isDragging = false;
     private bool _isScrolling = false;
     private IDraggable currentDraggable;
     private GameObject currentDraggedObject;
-    
+
     [Header("Scrolling Settings")]
     [SerializeField] private bool canScroll = true;
     [SerializeField] private float scrollMinY = -5f;
     [SerializeField] private float scrollMaxY = 5f;
     private Vector3 _scrollStartTouchPos;
     private float _scrollStartCameraY;
-    
 
     private ShipController _ActualshipController = null;
     private TilesController _ActualtilesController;
     [SerializeField] private GridController _gridController;
-    
+
     private bool _isHighLighted;
 
     private void Awake()
@@ -61,7 +58,6 @@ public class TouchManager : MonoBehaviour
 
     private void Update()
     {
-        // UPDATE LA POSITION 
         if (_IsHolding)
         {
             if (_isDragging && currentDraggable != null)
@@ -78,11 +74,7 @@ public class TouchManager : MonoBehaviour
                 currentTouchWorldPos.z = 0f;
                 float deltaY = currentTouchWorldPos.y - _scrollStartTouchPos.y;
                 float newCameraY = Mathf.Clamp(_scrollStartCameraY - deltaY * 0.75f, scrollMinY, scrollMaxY);
-                Camera.main.transform.position = new Vector3(
-                    Camera.main.transform.position.x,
-                    newCameraY,
-                    Camera.main.transform.position.z
-                );
+                Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, newCameraY, Camera.main.transform.position.z);
             }
         }
         else
@@ -99,54 +91,40 @@ public class TouchManager : MonoBehaviour
 
     private void OnHolding(InputAction.CallbackContext context)
     {
-        // ICI ON JOUE UNE ACTIONS LORSQU'ON RESTE APPUYER SUR UN OBJET
     }
 
     private void GetTouchPositon(InputAction.CallbackContext context)
     {
-        
     }
-    
+
     private void OnTouched(InputAction.CallbackContext context)
     {
-        if(!TurnManager.Instance.IsPlayerTurn()){return;} // CHECK SI C'EST AU JOUEUR
-        
-        // LORSQUE LE JOUEUR APPUIE *UNE FOIS* SUR L'ECRAN
+        if(!TurnManager.Instance.IsPlayerTurn()){return;}
         Vector2 touchedPosition = _touchPosition.ReadValue<Vector2>();
-        _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPosition);       
+        _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPosition);
         actualCollider = GetCollider();
         if (actualCollider == null)
         {
             return;
         }
-        
-        // INTERFACE BOUNCE QUI SERA REMPLACER PAR INTERACTABLE
         if (actualCollider.TryGetComponent(out bounce.IBounce Ib))
         {
             Ib.Bounce();
         }
-        else
-        {
-        }
-
-        ///// TILES CONTROLLER /////
         if (actualCollider.TryGetComponent(out TilesController tC))
         {
             if (_isHighLighted)
             {
                 if (tC.isHighLighted())
                 {
-                    
-                    if(_ActualshipController != null) // VAISSEAU SELECTIONNER
+                    if(_ActualshipController != null)
                     {
                         if(tC.IsAnAttackTile())
                         {
-                            // TILES D'ATTAQUE
                             Reset();
                         }
                         else
                         {
-                            // TILES DE DEPLACEMENT
                             if (_ActualshipController.CanMove())
                             {
                                 _ActualshipController.SetNewPosition(tC);
@@ -157,27 +135,23 @@ public class TouchManager : MonoBehaviour
             }
             Reset();
         }
-        
-        /// SHIPPPP CONTROLLER ////
-        
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
-        //    sc.GetInfos();
-            if (_ActualshipController == null) // SI AUCUN VAISSEAU N'EST SELECTIONNER
+            sc.GetInfos();
+            if (_ActualshipController == null)
             {
-                if(sc.IsAnEnemy()) // VAISSEAU ENNEMI SELECTIONNER
+                if(sc.IsAnEnemy())
                 {
                 }
-                else // VAISSEAU ALLIE SELECTIONNER
+                else
                 {
                     _isHighLighted = true;
                 }
                 sc.GetPath();
                 _ActualshipController = sc;
             }
-            else  // SI UN VAISSEAU EST DEJA SELECTIONNER
+            else
             {
-                
                 if(sc.IsAnEnemy())
                 {
                     if (_ActualshipController.IsAnEnemy())
@@ -187,14 +161,10 @@ public class TouchManager : MonoBehaviour
                     }
                     if (sc.GetTiles().HasAnEnemy() && sc.GetTiles().IsAnAttackTile() && _ActualshipController.CanAttack() && !_ActualshipController.IsInLockDown())
                     {
-                        // SI LE VAISSEAU EST UN ENNEMI LANCER UN COMBAT
-                        // POUR TOI MAXIME <3
-                        
                         _ActualshipController.SetHasAttacked(true);
                         sc.Die();
                     }
                     Reset();
-
                 }
                 else
                 {
@@ -208,14 +178,9 @@ public class TouchManager : MonoBehaviour
                         Reset();
                         sc.GetPath();
                         _ActualshipController = sc;
-                        // SI LE VAISSEAU SELECTIONNER EST DIFFERENT
                     }
-
                 }
             }
-        }
-        else
-        {
         }
     }
 
@@ -229,7 +194,6 @@ public class TouchManager : MonoBehaviour
 
     private Collider2D GetCollider()
     {
-        // ON RETOURNE L'OOBJET APPUYER
         Collider2D hit = Physics2D.OverlapPoint(_actualTouchedPosition);
         if (hit != null)
         {
@@ -237,7 +201,7 @@ public class TouchManager : MonoBehaviour
         }
         return null;
     }
-    
+
     private void OnHoldStarted(InputAction.CallbackContext context)
     {
         _IsHolding = true;
@@ -264,7 +228,7 @@ public class TouchManager : MonoBehaviour
             }
         }
     }
-    
+
     private void OnHoldCanceled(InputAction.CallbackContext context)
     {
         _IsHolding = false;
@@ -276,5 +240,10 @@ public class TouchManager : MonoBehaviour
         _isScrolling = false;
         currentDraggable = null;
         currentDraggedObject = null;
+    }
+
+    public void SetInteractionEnabled(bool enabled)
+    {
+        _playerInput.enabled = enabled;
     }
 }
