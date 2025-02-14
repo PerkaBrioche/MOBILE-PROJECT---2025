@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
   m_Name: Ranger
   m_EditorClassIdentifier: 
+  _unitIcon: {fileID: 1010450789034852114, guid: 0283bc5b7e7a6bb49944dde04ca6816b, type: 3}
   _unitName: Ranger
   hp: 20
   atk: 12
   def: 0.8
   atkRange: 2
-  canMooveAndShoot: 1
   _walkDistance: 2
   _attackRange: 2
+  canMooveAndShoot: 1
+  _cooldownAttack: 0

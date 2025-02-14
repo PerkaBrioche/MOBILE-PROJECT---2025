@@ -4,6 +4,14 @@ using UnityEngine;
 public class UnitStats : ScriptableObject
 {
     [Header("Informations générales")]
+    
+    [SerializeField] private Sprite _unitIcon;
+    public Sprite UnitIcon
+    {
+        get { return _unitIcon; }
+        set { _unitIcon = value; }
+    }
+    
     [SerializeField] private string _unitName;
     public string UnitName
     {

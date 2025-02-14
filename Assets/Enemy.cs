@@ -84,15 +84,15 @@ public class Enemy : MonoBehaviour
             }
             Attack(lowestLife);
             _shipController.SetLockMode(true);
-            TurnManager.Instance.EnemyEndATurn();
+            StartCoroutine(WaitAnimationFight());
         } 
         EndTurn();
 
     }
     
-    public virtual void Attack(ShipController sc)
+    public void Attack(ShipController sc)
     {
-        sc.Die();
+        CombatManager.Instance.StartCombat(_shipController, sc);
     }
 
     public virtual void Move(TilesController tilesController)
@@ -128,5 +128,10 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(time); 
         CheckPath();
     }
-}
+
+    private IEnumerator WaitAnimationFight()
+    {
+        yield return new WaitForSeconds(3); 
+        TurnManager.Instance.EnemyEndATurn();
+    }}
 

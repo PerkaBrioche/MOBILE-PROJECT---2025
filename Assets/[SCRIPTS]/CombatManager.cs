@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CombatManager : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class CombatManager : MonoBehaviour
     public Transform rightStartPoint;
     public Transform leftCombatPoint;
     public Transform rightCombatPoint;
+    [SerializeField] private RawImage _bgFight;
     public float moveSpeed = 2f;
     public float attackDelay = 1f;
     public UnityEngine.RectTransform topBorder;
@@ -17,6 +20,23 @@ public class CombatManager : MonoBehaviour
 
     private ShipController _attackerShip;
     private ShipController _targetShip;
+    
+    public static CombatManager Instance;
+    
+    [SerializeField] private Transform _shipContainer;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
 
     public void StartCombat(ShipController attacker, ShipController target)
     {
@@ -30,8 +50,15 @@ public class CombatManager : MonoBehaviour
     private IEnumerator CombatSequence()
     {
         yield return StartCoroutine(AnimateBordersIn());
-        GameObject attackerVisual = Instantiate(_attackerShip.gameObject, leftStartPoint.position, Quaternion.identity);
-        GameObject targetVisual = Instantiate(_targetShip.gameObject, rightStartPoint.position, Quaternion.identity);
+        GameObject attackerVisual = Instantiate(_shipContainer.gameObject, leftStartPoint.position, Quaternion.identity);
+        GameObject targetVisual = Instantiate(_shipContainer.gameObject, rightStartPoint.position, Quaternion.identity);
+
+        attackerVisual.GetComponent<SpriteRenderer>().sprite = _attackerShip.GetSprite();
+        targetVisual.GetComponent<SpriteRenderer>().sprite = _targetShip.GetSprite();
+        
+        // attackerVisual.GetComponent<SpriteRenderer>().sortingOrder = 15;
+        // targetVisual.GetComponent<SpriteRenderer>().sortingOrder = 15;
+        
         if (attackerVisual.TryGetComponent<ShipController>(out ShipController sc1))
             sc1.enabled = false;
         if (targetVisual.TryGetComponent<ShipController>(out ShipController sc2))
@@ -74,8 +101,8 @@ public class CombatManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         int damage = _attackerShip.runtimeStats.ATK - _targetShip.runtimeStats.DEF;
         if (damage < 1) damage = 1;
-        _targetShip.runtimeStats.HP -= damage;
-        Debug.Log(_attackerShip.runtimeStats.UnitName + " inflige " + damage + " dégâts à " + _targetShip.runtimeStats.UnitName + ". HP restant : " + _targetShip.runtimeStats.HP);
+        _targetShip.TakeDamage(damage);
+      //  Debug.Log(_attackerShip.runtimeStats.UnitName + " inflige " + damage + " dégâts à " + _targetShip.runtimeStats.UnitName + ". HP restant : " + _targetShip.runtimeStats.HP);
         yield return new WaitForSeconds(0.5f);
         Destroy(attackerVisual);
         Destroy(targetVisual);
@@ -96,6 +123,7 @@ public class CombatManager : MonoBehaviour
             float t = elapsed / borderAnimationDuration;
             topBorder.sizeDelta = Vector2.Lerp(topStart, topTarget, t);
             bottomBorder.sizeDelta = Vector2.Lerp(bottomStart, bottomTarget, t);
+            _bgFight.color = new Color(0.2f, 0.2f, 0.2f,  t/1.5f);
             yield return null;
         }
         topBorder.sizeDelta = topTarget;
@@ -115,8 +143,11 @@ public class CombatManager : MonoBehaviour
             float t = elapsed / borderAnimationDuration;
             topBorder.sizeDelta = Vector2.Lerp(topStart, topTarget, t);
             bottomBorder.sizeDelta = Vector2.Lerp(bottomStart, bottomTarget, t);
+            _bgFight.color = new Color(0.2f, 0.2f, 0.2f, 1 -  t/1.5f);
             yield return null;
         }
+        _bgFight.color = new Color(0.2f, 0.2f, 0.2f, 0);
+
         topBorder.sizeDelta = topTarget;
         bottomBorder.sizeDelta = bottomTarget;
     }
