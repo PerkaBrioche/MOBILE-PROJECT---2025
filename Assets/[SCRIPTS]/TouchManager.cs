@@ -33,6 +33,7 @@ public class TouchManager : MonoBehaviour
     [SerializeField] private GridController _gridController;
 
     private bool _isHighLighted;
+    private CombatManager _combatManager;
 
     private void Awake()
     {
@@ -40,6 +41,8 @@ public class TouchManager : MonoBehaviour
         _touchPosition = _playerInput.actions["TouchPosition"];
         _touchPress = _playerInput.actions["SinglePress"];
         _holdPress = _playerInput.actions["HoldPress"];
+        _combatManager = FindObjectOfType<CombatManager>();
+        
     }
 
     private void OnEnable()
@@ -162,13 +165,13 @@ public class TouchManager : MonoBehaviour
                     if (sc.GetTiles().HasAnEnemy() && sc.GetTiles().IsAnAttackTile() && _ActualshipController.CanAttack() && !_ActualshipController.IsInLockDown())
                     {
                         _ActualshipController.SetHasAttacked(true);
-                        sc.Die();
+                        _combatManager.StartCombat(_ActualshipController, sc);
                     }
                     Reset();
                 }
                 else
                 {
-                    if(_ActualshipController == sc)
+                    if(_ActualshipController == sc)  // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
                     {
                         _ActualshipController.SetLockMode(true);
                         Reset();
@@ -184,7 +187,7 @@ public class TouchManager : MonoBehaviour
         }
     }
 
-    private void Reset()
+    public void Reset()
     {
         _gridController.ResetAllTiles();
         _ActualshipController = null;

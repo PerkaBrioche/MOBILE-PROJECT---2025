@@ -36,14 +36,21 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private bool _isInLockDown;
 
     private bool _isMooving;
+    private bool _isOriginCampEnemy;
 
-    [Header("OTHERS")] [SerializeField] private GameObject _shipLock;
+    [Header("OTHERS")] 
+    [SerializeField] private GameObject _shipLock;
+    [SerializeField] private SpriteRenderer _shipIcon;
+    
     [SerializeField] private SpriteRenderer _RawNumber;
     [SerializeField] private List<Sprite> _numbers;
+    [SerializeField] private Slider _sliderLife;
+    
 
     private void Start()
     {
         _currentLockAttack = _myStats.CooldownAttack;
+        _shipIcon.sprite = _myStats.UnitIcon;
     }
 
     public void Bounce()
@@ -55,6 +62,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _bounce = GetComponent<bounce>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
+        
+        
     }
 
     public void GetPath()
@@ -96,6 +105,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         runtimeStats.DEF = Mathf.RoundToInt(_myStats.DEF);
         runtimeStats.WalkDistance = _myStats.WalkDistance;
         runtimeStats.AttackRange = _myStats.AttackRange;
+        SetOriginCamp(IsEnemy);
+        
+        _sliderLife.maxValue = _myStats.HP;
+        _sliderLife.value = _myStats.HP;
     }
 
     public void SetTiles(TilesController newTiles)
@@ -146,7 +159,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         if (TurnManager.Instance.IsEnemyTurn())
         {
-            TurnManager.Instance.EnemyEndATurn();
+            if(transform.TryGetComponent(out Enemy enemy))
+            {
+                enemy.SetMyTurn();
+            }
         }
         SetMoving(false);
     }
@@ -161,6 +177,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void TakeDamage(int damage)
     {
+        runtimeStats.HP -= damage;
+        UpdateSlider();
     }
 
     public void Die()
@@ -223,7 +241,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _hasAttacked = attack;
         CheckLock();
-        if (!_isInLockDown && !_myStats.CanMooveAndShoot)
+        if (!_isInLockDown && _myStats.CooldownAttack > 0)
         {
             _isInLockDown = true;
         }
@@ -269,12 +287,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         if (_isInLockDown)
         {
             _currentLockAttack--;
-            UpdateNumImage(_currentLockAttack);
             if (_currentLockAttack <= 0)
             {
                 _isInLockDown = false;
                 _currentLockAttack = _myStats.CooldownAttack;
             }
+            UpdateNumImage(_currentLockAttack);
         }
     }
 
@@ -320,4 +338,32 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _isMooving = state;
     }
+    
+    private void SetOriginCamp(bool state)
+    {
+        _isOriginCampEnemy = state;
+    }
+    
+    public bool IsOriginCampEnemy()
+    {
+        return _isOriginCampEnemy;
+    }
+
+
+    private void UpdateSlider()
+    {
+        SetSliderLife(runtimeStats.HP);
+    }
+    public void SetSliderLife(float value)
+    {
+        _sliderLife.value = value;
+    }
+    
+    
+    public Sprite GetSprite()
+    {
+        return _myStats.UnitIcon;
+    }
+    
+    
 }
