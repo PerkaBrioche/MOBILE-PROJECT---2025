@@ -5758,7 +5758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shipStats: {fileID: 11400000, guid: 0ebc91b330c14a54b951a54981b3e054, type: 2}
+  _shipStats: {fileID: 11400000, guid: 428f509a05d0fcb4db0094270e9229b2, type: 2}
   isEnemy: 0
   _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1 &1535309154

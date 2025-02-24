@@ -116,6 +116,10 @@ public class TouchManager : MonoBehaviour
         }
         if (actualCollider.TryGetComponent(out TilesController tC)) // TILES
         {
+            if (!tC.CanInteract())
+            {
+                return;
+            }
             if (_isHighLighted)
             {
                 if (tC.isHighLighted())
@@ -126,7 +130,7 @@ public class TouchManager : MonoBehaviour
                         {
                             Reset();
                         }
-                        else
+                        else if(tC.IsRangeTile())
                         {
                             if (_ActualshipController.CanMove())
                             {

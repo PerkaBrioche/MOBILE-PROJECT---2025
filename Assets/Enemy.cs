@@ -155,7 +155,7 @@ public class Enemy : MonoBehaviour
         List<TilesController> walkTiles = new List<TilesController>();
         foreach (var t in EnemyManager.Instance.GetTiles())
         {
-            if (!t.IsAnAttackTile() && t.isHighLighted())
+            if (t.IsRangeTile())
             {
                 walkTiles.Add(t);
             }
