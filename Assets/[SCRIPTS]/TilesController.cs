@@ -20,6 +20,8 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     public TilesController leftTile => _leftTile;
     public TilesController rightTile => _rightTile;
 
+    [SerializeField] private int columnPosition = 0;
+    [SerializeField] private int rowPosition = 0;
 
     private bool _isHighLighted;
     private bool _isAttackTiles;
@@ -461,5 +463,21 @@ private TilesController[] CheckTiles(List<Func<TilesController, TilesController>
         yield return  new WaitForSeconds(2);
         ChangeTilesColor(Color.white);
     }
-
+    
+    public void SetColumAndRowPosition(int column, int row)
+    {
+        columnPosition = column;
+        rowPosition = row;
+    }
+    
+    public int GetColumnPosition()
+    {
+        return columnPosition;
+    }
+    
+    public int GetRowPosition()
+    {
+        return rowPosition;
+    }
+    
 }

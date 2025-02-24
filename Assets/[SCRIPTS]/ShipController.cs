@@ -203,7 +203,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         Destroy(gameObject);
         _myTilesController.ChangeCollider(true);
-        _myTilesController.SetHasAnEnemy(false);
+        _myTilesController.ResetTiles();
     }
 
     public void ChangeCollider(bool state)

@@ -12,17 +12,15 @@ public class Enemy : MonoBehaviour
     private bool canAction = true;
     private GridController _gridController;
     
-  private TilesController[] _tilesDetected;
-
-  private ShipController _targetShips;
-  private int _distanceTravelled = 0;
-  struct tileDetectedInfo
-  {
-      public TilesController TileController;
-      public int Distance;
-  }
-  
+    private TilesController[] _tilesDetected;
+    private ShipController _targetShips;
+    private int _distanceTravelled = 0;
     
+    struct closestPositon
+    {
+        public TilesController TileController;
+        public Vector2 position;
+    }
     
     private void Awake()
     {
@@ -46,8 +44,7 @@ public class Enemy : MonoBehaviour
         _shipController.GetPath();
         StartCoroutine(Wait(1.5f));
     }
-
-
+    
     public void CheckPath()
     {
         _tilesDetected = EnemyManager.Instance.GetTiles();
@@ -57,9 +54,7 @@ public class Enemy : MonoBehaviour
         foreach (var tile in _tilesDetected)
         {
             if (tile == null)
-            {
                 continue;
-            }
             if (tile.HasAnEnemy() && tile.IsAnAttackTile())
             {
                 enemyOnTile.Add(tile.GetShipController());
@@ -79,31 +74,21 @@ public class Enemy : MonoBehaviour
             MoveAction();
             EndTurn();
         }
-        
         else if (enemyOnTile.Count > 0)
         {
-            // GET THE LOWEST ENEMY LIFE
-
             ShipController lowestLife = null;
             foreach (var enemy in enemyOnTile)
             {
                 if (lowestLife == null)
-                {
                     lowestLife = enemy;
-                }
-                else
-                {
-                    if (enemy.GetLife() < lowestLife.GetLife())
-                    {
-                        lowestLife = enemy;
-                    }
-                }
+                else if (enemy.GetLife() < lowestLife.GetLife())
+                    lowestLife = enemy;
             }
             _targetShips = lowestLife;
             Attack(lowestLife);
             _shipController.SetLockMode(true);
             StartCoroutine(WaitAnimationFight());
-        } 
+        }
         
         EndTurn();
     }
@@ -112,23 +97,22 @@ public class Enemy : MonoBehaviour
     {
         CombatManager.Instance.StartCombat(_shipController, sc);
     }
-
+    
     public virtual void Move(TilesController tilesController)
     {
         _shipController.SetNewPosition(tilesController);
     }
-
+    
     private void MoveAction()
     {
         FindPathToClosestPlayer();
     }
-
-    #region MOVEMENT
     
+    #region MOVEMENT
     private void MoveInDirection(Func<TilesController, TilesController> direction, TilesController originTiles = null)
     {
         int distance = _unitStats.WalkDistance;
-        if(originTiles == null)
+        if (originTiles == null)
         {
             originTiles = _shipController.GetTiles();
         }
@@ -140,9 +124,7 @@ public class Enemy : MonoBehaviour
         for (int i = 1; i < distance; i++)
         {
             if (directionTile != null)
-            {
                 directionTile = direction(directionTile);
-            }
         }
         if (directionTile != null)
         {
@@ -162,142 +144,123 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(time); 
         CheckPath();
     }
-
+    
     private IEnumerator WaitAnimationFight()
     {
         yield return new WaitForSeconds(3); 
         TurnManager.Instance.EnemyEndATurn();
     }
-
-    private tileDetectedInfo GetPathReturnShip(Func<TilesController, TilesController> directionCenter)
+    private void GetPathToTarget(TilesController tileTarget)
     {
-        TilesController centerTile = directionCenter(_shipController.GetTiles());
-        while (centerTile != null) // CHECK UP TILE
+        List<TilesController> walkTiles = new List<TilesController>();
+        foreach (var t in EnemyManager.Instance.GetTiles())
         {
-            var RTile = GetHorizontalTiles(_tilesController => _tilesController.rightTile, centerTile); // SI ENEMI A DROITE
-            if (RTile != null)
+            if (!t.IsAnAttackTile() && t.isHighLighted())
             {
-                return new tileDetectedInfo()
-                {
-                    TileController = RTile,
-                    Distance = _distanceTravelled
-                };
+                walkTiles.Add(t);
             }
-
-            var LTile = GetHorizontalTiles(_tilesController => _tilesController.leftTile, centerTile); // SI ENEMI A DROITE
-            if (LTile != null)
-            {
-                return new tileDetectedInfo()
-                {
-                    TileController = LTile,
-                    Distance = _distanceTravelled
-                };
-            }
-            centerTile = directionCenter(centerTile);
         }
-        return new tileDetectedInfo()
-        {
-            TileController = null,
-            Distance = 0
-        };
-    }
-
-    private void GetPathToTarget(Func<TilesController, TilesController> directionToTarget)
-    {
-        int walkDistance = _unitStats.WalkDistance-1;
-        TilesController targetTile = directionToTarget(_shipController.GetTiles());
-        bool foundEnemy = false;
-        while (walkDistance > 0)
-        {
-            if(GetHorizontalTiles(_tilesController => _tilesController.rightTile, targetTile) != null)
-            { 
-                MoveInDirection(_tilesController => _tilesController.rightTile, targetTile); 
-                return;
-            }
-            if(GetHorizontalTiles(_tilesController => _tilesController.leftTile, targetTile) != null)
-            { 
-                MoveInDirection(_tilesController => _tilesController.leftTile, targetTile); 
-                return;
-            }
-            walkDistance--;
-            targetTile = directionToTarget(targetTile);
-        }
-        MoveInDirection(tilec => tilec.downTile);
-    }
+        
+        TilesController bestTile = null;
+        float bestDistance = float.MaxValue;
+        Vector2 targetPos = new Vector2(tileTarget.GetColumnPosition(), tileTarget.GetRowPosition());
     
+        foreach (var t in walkTiles)
+        {
+            Vector2 tilePos = new Vector2(t.GetColumnPosition(), t.GetRowPosition());
+            float distance = Mathf.Abs(tilePos.x - targetPos.x) + Mathf.Abs(tilePos.y - targetPos.y);
+            if (distance < bestDistance)
+            {
+                bestDistance = distance;
+                bestTile = t;
+            }
+        }
+    
+        if (bestTile != null)
+        {
+            print("MOVE TO BEST TILE = " + bestTile.name + " DISTANCE = " + bestDistance);
+            Move(bestTile);
+        }
+        else
+        {
+            MoveInDirection(t => t.downTile);
+        }
+    }
+
     private void FindPathToClosestPlayer()
     {
-        _distanceTravelled = 0;
-        var UpShip = GetPathReturnShip(_tilesController => _tilesController.upTile);
-        print("DISTANCCE TRAVELLED = " + _distanceTravelled);
-        _distanceTravelled = 0;
-        var DownShip = GetPathReturnShip(_tilesController => _tilesController.downTile);
-        _distanceTravelled = 0;
-        // GET THE CLOSEST SHIP
-        
-        
-        
-        if(UpShip.TileController == null)
+        List<ShipController> allyShips = ShipManager.Instance.GetAllyShipsOrinalCamp();
+        if (allyShips == null || allyShips.Count == 0)
         {
-            print(DownShip.Distance + " DOWN DISTANCE");
-            GetPathToTarget(_tilesController => _tilesController.downTile);
+            MoveInDirection(t => t.downTile);
             return;
         }
-        if(DownShip.TileController == null)
+        
+        TilesController enemyTile = _shipController.GetTiles();
+        ShipController closestShip = null;
+        int minDistance = int.MaxValue;
+        foreach (ShipController ally in allyShips)
         {
-            print(UpShip.Distance + " UP DISTANCE");
-            GetPathToTarget(_tilesController => _tilesController.upTile);
-            return; 
-        }
-        print("DISTANCE / UP = " + UpShip.Distance + " DOWN = " + DownShip.Distance);
+            TilesController allyTile = ally.GetTiles();
+            if (allyTile == null)
+                continue;
+            print("ALLY- " + ally.name);
 
-        if(UpShip.Distance == DownShip.Distance)
-        {
-            print ("SAME DISTANCE = " + UpShip.Distance);
-            if (UpShip.TileController.GetShipController().runtimeStats.ATK == DownShip.TileController.GetShipController().runtimeStats.ATK) // MEME ATTAQUE
+            int distance = CalculateManhattanDistance(allyTile, enemyTile);
+            print("DISTANCE = " + distance);
+            if (distance < minDistance)
             {
-                print ("SAME ATTACK");
-
-                if (UpShip.TileController.GetShipController().runtimeStats.HP == DownShip.TileController.GetShipController().runtimeStats.HP) // MEME HP
-                {
-                    print ("SAME HP");
-                    GetPathToTarget(_tilesController => _tilesController.upTile);
-                }
-                else
-                {
-                    GetPathToTarget(UpShip.TileController.GetShipController().runtimeStats.HP > DownShip.TileController.GetShipController().runtimeStats.HP ?
-                        _tilesController => _tilesController.downTile : _tilesController => _tilesController.upTile);
-                }
-            } 
-            else
-            {
-                GetPathToTarget(UpShip.TileController.GetShipController().runtimeStats.ATK > DownShip.TileController.GetShipController().runtimeStats.ATK ?
-                    _tilesController => _tilesController.downTile : _tilesController => _tilesController.upTile);
+                minDistance = distance;
+                closestShip = ally;
             }
-            return;
+            else if (distance == minDistance)
+            {
+                if (ally.runtimeStats.ATK > closestShip.runtimeStats.ATK)
+                {
+                    closestShip = ally;
+                }
+                else if (ally.runtimeStats.ATK == closestShip.runtimeStats.ATK)
+                {
+                    print("SAME DAMAGE");
+                    if (ally.runtimeStats.HP > closestShip.runtimeStats.HP)
+                    {
+                    }
+                    else
+                    {
+                        closestShip = ally;
+                    }
+                }
+            }
         }
         
+        if (closestShip == null)
+        {
+            MoveInDirection(t => t.downTile);
+            return;
+        }
+        print("closest ship = " + closestShip.name);
         
-        GetPathToTarget(UpShip.Distance > DownShip.Distance ? _tilesController => _tilesController.downTile : _tilesController => _tilesController.upTile);
+        TilesController targetTile = closestShip.GetTiles();
+        // int dx = targetTile.GetColumnPosition() - enemyTile.GetColumnPosition();
+        // int dy = targetTile.GetRowPosition() - enemyTile.GetRowPosition(); 
+        //
+        // Func<TilesController, TilesController> direction;
+        // print("DX = " + dx + " DY = " + dy);
+        // if (Mathf.Abs(dx) >= Mathf.Abs(dy))
+        // {
+        //     direction = dx > 0 ? (t => t.rightTile) : (t => t.leftTile);
+        // }
+        // else
+        // {
+        //     direction = dy < 0 ? (t => t.upTile) : (t => t.downTile);
+        // }
+        //
+        GetPathToTarget(closestShip.GetTiles());
     }
-
-    private TilesController GetHorizontalTiles(Func<TilesController, TilesController> direction, TilesController originTiles)
+    private int CalculateManhattanDistance(TilesController a, TilesController b)
     {
-        TilesController nextTile = direction(originTiles);
-        while (nextTile != null)
-        {
-            _distanceTravelled++;
-            print(" ACTUAL DISTANCE TRAVVELLED = " + _distanceTravelled);
-            if (nextTile.HasAnEnemy())
-            {
-                return nextTile;
-            }
-            nextTile = direction(nextTile);
-        }
-        return null;
-        
+        int dx = Mathf.Abs(a.GetColumnPosition() - b.GetColumnPosition());
+        int dy = Mathf.Abs(a.GetRowPosition() - b.GetRowPosition());
+        return dx + dy;
     }
-
-    
 }
-
