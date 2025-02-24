@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
-    
     private bool _isPlayerTurn = false;
     private bool _isEnemyTurn = false;
     public static TurnManager Instance;
@@ -40,6 +39,7 @@ public class TurnManager : MonoBehaviour
     public void StartPlayerTurn()
     {
         ShipManager.Instance.ChangeShipsCamp();
+        ResetTurnManager.Instance.RecordStartingPositions();
         _isPlayerTurn = true;
         UpdateText("Player Turn", Color.green);
     }
@@ -108,7 +108,7 @@ public class TurnManager : MonoBehaviour
             {
                 if (_enemyTurn >= ShipManager.Instance.GetActualAllyShips().Count)
                 {
-                    print( "END ENEMY TURN WARNING");
+                    print("END ENEMY TURN WARNING");
                     EndEnemyTurn();
                     _waitingForEnemy = false;
                     return;
@@ -117,7 +117,6 @@ public class TurnManager : MonoBehaviour
                 {
                     print("PAS ASSEZ DE TURN, ENEMY TURN = " + _enemyTurn + " / " + ShipManager.Instance.GetActualEnemyShipsCount());
                     print("ALLY = " + ShipManager.Instance.GetActualAllyShips().Count);
-                    
                 }
                 _waitingForEnemy = true;
                 if(ShipManager.Instance.GetActualAllyShip(_enemyTurn).TryGetComponent(out Enemy enemy))
@@ -129,7 +128,6 @@ public class TurnManager : MonoBehaviour
                     Debug.LogError("MISSING ENEMY COMPONENT");
                 }
             }
-
         }
     }
 
@@ -137,7 +135,6 @@ public class TurnManager : MonoBehaviour
     {
         _turnButton.interactable = false;
     }
-
 
     public bool IsPlayerTurn()
     {
@@ -157,7 +154,6 @@ public class TurnManager : MonoBehaviour
 
     private bool CheckEndGame()
     {
-
         var ally = ShipManager.Instance.GetAllyShipsOrinalCamp();
         var enemy = ShipManager.Instance.GetEnemyShipsOrinalCamp();
         
@@ -180,7 +176,6 @@ public class TurnManager : MonoBehaviour
         }
         
         return false;
-        
     }
 
     private void WinGame()

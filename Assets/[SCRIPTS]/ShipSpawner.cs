@@ -10,10 +10,9 @@ public class ShipSpawner : MonoBehaviour
     [Header("PUT THE TILES HERE")]
     [SerializeField] TilesController _tilesController;
     [Header("IS AN ENEMY ?")]
-    [SerializeField] private bool isEnemy =false;
+    [SerializeField] private bool isEnemy = false;
     
     private ShipController _shipController;
-    
     
     private void Start()
     {
@@ -26,5 +25,6 @@ public class ShipSpawner : MonoBehaviour
         _shipController = ship.GetComponent<ShipController>();
         _shipController.Initialize(isEnemy, _shipStats);
         _shipController.SetTiles(_tilesController);
+        _shipController.SaveStartingState();
     }
 }

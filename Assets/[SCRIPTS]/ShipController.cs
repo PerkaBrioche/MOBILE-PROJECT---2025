@@ -46,6 +46,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     [SerializeField] private List<Sprite> _numbers;
     [SerializeField] private Slider _sliderLife;
     
+    private TilesController _startingTile;
+    private bool _isDead = false;
+    private RuntimeStats _initialStats;
 
     private void Start()
     {
@@ -62,8 +65,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _bounce = GetComponent<bounce>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
-        
-        
     }
 
     public void GetPath()
@@ -109,6 +110,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         
         _sliderLife.maxValue = _myStats.HP;
         _sliderLife.value = _myStats.HP;
+        SaveStartingState();
     }
 
     public void SetTiles(TilesController newTiles)
@@ -183,9 +185,19 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void Die()
     {
-        Destroy(gameObject);
-        _myTilesController.ChangeCollider(true);
-        _myTilesController.SetHasAnEnemy(false);
+        if(TurnManager.Instance != null && TurnManager.Instance.IsPlayerTurn())
+        {
+            _isDead = true;
+            gameObject.SetActive(false);
+            _myTilesController.ChangeCollider(true);
+            _myTilesController.SetHasAnEnemy(false);
+        }
+        else
+        {
+            Destroy(gameObject);
+            _myTilesController.ChangeCollider(true);
+            _myTilesController.SetHasAnEnemy(false);
+        }
     }
 
     public void ChangeCollider(bool state)
@@ -349,7 +361,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         return _isOriginCampEnemy;
     }
 
-
     private void UpdateSlider()
     {
         SetSliderLife(runtimeStats.HP);
@@ -359,11 +370,31 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _sliderLife.value = value;
     }
     
-    
     public Sprite GetSprite()
     {
         return _myStats.UnitIcon;
     }
     
+    public void SaveStartingState()
+    {
+        _startingTile = _myTilesController;
+        _initialStats = runtimeStats;
+    }
     
+    public void ResetTurnState()
+    {
+        if(_isDead)
+        {
+            gameObject.SetActive(true);
+            _isDead = false;
+        }
+        ResetShip();
+        runtimeStats = _initialStats;
+        UpdateSlider();
+        if (_startingTile != null)
+        {
+            transform.position = _startingTile.transform.position;
+            SetTiles(_startingTile);
+        }
+    }
 }
