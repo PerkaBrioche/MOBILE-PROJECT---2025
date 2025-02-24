@@ -20,6 +20,6 @@ MonoBehaviour:
   def: 3
   atkRange: 2
   _walkDistance: 2
-  _attackRange: 2
+  _attackRange: 1
   canMooveAndShoot: 1
   _cooldownAttack: 0
