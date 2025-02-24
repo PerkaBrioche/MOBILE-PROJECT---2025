@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager Instance;
-    private List<TilesController> _enemyTiles = new List<TilesController>();
+    [SerializeField]   private List<TilesController> _enemyTiles = new List<TilesController>();
     
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
     
-    public void AddTiles(TilesController[] tilesController)
+    public void AddTiles(List<TilesController> tilesController)
     {
         foreach (var tile in tilesController)
         {

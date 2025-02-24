@@ -25,20 +25,12 @@ public class ShipManager : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_EDITOR
-        if (Input.GetKeyDown("c"))
-        {
-            print("CHANGED CAMP");
-            ChangeShipsCamp();
-        }
-        
-#endif
         if (_isCooldown)
         {
             return;
         }
         if(!TurnManager.Instance.IsPlayerTurn()) { return;}
-        if (HasPlayedAllShips())
+        if (HasPlayedAllShips() && !CombatManager.Instance.IsInCombat())
         {
             TurnManager.Instance.CheckUnlockButton();
         }

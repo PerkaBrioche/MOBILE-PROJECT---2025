@@ -12,7 +12,11 @@ public class Enemy : MonoBehaviour
     private bool canAction = true;
     private GridController _gridController;
     
-    private TilesController[] _tilesDetected;
+  private TilesController[] _tilesDetected;
+
+  private ShipController _targetShips;
+  
+  
     
     
     private void Awake()
@@ -23,13 +27,19 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         _shipController = GetComponent<ShipController>();
-        _unitStats = _shipController.GetStats();
+        _unitStats = _shipController.GetUnitStats();
     }
     
     public virtual void SetMyTurn()
     {
+        if (_shipController.IsLocked())
+        {
+            TurnManager.Instance.EnemyEndATurn();
+            EndTurn();
+            return;
+        }
         _shipController.GetPath();
-        StartCoroutine(Wait(1f));
+        StartCoroutine(Wait(1.5f));
     }
 
 
@@ -45,27 +55,31 @@ public class Enemy : MonoBehaviour
             {
                 continue;
             }
-            if (tile.HasAnEnemy())
+            if (tile.HasAnEnemy() && tile.IsAnAttackTile())
             {
                 enemyOnTile.Add(tile.GetShipController());
                 canMoove = false;
             }
         }
+        print("TOTAL ENEMY DETECTED = " + enemyOnTile.Count);
+        print("CanMooe = " + canMoove);
+
         if (canMoove)
         {
-            if (_shipController.HasMoved() || _shipController.IsLocked())
+            if (_shipController.HasMoved())
             {
                 _shipController.SetLockMode(true);
                 TurnManager.Instance.EnemyEndATurn();
                 EndTurn();
                 return;
             }
-            MoveFoward();
+            MoveAction();
+            EndTurn();
         }
+        
         else if (enemyOnTile.Count > 0)
         {
             // GET THE LOWEST ENEMY LIFE
-            print("TOTAL ENEMY DETECTED = " + enemyOnTile.Count);
 
             ShipController lowestLife = null;
             foreach (var enemy in enemyOnTile)
@@ -76,18 +90,19 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    if (enemy.GetStats().HP < lowestLife.GetStats().HP)
+                    if (enemy.GetLife() < lowestLife.GetLife())
                     {
                         lowestLife = enemy;
                     }
                 }
             }
+            _targetShips = lowestLife;
             Attack(lowestLife);
             _shipController.SetLockMode(true);
             StartCoroutine(WaitAnimationFight());
         } 
+        
         EndTurn();
-
     }
     
     public void Attack(ShipController sc)
@@ -100,23 +115,42 @@ public class Enemy : MonoBehaviour
         _shipController.SetNewPosition(tilesController);
     }
 
-    public virtual void MoveFoward()
+    private void MoveAction()
+    {
+        FindPathToClosestPlayer();
+        return;
+        if(_targetShips != null)
+        {
+            FindPathToClosestPlayer();
+            return;
+        }
+        MoveInDirection(_tilesDetected => _tilesDetected.downTile);
+    }
+
+    #region MOVEMENT
+    
+    private void MoveInDirection(Func<TilesController, TilesController> direction, TilesController originTiles = null)
     {
         int distance = _unitStats.WalkDistance;
-        TilesController fowardTile = _shipController.GetTiles().downTile;
+        if(originTiles == null)
+        {
+            originTiles = _shipController.GetTiles();
+        }
+        TilesController directionTile = direction(originTiles);
         for (int i = 1; i < distance; i++)
         {
-            if (fowardTile != null)
+            if (directionTile != null)
             {
-                fowardTile = fowardTile.downTile;
+                directionTile = direction(directionTile);
             }
         }
-        if (fowardTile != null)
+        if (directionTile != null)
         {
-            Move(fowardTile);
+            Move(directionTile);
         }
     }
-    
+    #endregion
+
     public virtual void EndTurn()
     {
         _gridController.ResetAllTiles();
@@ -133,5 +167,83 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(3); 
         TurnManager.Instance.EnemyEndATurn();
-    }}
+    }
+    
+    private void FindPathToClosestPlayer()
+    {
+        int walkDistance = _unitStats.WalkDistance;
+
+        TilesController centerTile = _shipController.GetTiles();
+        while (centerTile != null) // CHECK UP TILE
+        {
+            if(GetHorizontalTiles(_tilesController => _tilesController.rightTile, centerTile) != null) // SI ENEMI A DROITE
+            {
+                if(walkDistance > 0)
+                {
+                    MoveInDirection(_tilesController => _tilesController.rightTile, centerTile);
+                    return;
+                }
+                MoveInDirection(_tilesController => _tilesController.upTile);
+                return;
+            }
+            if(GetHorizontalTiles(_tilesController => _tilesController.leftTile, centerTile) != null) // SI ENEMI A GAUCHE
+            {
+                if(walkDistance > 0)
+                {
+                    MoveInDirection(_tilesController => _tilesController.leftTile, centerTile);
+                    return;
+                }
+                MoveInDirection(_tilesController => _tilesController.upTile);
+                return;
+            }
+
+            walkDistance--;
+            centerTile = centerTile.upTile;
+        }
+        centerTile = _shipController.GetTiles();
+        walkDistance = _unitStats.WalkDistance;
+        while (centerTile != null) // CHECK UP TILE
+        {
+            if(GetHorizontalTiles(_tilesController => _tilesController.rightTile, centerTile) != null) // SI ENEMI A DROITE
+            {
+                if(walkDistance > 0)
+                {
+                    MoveInDirection(_tilesController => _tilesController.rightTile, centerTile);
+                    return;
+                }
+                MoveInDirection(_tilesController => _tilesController.downTile);
+                return;
+            }
+            if(GetHorizontalTiles(_tilesController => _tilesController.leftTile, centerTile) != null) // SI ENEMI A GAUCHE
+            {
+                if(walkDistance > 0)
+                {
+                    MoveInDirection(_tilesController => _tilesController.leftTile, centerTile);
+                    return;
+                }
+                MoveInDirection(_tilesController => _tilesController.downTile);
+                return;
+            }
+            walkDistance--;
+            centerTile = centerTile.downTile;
+        }
+    }
+
+    private TilesController GetHorizontalTiles(Func<TilesController, TilesController> direction, TilesController originTiles)
+    {
+        TilesController nextTile = direction(originTiles);
+        while (nextTile != null)
+        {
+            if (nextTile.HasAnEnemy())
+            {
+                return nextTile;
+            }
+            nextTile = direction(nextTile);
+        }
+        return null;
+        
+    }
+
+    
+}
 

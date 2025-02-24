@@ -705,7 +705,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 2278674370070462183}
   m_FillRect: {fileID: 5694588503507226492}
   m_HandleRect: {fileID: 9203879725591190419}

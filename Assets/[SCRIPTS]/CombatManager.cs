@@ -22,6 +22,7 @@ public class CombatManager : MonoBehaviour
     private ShipController _targetShip;
     
     public static CombatManager Instance;
+    private bool _isInCombat = false;
     
     [SerializeField] private Transform _shipContainer;
 
@@ -49,15 +50,13 @@ public class CombatManager : MonoBehaviour
 
     private IEnumerator CombatSequence()
     {
+        _isInCombat = true;
         yield return StartCoroutine(AnimateBordersIn());
         GameObject attackerVisual = Instantiate(_shipContainer.gameObject, leftStartPoint.position, Quaternion.identity);
         GameObject targetVisual = Instantiate(_shipContainer.gameObject, rightStartPoint.position, Quaternion.identity);
 
         attackerVisual.GetComponent<SpriteRenderer>().sprite = _attackerShip.GetSprite();
         targetVisual.GetComponent<SpriteRenderer>().sprite = _targetShip.GetSprite();
-        
-        // attackerVisual.GetComponent<SpriteRenderer>().sortingOrder = 15;
-        // targetVisual.GetComponent<SpriteRenderer>().sortingOrder = 15;
         
         if (attackerVisual.TryGetComponent<ShipController>(out ShipController sc1))
             sc1.enabled = false;
@@ -96,13 +95,12 @@ public class CombatManager : MonoBehaviour
     private IEnumerator Battle(GameObject attackerVisual, GameObject targetVisual)
     {
         Animator anim = attackerVisual.GetComponent<Animator>();
-        if (anim != null)
+        if (anim != null) 
             anim.SetTrigger("Attack");
         yield return new WaitForSeconds(1f);
         int damage = _attackerShip.runtimeStats.ATK - _targetShip.runtimeStats.DEF;
         if (damage < 1) damage = 1;
         _targetShip.TakeDamage(damage);
-      //  Debug.Log(_attackerShip.runtimeStats.UnitName + " inflige " + damage + " dégâts à " + _targetShip.runtimeStats.UnitName + ". HP restant : " + _targetShip.runtimeStats.HP);
         yield return new WaitForSeconds(0.5f);
         Destroy(attackerVisual);
         Destroy(targetVisual);
@@ -150,5 +148,22 @@ public class CombatManager : MonoBehaviour
 
         topBorder.sizeDelta = topTarget;
         bottomBorder.sizeDelta = bottomTarget;
+        _isInCombat = false;
+    }
+
+    private void Reset()
+    {
+        _attackerShip = null;
+        _targetShip = null;
+    }
+    
+    public bool IsInCombat()
+    {
+        return _isInCombat;
+    }
+    
+    public void SetInCombat(bool value)
+    {
+        _isInCombat = value;
     }
 }

@@ -39,6 +39,17 @@ public class GridController : MonoBehaviour
                 StartCoroutine(ChangeTilesCooldown());
             }
         }
+
+        if (Input.GetKeyDown("x"))
+        {
+            foreach (var t in _tilesControllers)
+            {
+                if (t.HasAnEnemy())
+                {
+                    t.HighLightTiles(0,true);
+                }
+            }
+        }
     }
 
     [Button ("ARRANGE GRID")]
@@ -117,6 +128,8 @@ public class GridController : MonoBehaviour
             tiles.ResetTiles();
         }
     } 
+    
+    
     
     
     

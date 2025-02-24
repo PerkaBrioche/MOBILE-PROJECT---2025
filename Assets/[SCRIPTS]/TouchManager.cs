@@ -114,7 +114,7 @@ public class TouchManager : MonoBehaviour
         {
             Ib.Bounce();
         }
-        if (actualCollider.TryGetComponent(out TilesController tC))
+        if (actualCollider.TryGetComponent(out TilesController tC)) // TILES
         {
             if (_isHighLighted)
             {
@@ -140,7 +140,7 @@ public class TouchManager : MonoBehaviour
         }
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
-            sc.GetInfos();
+        //    sc.GetInfos();
             if (_ActualshipController == null)
             {
                 if(sc.IsAnEnemy())

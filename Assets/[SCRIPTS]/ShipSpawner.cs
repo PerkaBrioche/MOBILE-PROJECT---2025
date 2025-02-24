@@ -1,22 +1,25 @@
 using System;
+using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipSpawner : MonoBehaviour
 {
-    [Header("PUT THE SHIP PREFAB HERE")]
-    [SerializeField] private GameObject _shipPrefab;
+    [Header("PUT THE SHIP STATS HERE")]
     [SerializeField] private UnitStats _shipStats;
     [Header("PUT THE TILES HERE")]
-    [SerializeField] TilesController _tilesController;
+    TilesController _tilesController;
     [Header("IS AN ENEMY ?")]
     [SerializeField] private bool isEnemy =false;
     
     private ShipController _shipController;
+    [Foldout("References")]
+    [SerializeField] private GameObject _shipPrefab;
     
     
     private void Start()
     {
+        _tilesController = transform.parent.GetComponent<TilesController>();
         SpawnShip();
     }
     

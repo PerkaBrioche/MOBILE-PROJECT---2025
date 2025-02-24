@@ -45,12 +45,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     [SerializeField] private SpriteRenderer _RawNumber;
     [SerializeField] private List<Sprite> _numbers;
     [SerializeField] private Slider _sliderLife;
-    
+    private Sprite _shipSprite;
+
 
     private void Start()
     {
         _currentLockAttack = _myStats.CooldownAttack;
-        _shipIcon.sprite = _myStats.UnitIcon;
     }
 
     public void Bounce()
@@ -62,8 +62,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _bounce = GetComponent<bounce>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
-        
-        
     }
 
     public void GetPath()
@@ -99,16 +97,35 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         isEnemy = IsEnemy;
         _myStats = stats;
+
+        if (isEnemy)
+        {
+            _shipIcon.sprite = _myStats._unitenemyIcon;
+            _shipSprite = _myStats._unitenemyIcon;
+            _shipIcon.flipY = true;
+        }
+        else
+        {
+            _shipIcon.sprite = _myStats._unitallyIcon;
+            _shipSprite = _myStats._unitallyIcon;
+        }
+        
+        
+        
         runtimeStats.UnitName = _myStats.UnitName;
-        runtimeStats.HP = _myStats.HP;
+        runtimeStats.HP = _myStats.HP;  
         runtimeStats.ATK = _myStats.ATK;
         runtimeStats.DEF = Mathf.RoundToInt(_myStats.DEF);
         runtimeStats.WalkDistance = _myStats.WalkDistance;
         runtimeStats.AttackRange = _myStats.AttackRange;
         SetOriginCamp(IsEnemy);
         
-        _sliderLife.maxValue = _myStats.HP;
-        _sliderLife.value = _myStats.HP;
+        if(_sliderLife != null)
+        {
+            _sliderLife.minValue = 0;
+            _sliderLife.maxValue = _myStats.HP;
+            UpdateSlider();
+        }
     }
 
     public void SetTiles(TilesController newTiles)
@@ -177,6 +194,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void TakeDamage(int damage)
     {
+        print("TAKE DAMAGE");
         runtimeStats.HP -= damage;
         UpdateSlider();
     }
@@ -201,7 +219,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     public void SetLockMode(bool play)
     {
         _isLocked = play;
-        _shipLock.SetActive(play);
+        _shipIcon.color = play ? Color.gray : Color.white;
+        
+        //_shipLock.SetActive(play);
     }
 
     public bool IsLocked()
@@ -292,7 +312,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 _isInLockDown = false;
                 _currentLockAttack = _myStats.CooldownAttack;
             }
-            UpdateNumImage(_currentLockAttack);
+            else
+            {
+                UpdateNumImage(_currentLockAttack);
+            }
         }
     }
 
@@ -309,11 +332,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _RawNumber.sprite = null;
         }
     }
-
-    public UnitStats GetStats()
+    
+    public int GetLife()
     {
-        return _myStats;
+        return runtimeStats.HP;
     }
+        
 
     public void GetInfos()
     {
@@ -348,21 +372,20 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         return _isOriginCampEnemy;
     }
-
-
+    
     private void UpdateSlider()
     {
-        SetSliderLife(runtimeStats.HP);
+        _sliderLife.value = runtimeStats.HP;
     }
-    public void SetSliderLife(float value)
-    {
-        _sliderLife.value = value;
-    }
-    
-    
+
     public Sprite GetSprite()
     {
-        return _myStats.UnitIcon;
+        return _shipSprite;
+    }
+    
+    public UnitStats GetUnitStats()
+    {
+        return _myStats;
     }
     
     

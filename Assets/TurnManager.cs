@@ -19,6 +19,7 @@ public class TurnManager : MonoBehaviour
 
     private bool _actualisedCamp = false;
     
+
     private void Awake()
     {
         if (Instance == null)
@@ -39,7 +40,6 @@ public class TurnManager : MonoBehaviour
     
     public void StartPlayerTurn()
     {
-        ShipManager.Instance.ChangeShipsCamp();
         _isPlayerTurn = true;
         UpdateText("Player Turn", Color.green);
     }
@@ -70,6 +70,7 @@ public class TurnManager : MonoBehaviour
         ShipManager.Instance.ResetAllShips();
         if (!CheckEndGame())
         {
+            ShipManager.Instance.ChangeShipsCamp();
             StartPlayerTurn();
         }
     }
@@ -108,16 +109,9 @@ public class TurnManager : MonoBehaviour
             {
                 if (_enemyTurn >= ShipManager.Instance.GetActualAllyShips().Count)
                 {
-                    print( "END ENEMY TURN WARNING");
                     EndEnemyTurn();
                     _waitingForEnemy = false;
                     return;
-                }
-                else
-                {
-                    print("PAS ASSEZ DE TURN, ENEMY TURN = " + _enemyTurn + " / " + ShipManager.Instance.GetActualEnemyShipsCount());
-                    print("ALLY = " + ShipManager.Instance.GetActualAllyShips().Count);
-                    
                 }
                 _waitingForEnemy = true;
                 if(ShipManager.Instance.GetActualAllyShip(_enemyTurn).TryGetComponent(out Enemy enemy))

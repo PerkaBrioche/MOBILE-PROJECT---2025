@@ -5,13 +5,19 @@ public class UnitStats : ScriptableObject
 {
     [Header("Informations générales")]
     
-    [SerializeField] private Sprite _unitIcon;
-    public Sprite UnitIcon
+    [SerializeField] private Sprite _unitAllyIcon;
+    public Sprite _unitallyIcon
     {
-        get { return _unitIcon; }
-        set { _unitIcon = value; }
+        get { return _unitAllyIcon; }
+        set { _unitAllyIcon = value; }
     }
     
+    [SerializeField] private Sprite _unitEnemyIcon;
+    public Sprite _unitenemyIcon
+    {
+        get { return _unitEnemyIcon; }
+        set { _unitEnemyIcon = value; }
+    }
     [SerializeField] private string _unitName;
     public string UnitName
     {

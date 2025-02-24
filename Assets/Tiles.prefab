@@ -108,6 +108,8 @@ MonoBehaviour:
   _rightTile: {fileID: 0}
   _spriteRenderer: {fileID: 1238155873766225299}
   _bounce: {fileID: 2949985889879029692}
+  hasAnEnemy: 0
+  _shipSpawner: {fileID: 0}
 --- !u!114 &2949985889879029692
 MonoBehaviour:
   m_ObjectHideFlags: 0
