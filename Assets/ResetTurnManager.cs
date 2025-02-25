@@ -18,10 +18,13 @@ public class ResetTurnManager : MonoBehaviour
 
     public void RecordStartingPositions()
     {
-        ShipController[] ships = FindObjectsOfType<ShipController>();
+        ShipController[] ships = Resources.FindObjectsOfTypeAll<ShipController>();
         foreach (ShipController ship in ships)
         {
-            ship.SaveStartingState();
+            if (ship.gameObject.scene.isLoaded)
+            {
+                ship.SaveStartingState();
+            }
         }
     }
 
@@ -31,10 +34,13 @@ public class ResetTurnManager : MonoBehaviour
         {
             return;
         }
-        ShipController[] ships = FindObjectsOfType<ShipController>();
+        ShipController[] ships = Resources.FindObjectsOfTypeAll<ShipController>();
         foreach (ShipController ship in ships)
         {
-            ship.ResetTurnState();
+            if (ship.gameObject.scene.isLoaded)
+            {
+                ship.ResetTurnState();
+            }
         }
     }
 }
