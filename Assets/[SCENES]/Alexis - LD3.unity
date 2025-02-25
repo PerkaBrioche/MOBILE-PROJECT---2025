@@ -538,10 +538,7 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1793283400}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!4 &237411688 stripped
@@ -700,10 +697,7 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 502762837}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!4 &306166269 stripped
@@ -1449,53 +1443,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74ac95fd2e3e864aa6908caeab9c5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &502762836
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 502762837}
-  - component: {fileID: 502762838}
-  m_Layer: 0
-  m_Name: ShipSpawner 1(Clone)
-  m_TagString: Untagged
-  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &502762837
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502762836}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00000050193387, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 306166269}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &502762838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502762836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _shipStats: {fileID: 11400000, guid: 428f509a05d0fcb4db0094270e9229b2, type: 2}
-  isEnemy: 1
-  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1001 &523259448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1573,6 +1520,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
   m_PrefabInstance: {fileID: 523259448}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &528764140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 528764141}
+  - component: {fileID: 528764142}
+  m_Layer: 0
+  m_Name: ShipSpawner 1(Clone)
+  m_TagString: Untagged
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &528764141
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528764140}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.00000050193387, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1774697657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &528764142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528764140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shipStats: {fileID: 11400000, guid: 2e83982fc65038544bbd7766956ad04b, type: 2}
+  isEnemy: 0
+  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1001 &562286972
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1994,6 +1988,53 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &617962727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 617962728}
+  - component: {fileID: 617962729}
+  m_Layer: 0
+  m_Name: ShipSpawner 1(Clone)
+  m_TagString: Untagged
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &617962728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617962727}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0000010038677, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 783744289}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &617962729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617962727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shipStats: {fileID: 11400000, guid: 0ebc91b330c14a54b951a54981b3e054, type: 2}
+  isEnemy: 1
+  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1 &623668759
 GameObject:
   m_ObjectHideFlags: 0
@@ -2472,7 +2513,10 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 967993400}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!4 &711594787 stripped
@@ -2955,7 +2999,10 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 617962728}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!4 &783744289 stripped
@@ -3083,53 +3130,6 @@ Transform:
   - {fileID: 1332519658}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &850174468
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 850174469}
-  - component: {fileID: 850174470}
-  m_Layer: 0
-  m_Name: ShipSpawner 1(Clone)
-  m_TagString: Untagged
-  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &850174469
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 850174468}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.00000050193387, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1324193170}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &850174470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 850174468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _shipStats: {fileID: 11400000, guid: 0ebc91b330c14a54b951a54981b3e054, type: 2}
-  isEnemy: 0
-  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1001 &856217263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3665,6 +3665,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74ac95fd2e3e864aa6908caeab9c5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &967993399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 967993400}
+  - component: {fileID: 967993401}
+  m_Layer: 0
+  m_Name: ShipSpawner 1(Clone)
+  m_TagString: Untagged
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &967993400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967993399}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.00000050193387, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 711594787}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &967993401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967993399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shipStats: {fileID: 11400000, guid: e1a270747217482488a8b060b18fb8be, type: 2}
+  isEnemy: 0
+  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1 &972619571
 GameObject:
   m_ObjectHideFlags: 0
@@ -3922,7 +3969,10 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1861826854}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!4 &974026911 stripped
@@ -4080,10 +4130,7 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1706397376}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!114 &981680613 stripped
@@ -5033,10 +5080,7 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 850174469}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!4 &1324193170 stripped
@@ -5479,6 +5523,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74ac95fd2e3e864aa6908caeab9c5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1395125050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1395125051}
+  - component: {fileID: 1395125052}
+  m_Layer: 0
+  m_Name: ShipSpawner 1(Clone)
+  m_TagString: Untagged
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1395125051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1395125050}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.00000050193387, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1410796991}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1395125052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1395125050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shipStats: {fileID: 11400000, guid: 6b511a6a1be760b489fe024917ed7837, type: 2}
+  isEnemy: 1
+  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1001 &1410796990
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5553,7 +5644,10 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1395125051}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!4 &1410796991 stripped
@@ -6075,10 +6169,7 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1880161914}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!4 &1586942804 stripped
@@ -6097,6 +6188,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74ac95fd2e3e864aa6908caeab9c5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1623552958
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1623552959}
+  - component: {fileID: 1623552960}
+  m_Layer: 0
+  m_Name: ShipSpawner 1(Clone)
+  m_TagString: Untagged
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1623552959
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623552958}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0000010038677, y: 0.00000050193387, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1769605366}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1623552960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623552958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shipStats: {fileID: 11400000, guid: 0ebc91b330c14a54b951a54981b3e054, type: 2}
+  isEnemy: 1
+  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1 &1625916650
 GameObject:
   m_ObjectHideFlags: 0
@@ -6553,53 +6691,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74ac95fd2e3e864aa6908caeab9c5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1706397375
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1706397376}
-  - component: {fileID: 1706397377}
-  m_Layer: 0
-  m_Name: ShipSpawner 1(Clone)
-  m_TagString: Untagged
-  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1706397376
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706397375}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0000010038677, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 981680614}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1706397377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706397375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _shipStats: {fileID: 11400000, guid: 0ebc91b330c14a54b951a54981b3e054, type: 2}
-  isEnemy: 0
-  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1001 &1720521990
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6917,7 +7008,10 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1623552959}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!4 &1769605366 stripped
@@ -7083,7 +7177,10 @@ PrefabInstance:
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 528764141}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
 --- !u!114 &1774697656 stripped
@@ -7217,53 +7314,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -69}
   m_SizeDelta: {x: 1284, y: 2640}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1793283399
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1793283400}
-  - component: {fileID: 1793283401}
-  m_Layer: 0
-  m_Name: ShipSpawner 1(Clone)
-  m_TagString: Untagged
-  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1793283400
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1793283399}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0000010038677, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 237411688}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1793283401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1793283399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _shipStats: {fileID: 11400000, guid: 428f509a05d0fcb4db0094270e9229b2, type: 2}
-  isEnemy: 1
-  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1001 &1832839993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7442,6 +7492,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74ac95fd2e3e864aa6908caeab9c5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1861826853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1861826854}
+  - component: {fileID: 1861826855}
+  m_Layer: 0
+  m_Name: ShipSpawner 1(Clone)
+  m_TagString: Untagged
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1861826854
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861826853}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.00000050193387, y: 0.00000050193387, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 974026911}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1861826855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861826853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shipStats: {fileID: 11400000, guid: 6b511a6a1be760b489fe024917ed7837, type: 2}
+  isEnemy: 1
+  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!114 &1871818019 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
@@ -7453,53 +7550,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74ac95fd2e3e864aa6908caeab9c5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1880161913
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1880161914}
-  - component: {fileID: 1880161915}
-  m_Layer: 0
-  m_Name: ShipSpawner 1(Clone)
-  m_TagString: Untagged
-  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1880161914
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1880161913}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0000010038677, y: 0.00000050193387, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1586942804}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1880161915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1880161913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _shipStats: {fileID: 11400000, guid: 2e83982fc65038544bbd7766956ad04b, type: 2}
-  isEnemy: 0
-  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
 --- !u!1001 &1885481256
 PrefabInstance:
   m_ObjectHideFlags: 0
