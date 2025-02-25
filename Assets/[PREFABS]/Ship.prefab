@@ -336,7 +336,6 @@ GameObject:
   - component: {fileID: 5503381764212212986}
   - component: {fileID: 7171925880746312463}
   - component: {fileID: 4483572757704033794}
-  - component: {fileID: 6378174840705516560}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Ship
@@ -453,18 +452,6 @@ MonoBehaviour:
   _bounceForce: 1
   _bounceDuration: 0.05
   _bounceDecreaseSpeed: 3
---- !u!114 &6378174840705516560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2584803787075401790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf7b34962aaab9a4597bca6d4ca2399d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3401754641239617556
 GameObject:
   m_ObjectHideFlags: 0

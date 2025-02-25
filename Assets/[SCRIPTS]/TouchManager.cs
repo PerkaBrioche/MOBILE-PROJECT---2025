@@ -116,7 +116,7 @@ public class TouchManager : MonoBehaviour
         }
         if (actualCollider.TryGetComponent(out TilesController tC)) // TILES
         {
-            if (!tC.CanInteract())
+            if (tC.IsBlocked())
             {
                 return;
             }

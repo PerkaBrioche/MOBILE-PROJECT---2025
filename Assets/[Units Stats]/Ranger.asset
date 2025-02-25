@@ -15,11 +15,11 @@ MonoBehaviour:
   _unitAllyIcon: {fileID: 1010450789034852114, guid: 0283bc5b7e7a6bb49944dde04ca6816b, type: 3}
   _unitEnemyIcon: {fileID: 2204708268438558152, guid: d66346acd41662e4a95ab74f42e4dee6, type: 3}
   _unitName: Ranger
+  _unitType: {fileID: 0}
   hp: 18
   atk: 12
   def: 3
   atkRange: 2
   _walkDistance: 2
-  _attackRange: 1
-  canMooveAndShoot: 1
+  _attackRange: 2
   _cooldownAttack: 0

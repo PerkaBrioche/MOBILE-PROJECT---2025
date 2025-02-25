@@ -48,6 +48,17 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private Sprite _shipSprite;
 
 
+    private ShipSpawner.shipType _shipType;
+    
+    public void SetType( ShipSpawner.shipType type)
+    {
+        _shipType = type;
+    }
+    
+    public ShipSpawner.shipType GetType()
+    {
+        return _shipType;
+    }
     private void Start()
     {
         _currentLockAttack = _myStats.CooldownAttack;
@@ -93,8 +104,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         }
     }
 
-    public void Initialize(bool IsEnemy, UnitStats stats)
+    public void Initialize(bool IsEnemy, UnitStats stats, ShipSpawner.shipType st)
     {
+        _shipType = st;
         isEnemy = IsEnemy;
         _myStats = stats;
 
@@ -203,6 +215,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         Destroy(gameObject);
         _myTilesController.ChangeCollider(true);
+        _myTilesController.SetHasAnAlly(false);
+        _myTilesController.SetHasAnEnemy(false);
         _myTilesController.ResetTiles();
     }
 
@@ -274,12 +288,19 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void CheckLock()
     {
-        if (_myStats.CanMooveAndShoot)
+        if(_isLocked)
+        {
+            return;
+        }
+        if (_shipType != ShipSpawner.shipType.SpaceFortress)
         {
             if (_hasAttacked)
             {
-                SetLockMode(true);
-                return;
+                if (_shipType != ShipSpawner.shipType.Rider)
+                {
+                    SetLockMode(true);
+                    return;
+                }
             }
             if (_hasMoved && _hasAttacked)
             {

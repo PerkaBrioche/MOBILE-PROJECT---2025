@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74ac95fd2e3e864aa6908caeab9c5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _blockInteraction: 0
   _upTile: {fileID: 0}
   _downTile: {fileID: 0}
   _leftTile: {fileID: 0}

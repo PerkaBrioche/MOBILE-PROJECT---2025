@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewUnitStats", menuName = "Unit/Unit Stats", order = 1)]
@@ -24,6 +25,8 @@ public class UnitStats : ScriptableObject
         get { return _unitName; }
         set { _unitName = value; }
     }
+    
+    [SerializeField] private Component _unitType;
 
     [Header("Statistiques de combat")]
     [SerializeField] private int hp;
@@ -68,11 +71,6 @@ public class UnitStats : ScriptableObject
     
     [Space(10)]
     [Header("OTHERS")]
-    [SerializeField] private bool canMooveAndShoot;
-    public bool CanMooveAndShoot
-    { 
-        get { return canMooveAndShoot; }
-    }
     [SerializeField] private int _cooldownAttack;
     public int CooldownAttack
     {

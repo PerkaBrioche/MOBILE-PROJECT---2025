@@ -146,7 +146,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         ChangeTilesColor(_originalColor);
         _bounce.ResetTransform();
         SetHighlight(false);
-        
         SetIsAttackTile(false);
         SetIsRangeTile(false);
     }
@@ -496,8 +495,8 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         return rowPosition;
     }
 
-    public bool CanInteract()
+    public bool IsBlocked()
     {
-        return !_blockInteraction;
+        return _blockInteraction;
     }
 }
