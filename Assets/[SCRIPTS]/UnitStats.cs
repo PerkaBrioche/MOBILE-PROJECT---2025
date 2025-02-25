@@ -12,6 +12,8 @@ public class UnitStats : ScriptableObject
         set { _unitIcon = value; }
     }
     
+    
+    
     [SerializeField] private string _unitName;
     public string UnitName
     {
