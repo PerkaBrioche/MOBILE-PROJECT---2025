@@ -55,7 +55,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _shipType = type;
     }
     
-    public ShipSpawner.shipType GetType()
+    public new ShipSpawner.shipType GetType()
     {
         return _shipType;
     }

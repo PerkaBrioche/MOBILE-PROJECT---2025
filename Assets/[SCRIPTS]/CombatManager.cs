@@ -19,25 +19,24 @@ public class CombatManager : MonoBehaviour
     
     private ShipController _attackerShip;
     private ShipController _targetShip;
+    private bool _isInCombat = false;
     
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(this);
-        }
     }
     
     public void StartCombat(ShipController attacker, ShipController target)
     {
-        TouchManager tm = FindObjectOfType<TouchManager>();
-        if (tm != null) tm.SetInteractionEnabled(false);
+        TouchManager tm = UnityEngine.Object.FindFirstObjectByType<TouchManager>();
+        if (tm != null)
+            tm.SetInteractionEnabled(false);
         _attackerShip = attacker;
         _targetShip = target;
+        _isInCombat = true;
         StartCoroutine(DashAttack());
     }
     
@@ -58,29 +57,17 @@ public class CombatManager : MonoBehaviour
         int damage = _attackerShip.runtimeStats.ATK;
         _targetShip.TakeDamage(damage);
         if (attackerHPText != null)
-        {
             attackerHPText.text = _attackerShip.runtimeStats.HP.ToString();
-        }
         if (attackerAtkText != null)
-        {
             attackerAtkText.text = _attackerShip.runtimeStats.ATK.ToString();
-        }
         if (targetHPText != null)
-        {
             targetHPText.text = _targetShip.runtimeStats.HP.ToString();
-        }
         if (targetAtkText != null)
-        {
             targetAtkText.text = _targetShip.runtimeStats.ATK.ToString();
-        }
         if (attackerPilotImage != null)
-        {
             attackerPilotImage.sprite = _attackerShip.GetSprite();
-        }
         if (targetPilotImage != null)
-        {
             targetPilotImage.sprite = _targetShip.GetSprite();
-        }
         yield return new WaitForSeconds(attackDelay);
         elapsed = 0f;
         while (elapsed < dashTime)
@@ -90,9 +77,16 @@ public class CombatManager : MonoBehaviour
             yield return null;
         }
         _attackerShip.transform.position = originalPosition;
-        TouchManager tm = FindObjectOfType<TouchManager>();
-        if (tm != null) tm.SetInteractionEnabled(true);
+        TouchManager tm2 = UnityEngine.Object.FindFirstObjectByType<TouchManager>();
+        if (tm2 != null)
+            tm2.SetInteractionEnabled(true);
         if (_targetShip.runtimeStats.HP <= 0)
             _targetShip.Die();
+        _isInCombat = false;
+    }
+    
+    public bool IsInCombat()
+    {
+        return _isInCombat;
     }
 }
