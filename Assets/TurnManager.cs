@@ -39,7 +39,10 @@ public class TurnManager : MonoBehaviour
     public void StartPlayerTurn()
     {
         ShipManager.Instance.ChangeShipsCamp();
-        ResetTurnManager.Instance.RecordStartingPositions();
+        if (ResetTurnManager.Instance != null)
+        {
+            ResetTurnManager.Instance.RecordStartingPositions();
+        }
         _isPlayerTurn = true;
         UpdateText("Player Turn", Color.green);
     }
