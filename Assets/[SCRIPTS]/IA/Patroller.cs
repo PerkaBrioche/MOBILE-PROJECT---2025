@@ -22,6 +22,6 @@ public class Patroller : Enemy
     private IEnumerator Wait(float time)
     {
         yield return new WaitForSeconds(time);
-        CheckPath();
+        PlayPathAutomatically();
     }
 }

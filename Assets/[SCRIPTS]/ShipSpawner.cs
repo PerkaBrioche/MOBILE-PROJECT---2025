@@ -69,13 +69,16 @@ public class ShipSpawner : MonoBehaviour
                 ship.AddComponent<Rider>();
                 break;
             case shipType.SpacceBerzerker:
+                ship.AddComponent<Patroller>();
                 _shipStats = SpaceBerzerkerStats;
                 break;
             case shipType.Tank:
                 _shipStats = TankStats;
+                ship.AddComponent<Tank>();
                 break;
             case shipType.SpaceFortress:
                 _shipStats = SpaceFortressStats;
+                ship.AddComponent<Fortress>();
                 break;
         }
         

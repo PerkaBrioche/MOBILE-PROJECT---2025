@@ -30,6 +30,10 @@ public class Enemy : MonoBehaviour
     
     public virtual void SetMyTurn()
     {
+        if (TurnManager.Instance.IsPlayerTurn())
+        {
+            return;
+        }
         if (_shipController.IsLocked())
         {
             TurnManager.Instance.EnemyEndATurn();
@@ -43,7 +47,7 @@ public class Enemy : MonoBehaviour
     {
         
     }
-    public void CheckPath(TilesController targetile = null)
+    public void PlayPathAutomatically(TilesController targetile = null)
     {
         _tilesDetected = EnemyManager.Instance.GetTiles();
         bool canMoove = true;
@@ -84,16 +88,34 @@ public class Enemy : MonoBehaviour
         }
         else if (enemyOnTile.Count > 0)
         {
+            if (_shipController.IsInLockDown())
+            {
+                EndTurn();
+                TurnManager.Instance.EnemyEndATurn();
+                return;
+            }
             ShipController lowestLife = null;
+
             foreach (var enemy in enemyOnTile)
             {
                 if (lowestLife == null)
+                {
                     lowestLife = enemy;
-                else if (enemy.GetLife() < lowestLife.GetLife())
+                }
+                else if (enemy.GetLife() < lowestLife.GetLife()) // NEW ENEMY < OLD ENEMY // COMPARE LIFE // SI L'ANCIEN A PLUS DE VIE ON CHANGE
+                {
                     lowestLife = enemy;
+                }else if (enemy.GetLife() == lowestLife.GetLife())
+                {
+                    if (enemy.GetAttack() > lowestLife.GetAttack()) // NEW ENEMY > OLD ENEMY // COMPARE DAMAGE // SI L'ANCIEN A MOINS DE ATTAQUE ON CHANGE
+                    {
+                        lowestLife = enemy;
+                    }
+                }
             }
             _targetShips = lowestLife;
             Attack(lowestLife);
+            _shipController.SetHasAttacked(true);
             if (_shipController.GetType() != ShipSpawner.shipType.Rider || _shipController.HasMoved())
             {
                 _shipController.SetLockMode(true);
@@ -106,12 +128,16 @@ public class Enemy : MonoBehaviour
     protected virtual void Attack(ShipController sc)
     {
         CombatManager.Instance.StartCombat(_shipController, sc);
+        HasAttacked();
     }
 
+    public virtual void HasAttacked(){}
     public virtual void Move(TilesController tilesController)
     {
         _shipController.SetNewPosition(tilesController);
     }
+
+    public virtual void TankBlocked() { }
     
     #region MOVEMENT
     public void MoveInDirection(Func<TilesController, TilesController> direction, TilesController originTiles = null, int maxtime = 0)
@@ -125,11 +151,18 @@ public class Enemy : MonoBehaviour
         {
             distance--;
         }
+        
         TilesController directionTile = direction(originTiles);
+        if (!IsTileValid(directionTile)) 
+        { 
+            Move(originTiles);
+            return;
+        }
+        
         for (int i = 1; i < distance; i++)
         {
-            if (directionTile != null || !directionTile.IsBlocked())
-            {
+            if (IsTileValid(directionTile)) 
+            { 
                 directionTile = direction(directionTile);
             }
         }
@@ -144,6 +177,21 @@ public class Enemy : MonoBehaviour
     {
         _gridController.ResetAllTiles();
         EnemyManager.Instance.ClearTiles();
+    }
+
+    private bool IsTileValid(TilesController t)
+    {
+        print(t + " TILE " + t.IsBlocked() + " " + t.HasAnEnemy() + " " + t.HasAnAlly());
+
+        if (t != null)
+        {
+            if (!t.IsBlocked() && !t.HasAnEnemy() && !t.HasAnAlly())
+            {
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
     
 
@@ -240,8 +288,8 @@ public class Enemy : MonoBehaviour
         foreach (ShipController ally in allyShips)
         {
             TilesController allyTile = ally.GetTiles();
-            if (allyTile == null)
-                continue;
+            if (allyTile == null) { continue; }
+            
             int distance = CalculateManhattanDistance(allyTile, enemyTile);
             if (distance < minDistance)
             {
@@ -250,18 +298,32 @@ public class Enemy : MonoBehaviour
             }
             else if (distance == minDistance)
             {
-                if (ally.runtimeStats.ATK < closestShip.runtimeStats.ATK)
+                if(_shipController.GetType() == ShipSpawner.shipType.SpacceBerzerker)
                 {
-                    closestShip = ally;
-                }
-                else if (ally.runtimeStats.ATK == closestShip.runtimeStats.ATK)
-                {
-                    if (ally.runtimeStats.HP > closestShip.runtimeStats.HP)
-                    {
-                    }
-                    else
+                    if (ally.runtimeStats.HP < closestShip.runtimeStats.HP)
                     {
                         closestShip = ally;
+                    }
+                    else if (ally.runtimeStats.HP == closestShip.runtimeStats.HP)
+                    {
+                        if (ally.runtimeStats.ATK < closestShip.runtimeStats.ATK)
+                        {
+                            closestShip = ally;
+                        }
+                    }
+                }
+                else // PAS BERSERKER
+                {
+                    if (ally.runtimeStats.ATK < closestShip.runtimeStats.ATK)
+                    {
+                        closestShip = ally;
+                    }
+                    else if (ally.runtimeStats.ATK == closestShip.runtimeStats.ATK)
+                    {
+                        if (ally.runtimeStats.HP < closestShip.runtimeStats.HP)
+                        {
+                            closestShip = ally;
+                        }
                     }
                 }
             }

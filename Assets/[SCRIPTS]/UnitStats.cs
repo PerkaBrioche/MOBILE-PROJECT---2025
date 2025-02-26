@@ -74,6 +74,6 @@ public class UnitStats : ScriptableObject
     [SerializeField] private int _cooldownAttack;
     public int CooldownAttack
     {
-        get { return _cooldownAttack; }
+        get { return _cooldownAttack+1; }
     }
 }

@@ -163,10 +163,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void SetNewPosition(TilesController neswtiles)
     {
-        StartCoroutine(TranslationPosition(neswtiles.transform.position));
-        SetTiles(neswtiles);
         SetHasMoved(true);
         CheckLock();
+        StartCoroutine(TranslationPosition(neswtiles.transform.position));
+        SetTiles(neswtiles);
     }
 
     public IEnumerator TranslationPosition(Vector2 newPosition)
@@ -190,7 +190,11 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             if(transform.TryGetComponent(out Enemy enemy))
             {
-                enemy.SetMyTurn();
+                // if (_shipType != ShipSpawner.shipType.SpaceFortress)
+                // {
+                    print("J'APPELLE LE TURN DE L'ENEMY");
+                    enemy.SetMyTurn();
+                //}
             }
         }
         SetMoving(false);
@@ -277,6 +281,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         CheckLock();
         if (!_isInLockDown && _myStats.CooldownAttack > 0)
         {
+            print("LOCK DOWN");
             _isInLockDown = true;
         }
     }
@@ -313,6 +318,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             if (_hasMoved || _hasAttacked)
             {
+                print("JE ME LOCK GAGAGA");
                 SetLockMode(true);
                 return;
             }
@@ -327,15 +333,13 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         SetLockMode(false);
         if (_isInLockDown)
         {
+            print("LOCK DOWN RESET");
             _currentLockAttack--;
+            UpdateNumImage(_currentLockAttack);
             if (_currentLockAttack <= 0)
             {
                 _isInLockDown = false;
                 _currentLockAttack = _myStats.CooldownAttack;
-            }
-            else
-            {
-                UpdateNumImage(_currentLockAttack);
             }
         }
     }
@@ -345,6 +349,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         return _isInLockDown;
     }
 
+    public int lockDownLeft()
+    {
+        return _currentLockAttack;
+    }
     private void UpdateNumImage(int index)
     {
         _RawNumber.sprite = _numbers[index];
@@ -359,7 +367,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         return runtimeStats.HP;
     }
         
-
+    public int GetAttack()
+    {
+        return runtimeStats.ATK;
+    }
     public void GetInfos()
     {
         print("HasMoved = " + _hasMoved);

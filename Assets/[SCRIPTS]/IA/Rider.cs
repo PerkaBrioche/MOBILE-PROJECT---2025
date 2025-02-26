@@ -22,7 +22,7 @@ public class Rider : Enemy
     private IEnumerator Wait(float time)
     {
         yield return new WaitForSeconds(time);
-        CheckPath();
+        PlayPathAutomatically();
     }
     
     public override void GoCoward()
