@@ -19,7 +19,7 @@ public class CombatManager : MonoBehaviour
     
     private ShipController _attackerShip;
     private ShipController _targetShip;
-
+    
     private void Awake()
     {
         if (Instance == null)
@@ -31,7 +31,7 @@ public class CombatManager : MonoBehaviour
             Destroy(this);
         }
     }
-
+    
     public void StartCombat(ShipController attacker, ShipController target)
     {
         TouchManager tm = FindObjectOfType<TouchManager>();
@@ -40,7 +40,7 @@ public class CombatManager : MonoBehaviour
         _targetShip = target;
         StartCoroutine(DashAttack());
     }
-
+    
     private IEnumerator DashAttack()
     {
         Vector3 originalPosition = _attackerShip.transform.position;

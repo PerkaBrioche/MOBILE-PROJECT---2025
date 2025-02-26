@@ -12,10 +12,10 @@ public class TurnManager : MonoBehaviour
     
     [SerializeField] private TextMeshProUGUI _turnText;
     [SerializeField] private Button _turnButton;
-
+    
     private int _enemyTurn;
     private bool _waitingForEnemy = false;
-
+    
     private bool _actualisedCamp = false;
     
     private void Awake()
@@ -43,7 +43,7 @@ public class TurnManager : MonoBehaviour
         _isPlayerTurn = true;
         UpdateText("Player Turn", Color.green);
     }
-
+    
     public void EndPlayerTurn()
     {
         _isPlayerTurn = false;
@@ -70,6 +70,7 @@ public class TurnManager : MonoBehaviour
         ShipManager.Instance.ResetAllShips();
         if (!CheckEndGame())
         {
+            ShipManager.Instance.ChangeShipsCamp();
             StartPlayerTurn();
         }
     }
@@ -79,7 +80,7 @@ public class TurnManager : MonoBehaviour
         _turnText.text = text;
         _turnText.color = color;
     }
-
+    
     private void UnlockButtonTurn()
     {
         _turnButton.interactable = true;
@@ -92,14 +93,14 @@ public class TurnManager : MonoBehaviour
             UnlockButtonTurn();
         }
     }
-
+    
     public void EnemyEndATurn()
     {
         print("ENEMY END A TURN");
         _enemyTurn++;
         _waitingForEnemy = false;
     }
-
+    
     private void Update()
     {
         if (_isEnemyTurn)
@@ -119,7 +120,7 @@ public class TurnManager : MonoBehaviour
                     print("ALLY = " + ShipManager.Instance.GetActualAllyShips().Count);
                 }
                 _waitingForEnemy = true;
-                if(ShipManager.Instance.GetActualAllyShip(_enemyTurn).TryGetComponent(out Enemy enemy))
+                if (ShipManager.Instance.GetActualAllyShip(_enemyTurn).TryGetComponent(out Enemy enemy))
                 {
                     enemy.SetMyTurn();
                 }
@@ -130,12 +131,12 @@ public class TurnManager : MonoBehaviour
             }
         }
     }
-
+    
     private void LockButtonTurn()
     {
         _turnButton.interactable = false;
     }
-
+    
     public bool IsPlayerTurn()
     {
         return _isPlayerTurn;
@@ -145,13 +146,13 @@ public class TurnManager : MonoBehaviour
     {
         return _isEnemyTurn;
     }
-
+    
     private IEnumerator waitForSwapCamp()
     {
         yield return new WaitForSeconds(0.5f);
         _actualisedCamp = true;
     }
-
+    
     private bool CheckEndGame()
     {
         var ally = ShipManager.Instance.GetAllyShipsOrinalCamp();
@@ -166,7 +167,7 @@ public class TurnManager : MonoBehaviour
             return true;
         }
         
-        if(ally.Count > 0)
+        if (ally.Count > 0)
         {
         }
         else
@@ -177,7 +178,7 @@ public class TurnManager : MonoBehaviour
         
         return false;
     }
-
+    
     private void WinGame()
     {
         UpdateText("VICTORY", Color.green);

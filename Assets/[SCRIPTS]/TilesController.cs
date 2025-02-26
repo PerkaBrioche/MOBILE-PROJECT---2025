@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class TilesController : MonoBehaviour, bounce.IBounce
 {
+
+    [SerializeField] private bool _blockInteraction;
     [Header("ADJACENT TILES")] [SerializeField]
     private TilesController _upTile;
 
@@ -20,6 +22,8 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     public TilesController leftTile => _leftTile;
     public TilesController rightTile => _rightTile;
 
+    [SerializeField] private int columnPosition = 0;
+    [SerializeField] private int rowPosition = 0;
 
     private bool _isHighLighted;
     private bool _isAttackTiles;
@@ -35,12 +39,30 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     private Color _myColor;
     private Color _originalColor;
 
-    private bool hasAnEnemy = false;
+    [SerializeField] private bool hasAnEnemy = false;
     private bool hasAlly = false;
     
     private ShipController _shipController;
 
     private float _timeBeetweenReveal = 0.2f;
+    
+    [Foldout("OTHERS")]
+    [SerializeField] private GameObject _shipSpawner;
+
+    private GameObject _shipSpawbner;
+    [Button]
+    
+    private void PlaceSpawner()
+    {
+        if(transform.childCount > 0) { return; }
+        _shipSpawbner = Instantiate(_shipSpawner, transform.position, Quaternion.identity, transform);
+    }
+    [Button]
+    private void DestroySpawner()
+    {
+        DestroyImmediate(transform.GetChild(0).gameObject);
+    }
+
 
     public enum TileColor
     {
@@ -98,21 +120,24 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         return null;
     }
 
-    public void HighLightTiles(float seconds, bool attackTiles)
+    public void HighLightTiles(float seconds, bool attackTiles, bool lockdown = false)
     {
         SetHighlight(true);
         var color = Color.white;
-        if(attackTiles)
+        if(lockdown)
         {
             SetIsAttackTile(true);
             color = Color.red;
         }
+        else if (attackTiles)
+        {
+            color = Color.red;
+        }
         else
         {
-            SetIsRangeTile(false);
+            SetIsRangeTile(true);
             color = Color.green;
         }
-        
         StartCoroutine(RevealTiles(color, seconds));
     }
 
@@ -121,145 +146,239 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         ChangeTilesColor(_originalColor);
         _bounce.ResetTransform();
         SetHighlight(false);
-        
         SetIsAttackTile(false);
         SetIsRangeTile(false);
     }
 
-    public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance, List<Func<TilesController, TilesController>> sideFuncs = null, bool diagonal = false)
+   public void GetTiles(int distance, Func<TilesController, TilesController> directionFunc, int walkDistance, List<Func<TilesController, TilesController>> sideFuncs = null, bool diagonal = false)
+   {
+       if (_shipController.IsLocked()) { return; }
+    
+       bool isEnemy = _shipController.IsAnEnemy();
+       int attackRange = distance - walkDistance;
+       int realAttackRange = _shipController.runtimeStats.AttackRange;
+       int baseWalkDistance = walkDistance;
+
+       bool lockdown = _shipController.HasMoved();
+       float seconds = 0f;
+       TilesController[] tilesControllers = new TilesController[distance];
+       tilesControllers[0] = directionFunc(this);
+       for (int i = 1; i < distance; i++)
+       {
+           if (tilesControllers[i - 1] != null)
+           {
+               tilesControllers[i] = directionFunc(tilesControllers[i - 1]);
+           }
+       }
+       List<TilesController> tilesForEnemy = new List<TilesController>();
+       foreach (var tile in tilesControllers)
+       {
+           if (tile == null)
+           {
+               continue;
+           }
+
+           if (lockdown)
+           {
+               if (diagonal && realAttackRange <= 1)
+               {
+                   break;
+               }
+               if (realAttackRange <= 0)
+               {
+                   break;
+               }
+               else
+               {
+                   realAttackRange--;
+               }
+           }
+
+
+           seconds += 0.07f;
+
+           if (TurnManager.Instance.IsEnemyTurn() && !tilesForEnemy.Contains(tile))
+           {
+               tilesForEnemy.Add(tile);
+           }
+
+           if (walkDistance > 0 || lockdown) // GREEN TILES
+           {
+               if (isEnemy)
+               {
+                   tile.HighLightTiles(seconds, false);
+                   walkDistance--;
+                   continue;
+               }
+
+               if (tile.HasAnAlly())
+               {
+                   break;
+               }
+
+               if (tile.HasAnEnemy())
+               {
+                   // RED TILES
+                   tile.HighLightTiles(seconds, true, true);
+                   break;
+               }
+               tile.HighLightTiles(seconds, false, lockdown);
+               
+               if (walkDistance > 1 && !lockdown)
+               {
+                   var sideTiles = CheckTiles(sideFuncs, tile, seconds, false);
+                   if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
+                   {
+                       foreach (var st in sideTiles)
+                       {
+                           if (st != null && !tilesForEnemy.Contains(st))
+                           {
+                               tilesForEnemy.Add(st);
+                           }
+                       }
+                   }
+               }
+               else 
+               {
+                   if (baseWalkDistance == 3)
+                   {
+                       var sideTiles = CheckTiles(sideFuncs, tile, seconds, false);
+                       if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
+                       {
+                           foreach (var st in sideTiles)
+                           {
+                               if (st != null && !tilesForEnemy.Contains(st))
+                               {
+                                   tilesForEnemy.Add(st);
+                               }
+                           }
+                       }
+                   }
+               }
+
+               walkDistance--;
+           }
+           else
+           {
+               // RED TILES
+               if (tile.HasAnAlly() && !isEnemy)
+               {
+                   break;
+               }
+
+               if (diagonal) // DIAGONAL
+               {
+                   if (tile == tilesControllers[distance - 1]) // DERNIERE CASE
+                   {
+                       if (attackRange == 1 && (baseWalkDistance + 1) < 2)
+                       {
+                       }
+                       else if (attackRange == 2 && (baseWalkDistance + 1) == 2)
+                       {
+                           break;
+                       }
+                       else
+                       {
+                           var sideTiles = CheckTiles(sideFuncs, tile, seconds, true);
+                           if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
+                           {
+                               foreach (var st in sideTiles)
+                               {
+                                   if (st != null && !tilesForEnemy.Contains(st))
+                                   {
+                                       tilesForEnemy.Add(st);
+                                   }
+                               }
+                           }
+                           break;
+                       }
+                   }
+                   else
+                   {
+                       var sideTiles = CheckTiles(sideFuncs, tile, seconds, true);
+                       if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
+                       {
+                           foreach (var st in sideTiles)
+                           {
+                               if (st != null && !tilesForEnemy.Contains(st))
+                               {
+                                   tilesForEnemy.Add(st);
+                               }
+                           }
+                       }
+                   }
+               }
+               else
+               {
+                   if (tile != tilesControllers[distance - 1])
+                   {
+                       var sideTiles = CheckTiles(sideFuncs, tile, seconds, true);
+                       if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
+                       {
+                           foreach (var st in sideTiles)
+                           {
+                               if (st != null && !tilesForEnemy.Contains(st))
+                               {
+                                   tilesForEnemy.Add(st);
+                               }
+                           }
+                       }
+                   }
+                   else
+                   {
+                       if ((baseWalkDistance) == 3)
+                       {
+                           var sideTiles = CheckTiles(sideFuncs, tile, seconds, true);
+                           if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
+                           {
+                               foreach (var st in sideTiles)
+                               {
+                                   if (st != null && !tilesForEnemy.Contains(st))
+                                   {
+                                       tilesForEnemy.Add(st);
+                                   }
+                               }
+                           }
+                       }
+                   }
+               }
+
+               tile.HighLightTiles(seconds, true);
+           }
+           // --- Fin logique des tuiles ---
+       }
+
+       if (TurnManager.Instance.IsEnemyTurn() && tilesForEnemy.Count > 0)
+       {
+           EnemyManager.Instance.AddTiles(tilesForEnemy);
+       }
+   }
+
+   private TilesController[] CheckTiles(List<Func<TilesController, TilesController>> sideFuncs, 
+                                     TilesController tile, 
+                                     float seconds, 
+                                     bool attack)
+{
+    if (sideFuncs == null) return null;
+
+
+    TilesController[] tilesControllers = new TilesController[sideFuncs.Count];
+
+    for (int i = 0; i < sideFuncs.Count; i++)
     {
-        bool isEnemy = false;
-        print(isEnemy);
-        int attackRange = distance - walkDistance;
-        int baseWalkDistance = walkDistance;
-        float seconds = 0f;
-        TilesController[] tilesControllers = new TilesController[distance];
-        tilesControllers[0] = directionFunc(this);
-        
-        for (int i = 1; i < distance; i++)
-        {
-            if (tilesControllers[i - 1] != null)
-            {
-                tilesControllers[i] = directionFunc(tilesControllers[i - 1]);
-            }
-        }
-        if (TurnManager.Instance.IsEnemyTurn())
-        {
-            EnemyManager.Instance.AddTiles(tilesControllers);
-        }
-        
-        foreach (var tile in tilesControllers)
-        {
-            if (tile == null)
-            {
-                continue;
-            }
-            seconds += 0.07f;
-            if(walkDistance > 0) // GREEN TILES
-            {
-                
-                if (tile.HasAnAlly() && !isEnemy) // SI ALLIE SUR LA TILES
-                {
-                    break;
-                }
-                if (tile.HasAnEnemy() && !isEnemy) // SI ENNEMI SUR LA TILES
-                {
-                    // RED TILES
-                    
-                    tile.HighLightTiles(seconds, true);
-                    break;
-                }
-                
-                tile.HighLightTiles(seconds, false);
+        TilesController adjacent = sideFuncs[i](tile);
 
-                
-                if(walkDistance != 1)
-                {
-                    CheckTiles(sideFuncs, tile, seconds, false);
-                }
-                else
-                {
-                    if (baseWalkDistance == 3)
-                    {
-                        CheckTiles(sideFuncs, tile, seconds, false);
-                    }
-                }
-                walkDistance--;
-            }
-            else
-            {
-                // RED TILES
-                if (tile.HasAnAlly() && !isEnemy)
-                {
-                    break;
-                }
-                
-
-                if (diagonal) // DIAGONAL
-                {
-                    if(tile == tilesControllers[distance-1]) // DERNIERE CASE
-                    {
-                        if (attackRange == 1 && (baseWalkDistance+1) < 2) // UNE SEULE CASE DE BASE ET UNE CASE DE DEPLACEMENT
-                        {
-                        }
-                        else if (attackRange == 2 && (baseWalkDistance+1) == 2 )
-                        {
-                            break;
-                        }
-                        else // PLUSIEURS CASES DE BASE
-                        {
-                            CheckTiles(sideFuncs, tile, seconds, true);
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        CheckTiles(sideFuncs, tile, seconds, true);
-                    }
-                }
-                else
-                {
-                    if(tile != tilesControllers[distance-1])
-                    {
-                        CheckTiles(sideFuncs, tile, seconds, true);
-                    }
-                    else
-                    {
-                        if ((baseWalkDistance) == 3)
-                        {
-                            CheckTiles(sideFuncs, tile, seconds, true);
-                        }
-                    }
-                }
-                tile.HighLightTiles(seconds, true); 
-                    
-            }
+        if (adjacent != null && !adjacent.HasAnAlly())
+        {
+            adjacent.HighLightTiles(seconds, attack);
         }
 
-
+        tilesControllers[i] = adjacent;
     }
-    
-    private void CheckTiles(List<Func<TilesController, TilesController>> sideFuncs, TilesController tile, float seconds, bool attack)
-    {
-        bool isEnemy = false;
-        if (sideFuncs == null)
-            return;
-    
-        foreach (var func in sideFuncs)
-        {
-            TilesController adjacent = func(tile);
-            if (adjacent != null && !adjacent.isHighLighted() && !adjacent.HasAnAlly())
-            {
-                if (adjacent.HasAnEnemy() && !isEnemy)
-                {
-                    adjacent.HighLightTiles(seconds, true);
-                    break;
-                }
-                adjacent.HighLightTiles(seconds, attack);
-            }
-        }
-    }
-    
+
+    return tilesControllers;
+}
+
     private IEnumerator RevealTiles(Color color, float seconds)
     {
         yield return new WaitForSeconds(seconds);
@@ -335,9 +454,49 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         _isRangeTiles = range;
     }
     
-    
-    
     #endregion
 
+    public List<TilesController> GetNeighbors()
+    {
+        List<TilesController> neighbors = new List<TilesController>();
+    
+        if (upTile != null) neighbors.Add(upTile);
+        if (downTile != null) neighbors.Add(downTile);
+        if (leftTile != null) neighbors.Add(leftTile);
+        if (rightTile != null) neighbors.Add(rightTile);
+        return neighbors;
+    }
 
+    public void Debug()
+    {
+        StopAllCoroutines();
+        StartCoroutine(DebugColor());
+    }
+    private IEnumerator DebugColor()
+    {
+        ChangeTilesColor(Color.magenta);
+        yield return  new WaitForSeconds(2);
+        ChangeTilesColor(Color.white);
+    }
+    
+    public void SetColumAndRowPosition(int column, int row)
+    {
+        columnPosition = column;
+        rowPosition = row;
+    }
+    
+    public int GetColumnPosition()
+    {
+        return columnPosition;
+    }
+    
+    public int GetRowPosition()
+    {
+        return rowPosition;
+    }
+
+    public bool IsBlocked()
+    {
+        return _blockInteraction;
+    }
 }

@@ -27,7 +27,12 @@ public class GridController : MonoBehaviour
     private bool _isChangingColor;
 
     [SerializeField] private List<TilesController> _tilesControllers;
-    
+
+    private void Start()
+    {
+        FindAllTiles();
+        ReArangeGrid();
+    }
 
     private void Update()
     {
@@ -53,6 +58,10 @@ public class GridController : MonoBehaviour
             float x = col * (tileSize + tileSpacing);
             float y = -row * (tileSize + tileSpacing);
             child.localPosition = new Vector2(x, y);
+            if(child.TryGetComponent(out TilesController tc))
+            {
+                tc.SetColumAndRowPosition( col, row);
+            }
         }
         
         // CHANGE GRID POSITION ??
@@ -117,6 +126,8 @@ public class GridController : MonoBehaviour
             tiles.ResetTiles();
         }
     } 
+    
+    
     
     
     

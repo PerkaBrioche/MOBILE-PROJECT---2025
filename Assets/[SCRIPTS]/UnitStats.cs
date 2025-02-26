@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewUnitStats", menuName = "Unit/Unit Stats", order = 1)]
@@ -5,21 +6,26 @@ public class UnitStats : ScriptableObject
 {
     [Header("Informations générales")]
     
-    [SerializeField] private Sprite _unitIcon;
-    public Sprite UnitIcon
+    [SerializeField] private Sprite _unitAllyIcon;
+    public Sprite _unitallyIcon
     {
-        get { return _unitIcon; }
-        set { _unitIcon = value; }
+        get { return _unitAllyIcon; }
+        set { _unitAllyIcon = value; }
     }
-    
-    
-    
+    [SerializeField] private Sprite _unitEnemyIcon;
+    public Sprite _unitenemyIcon
+    {
+        get { return _unitEnemyIcon; }
+        set { _unitEnemyIcon = value; }
+    }
     [SerializeField] private string _unitName;
     public string UnitName
     {
         get { return _unitName; }
         set { _unitName = value; }
     }
+    
+    [SerializeField] private Component _unitType;
 
     [Header("Statistiques de combat")]
     [SerializeField] private int hp;
@@ -34,13 +40,6 @@ public class UnitStats : ScriptableObject
     {
         get { return atk; }
         set { atk = value; }
-    }
-
-    [SerializeField] private float def;
-    public float DEF
-    {
-        get { return def; }
-        set { def = value; }
     }
     
     [SerializeField] private int atkRange;
@@ -64,11 +63,6 @@ public class UnitStats : ScriptableObject
     
     [Space(10)]
     [Header("OTHERS")]
-    [SerializeField] private bool canMooveAndShoot;
-    public bool CanMooveAndShoot
-    { 
-        get { return canMooveAndShoot; }
-    }
     [SerializeField] private int _cooldownAttack;
     public int CooldownAttack
     {
