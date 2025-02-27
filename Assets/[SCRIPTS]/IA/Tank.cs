@@ -50,16 +50,13 @@ public class Tank : Enemy
         switch (_shipController.lockDownLeft())
         {
             case 1:
-                print("ALEEEDD 1");
                 PlayPathAutomatically();
                 break;
             case 2:
-                print("ALEEEDD 2");
                 MoveInDirection(GetOpossiteDirection(FindClosestEnemy().GetTiles(), _shipController.GetTiles()), _shipController.GetTiles());
                 EndTurn();
                 break;
             case 3:
-                print("ALEEEDD 3");
                 MoveInDirection(GetOpossiteDirection(FindClosestEnemy().GetTiles(), _shipController.GetTiles()));
                 EndTurn();
                 break;

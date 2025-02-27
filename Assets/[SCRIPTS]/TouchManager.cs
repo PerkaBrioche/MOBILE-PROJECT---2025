@@ -20,6 +20,8 @@ public class TouchManager : MonoBehaviour
     private bool _isScrolling = false;
     private IDraggable currentDraggable;
     private GameObject currentDraggedObject;
+    
+    private GameManager _gameManager;
 
     [Header("Scrolling Settings")]
     [SerializeField] private bool canScroll = true;
@@ -42,9 +44,12 @@ public class TouchManager : MonoBehaviour
         _touchPress = _playerInput.actions["SinglePress"];
         _holdPress = _playerInput.actions["HoldPress"];
         _combatManager = FindObjectOfType<CombatManager>();
-        
     }
 
+    private void Start()
+    {
+        _gameManager = GameManager.Instance;
+    }
     private void OnEnable()
     {
         _touchPress.performed += OnTouched;
@@ -102,7 +107,8 @@ public class TouchManager : MonoBehaviour
 
     private void OnTouched(InputAction.CallbackContext context)
     {
-        if(!TurnManager.Instance.IsPlayerTurn()){return;}
+        if(!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch()){return;}
+        _gameManager.TouchScreen();
         Vector2 touchedPosition = _touchPosition.ReadValue<Vector2>();
         _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPosition);
         actualCollider = GetCollider();

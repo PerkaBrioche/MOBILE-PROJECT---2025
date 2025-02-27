@@ -140,8 +140,9 @@ public class Enemy : MonoBehaviour
     public virtual void TankBlocked() { }
     
     #region MOVEMENT
-    public void MoveInDirection(Func<TilesController, TilesController> direction, TilesController originTiles = null, int maxtime = 0)
+    public void MoveInDirection(Func<TilesController, TilesController> direction, TilesController originTiles = null)
     {
+        TilesController finalTile = null;
         int distance = _unitStats.WalkDistance;
         if (originTiles == null)
         {
@@ -151,24 +152,25 @@ public class Enemy : MonoBehaviour
         {
             distance--;
         }
+        finalTile = originTiles;
         
         TilesController directionTile = direction(originTiles);
         if (!IsTileValid(directionTile)) 
-        { 
+        {
             Move(originTiles);
-            return;
         }
-        
-        for (int i = 1; i < distance; i++)
+        for (int i = 0; i < distance; i++)
         {
             if (IsTileValid(directionTile)) 
-            { 
+            {
+                finalTile = directionTile;
                 directionTile = direction(directionTile);
             }
         }
-        if (directionTile != null)
+        if (finalTile != null)
         {
-            Move(directionTile);
+            print("FINAL TILE ++ " + finalTile);
+            Move(finalTile);
         }
     }
     #endregion
@@ -181,15 +183,19 @@ public class Enemy : MonoBehaviour
 
     private bool IsTileValid(TilesController t)
     {
-        print(t + " TILE " + t.IsBlocked() + " " + t.HasAnEnemy() + " " + t.HasAnAlly());
-
         if (t != null)
         {
+            print(t + " TILE " + t.IsBlocked() + " " + t.HasAnEnemy() + " " + t.HasAnAlly());
+
             if (!t.IsBlocked() && !t.HasAnEnemy() && !t.HasAnAlly())
             {
                 return true;
             }
             return false;
+        }
+        else
+        {
+            print("TILE NULL BRUH");
         }
         return false;
     }
@@ -247,6 +253,7 @@ public class Enemy : MonoBehaviour
         {
             if (t.IsRangeTile())
             {
+                print("add tile = " + t);
                 walkTiles.Add(t);
             }
         }

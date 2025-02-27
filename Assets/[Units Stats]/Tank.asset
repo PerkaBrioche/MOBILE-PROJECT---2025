@@ -17,7 +17,7 @@ MonoBehaviour:
   _unitName: Tank
   _unitType: {fileID: 0}
   hp: 30
-  atk: 30
+  atk: 2
   def: 10
   atkRange: 1
   _walkDistance: 2

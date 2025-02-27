@@ -8,12 +8,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
 {
 
     [SerializeField] private bool _blockInteraction;
-    [Header("ADJACENT TILES")] [SerializeField]
+    [Header("ADJACENT TILES")] 
     private TilesController _upTile;
-
-    [SerializeField] private TilesController _downTile;
-    [SerializeField] private TilesController _leftTile;
-    [SerializeField] private TilesController _rightTile;
+    private TilesController _downTile;
+    private TilesController _leftTile;
+    private TilesController _rightTile;
     
     private BoxCollider2D _boxCollider2D;
 
@@ -22,12 +21,12 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     public TilesController leftTile => _leftTile;
     public TilesController rightTile => _rightTile;
 
-    [SerializeField] private int columnPosition = 0;
-    [SerializeField] private int rowPosition = 0;
+    private int columnPosition = 0;
+    private int rowPosition = 0;
 
     private bool _isHighLighted;
     private bool _isAttackTiles;
-    private bool _isRangeTiles;
+  [SerializeField]   private bool _isRangeTiles;
 
 
     [Space(20)] [Foldout("References")] [SerializeField]
@@ -39,7 +38,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     private Color _myColor;
     private Color _originalColor;
 
-    [SerializeField] private bool hasAnEnemy = false;
+    private bool hasAnEnemy = false;
     private bool hasAlly = false;
     
     private ShipController _shipController;
@@ -131,6 +130,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         }
         else if (attackTiles)
         {
+            SetIsRangeTile(false);
             color = Color.red;
         }
         else
@@ -206,6 +206,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
            {
                if (isEnemy)
                {
+                   print("ENEMY WALK DISTANCE + " + walkDistance);
                    tile.HighLightTiles(seconds, false);
                    walkDistance--;
                    continue;
@@ -218,10 +219,20 @@ public class TilesController : MonoBehaviour, bounce.IBounce
 
                if (tile.HasAnEnemy())
                {
-                   // RED TILES
-                   tile.HighLightTiles(seconds, true, true);
+                  // print("realAttackRange = " + _shipController.runtimeStats.AttackRange  + " walkDistance = " + walkDistance);
+                  
+                   print(tile + " HAS AN ENEMY");    
+                   if(lockdown || walkDistance > _shipController.runtimeStats.AttackRange)
+                   {
+                       tile.HighLightTiles(seconds, true, true);
+                   }
+                   else
+                   {
+                       tile.HighLightTiles(seconds, true);
+                   } 
                    break;
                }
+               
                tile.HighLightTiles(seconds, false, lockdown);
                
                if (walkDistance > 1 && !lockdown)

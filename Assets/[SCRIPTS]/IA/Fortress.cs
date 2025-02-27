@@ -46,7 +46,6 @@ public class Fortress : Enemy
         if (_AggroTime > 0)
         {
             _AggroTime--;
-            print("AGGRO");
             PlayPathAutomatically( FindBestTile(_closestEnemy.GetTiles()));
         }
         else // STAY BACK
@@ -54,13 +53,11 @@ public class Fortress : Enemy
             if (distanceTarget <= 1)
             {
                 _AggroTime = 2;
-                print("ENEMY IN RANGE");
                 MoveInDirection(GetOpossiteDirection(_closestEnemy.GetTiles(), _myTile));
                 EndTurn();
             }
             else
             {
-                print("NO ENEMY IN RANGE");
                 PlayPathAutomatically( FindBestTile(_closestEnemy.GetTiles()));
             }
         }
