@@ -13,7 +13,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         public string UnitName;
         public int HP;
         public int ATK;
-        public int DEF;
         public int WalkDistance;
         public int AttackRange;
     }
@@ -27,7 +26,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private bool isEnemy;
     private BoxCollider2D _boxCollider2D;
 
-    // TURN
     [SerializeField] private bool _isLocked = false;
     private bool _hasMoved;
     private bool _hasAttacked;
@@ -38,24 +36,26 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private bool _isMooving;
     private bool _isOriginCampEnemy;
 
-    [Header("OTHERS")] 
+    [Header("OTHERS")]
     [SerializeField] private GameObject _shipLock;
     [SerializeField] private SpriteRenderer _shipIcon;
     
     [SerializeField] private SpriteRenderer _RawNumber;
     [SerializeField] private List<Sprite> _numbers;
     [SerializeField] private Slider _sliderLife;
+    private TilesController _startingTile;
+    private bool _isDead = false;
+    private RuntimeStats _initialStats;
     private Sprite _shipSprite;
-
 
     private ShipSpawner.shipType _shipType;
     
-    public void SetType( ShipSpawner.shipType type)
+    public void SetType(ShipSpawner.shipType type)
     {
         _shipType = type;
     }
     
-    public ShipSpawner.shipType GetType()
+    public new ShipSpawner.shipType GetType()
     {
         return _shipType;
     }
@@ -109,7 +109,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _shipType = st;
         isEnemy = IsEnemy;
         _myStats = stats;
-
         if (isEnemy)
         {
             _shipIcon.sprite = _myStats._unitenemyIcon;
@@ -121,23 +120,19 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _shipIcon.sprite = _myStats._unitallyIcon;
             _shipSprite = _myStats._unitallyIcon;
         }
-        
-        
-        
         runtimeStats.UnitName = _myStats.UnitName;
-        runtimeStats.HP = _myStats.HP;  
+        runtimeStats.HP = _myStats.HP;
         runtimeStats.ATK = _myStats.ATK;
-        runtimeStats.DEF = Mathf.RoundToInt(_myStats.DEF);
         runtimeStats.WalkDistance = _myStats.WalkDistance;
         runtimeStats.AttackRange = _myStats.AttackRange;
         SetOriginCamp(IsEnemy);
-        
         if(_sliderLife != null)
         {
             _sliderLife.minValue = 0;
             _sliderLife.maxValue = _myStats.HP;
-            UpdateSlider();
+            _sliderLife.value = _myStats.HP;
         }
+        SaveStartingState();
     }
 
     public void SetTiles(TilesController newTiles)
@@ -190,11 +185,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             if(transform.TryGetComponent(out Enemy enemy))
             {
-                // if (_shipType != ShipSpawner.shipType.SpaceFortress)
-                // {
-                    print("J'APPELLE LE TURN DE L'ENEMY");
-                    enemy.SetMyTurn();
-                //}
+                print("J'APPELLE LE TURN DE L'ENEMY");
+                enemy.SetMyTurn();
             }
         }
         SetMoving(false);
@@ -217,11 +209,19 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void Die()
     {
-        Destroy(gameObject);
-        _myTilesController.ChangeCollider(true);
-        _myTilesController.SetHasAnAlly(false);
-        _myTilesController.SetHasAnEnemy(false);
-        _myTilesController.ResetTiles();
+        if(TurnManager.Instance != null && TurnManager.Instance.IsPlayerTurn())
+        {
+            _isDead = true;
+            gameObject.SetActive(false);
+            _myTilesController.ChangeCollider(true);
+            _myTilesController.SetHasAnEnemy(false);
+        }
+        else
+        {
+            Destroy(gameObject);
+            _myTilesController.ChangeCollider(true);
+            _myTilesController.SetHasAnEnemy(false);
+        }
     }
 
     public void ChangeCollider(bool state)
@@ -238,8 +238,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _isLocked = play;
         _shipIcon.color = play ? Color.gray : Color.white;
-        
-        //_shipLock.SetActive(play);
     }
 
     public bool IsLocked()
@@ -366,11 +364,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         return runtimeStats.HP;
     }
-        
+    
     public int GetAttack()
     {
         return runtimeStats.ATK;
     }
+    
     public void GetInfos()
     {
         print("HasMoved = " + _hasMoved);
@@ -409,7 +408,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _sliderLife.value = runtimeStats.HP;
     }
-
+    
     public Sprite GetSprite()
     {
         return _shipSprite;
@@ -420,5 +419,34 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         return _myStats;
     }
     
+    public void SaveStartingState()
+    {
+        _startingTile = _myTilesController;
+        _initialStats = runtimeStats;
+    }
     
+    public void ResetTurnState()
+    {
+        if(_isDead)
+        {
+            gameObject.SetActive(true);
+            _isDead = false;
+        }
+        ResetShip();
+        runtimeStats = _initialStats;
+        UpdateSlider();
+        if (_startingTile != null)
+        {
+            transform.position = _startingTile.transform.position;
+            SetTiles(_startingTile);
+        }
+    }
+    
+    public void SetHealthBarVisible(bool visible)
+    {
+        if(_sliderLife != null)
+        {
+            _sliderLife.gameObject.SetActive(visible);
+        }
+    }
 }

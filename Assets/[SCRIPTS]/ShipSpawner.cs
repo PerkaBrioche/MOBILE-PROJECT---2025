@@ -6,28 +6,17 @@ using UnityEngine;
 public class ShipSpawner : MonoBehaviour
 {
     [Header("PUT THE SHIP STATS HERE")]
-     private UnitStats _shipStats;
+    private UnitStats _shipStats;
     public shipType TypeShip;
 
     [Header("PUT THE TILES HERE")]
     TilesController _tilesController;
     [Header("IS AN ENEMY ?")]
-    [SerializeField] private bool isEnemy =false;
+    [SerializeField] private bool isEnemy = false;
     
     private ShipController _shipController;
     [Foldout("References")]
     [SerializeField] private GameObject _shipPrefab;
-
-    public enum shipType
-    {
-        Patroller,
-        Ranger,
-        Rider,
-        SpacceBerzerker,
-        Tank,
-        SpaceFortress
-    }
-    
     [Foldout("References")]
     [SerializeField] private UnitStats PatrollerStats;
     [Foldout("References")]
@@ -40,13 +29,21 @@ public class ShipSpawner : MonoBehaviour
     [SerializeField] private UnitStats TankStats;
     [Foldout("References")]
     [SerializeField] private UnitStats SpaceFortressStats;
+
+    public enum shipType
+    {
+        Patroller,
+        Ranger,
+        Rider,
+        SpacceBerzerker,
+        Tank,
+        SpaceFortress
+    }
+    
     private void Start()
     {
         _tilesController = transform.parent.GetComponent<TilesController>();
-
-
         SpawnShip();
-
     }
     
     public void SpawnShip()
@@ -88,7 +85,8 @@ public class ShipSpawner : MonoBehaviour
             return;
         }
         
-        _shipController.Initialize(isEnemy, _shipStats,TypeShip);
+        _shipController.Initialize(isEnemy, _shipStats, TypeShip);
         _shipController.SetTiles(_tilesController);
+        _shipController.SaveStartingState();
     }
 }
