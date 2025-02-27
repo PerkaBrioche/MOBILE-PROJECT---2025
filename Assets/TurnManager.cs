@@ -133,7 +133,7 @@ public class TurnManager : MonoBehaviour
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
-            dimCol.a = Mathf.Lerp(0, 0.5f, t / fadeDuration);
+            dimCol.a = Mathf.Lerp(0, 0.9f, t / fadeDuration);
             dimBackground.color = dimCol;
             yield return null;
         }
@@ -173,7 +173,7 @@ public class TurnManager : MonoBehaviour
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
-            dimCol.a = Mathf.Lerp(0.5f, 0, t / fadeDuration);
+            dimCol.a = Mathf.Lerp(0.9f, 0, t / fadeDuration);
             dimBackground.color = dimCol;
             yield return null;
         }

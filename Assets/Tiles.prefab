@@ -103,15 +103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blockInteraction: 0
-  _upTile: {fileID: 0}
-  _downTile: {fileID: 0}
-  _leftTile: {fileID: 0}
-  _rightTile: {fileID: 0}
-  columnPosition: 0
-  rowPosition: 0
+  _isRangeTiles: 0
   _spriteRenderer: {fileID: 1238155873766225299}
   _bounce: {fileID: 2949985889879029692}
-  hasAnEnemy: 0
   _shipSpawner: {fileID: 0}
 --- !u!114 &2949985889879029692
 MonoBehaviour:
