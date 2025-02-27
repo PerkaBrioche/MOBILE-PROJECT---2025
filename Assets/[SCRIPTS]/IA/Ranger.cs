@@ -38,14 +38,15 @@ public class Ranger : Enemy
         _myTile = _shipController.GetTiles();
         _closestEnemy = FindClosestEnemy();
         int distanceTarget = CalculateManhattanDistance(_closestEnemy.GetTiles(), _shipController.GetTiles());
-        if (distanceTarget <= 1)
+        if (distanceTarget <= 0)
         {
-            MoveInDirection(GetOpossiteDirection(_closestEnemy.GetTiles(), _myTile), _shipController.GetTiles(), 1);
+            print("TOO CLOSE");
+            MoveInDirection(GetOpossiteDirection(_closestEnemy.GetTiles(), _myTile), _shipController.GetTiles());
             EndTurn();
         }
         else
         {
-            print("NO ENEMY IN RANGE");
+            print("PLAY AUTOMATICALLY");
             PlayPathAutomatically( FindBestTile(_closestEnemy.GetTiles()));
         }
     }
