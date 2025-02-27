@@ -101,6 +101,7 @@ public class ShipManager : MonoBehaviour
     public void ResetAllShips()
     {
         var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);
+        print("RESET ALL SHIPS");
         foreach (var ships in AllShips)
         {
             ships.ResetShip();

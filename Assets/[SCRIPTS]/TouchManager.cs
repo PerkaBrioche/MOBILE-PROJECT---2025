@@ -107,7 +107,11 @@ public class TouchManager : MonoBehaviour
 
     private void OnTouched(InputAction.CallbackContext context)
     {
-        if(!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch()){return;}
+        if (!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch())
+        {
+            Debug.LogError("PROBLEM TOUCH");
+            return;
+        }
         _gameManager.TouchScreen();
         Vector2 touchedPosition = _touchPosition.ReadValue<Vector2>();
         _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPosition);
@@ -126,6 +130,7 @@ public class TouchManager : MonoBehaviour
             {
                 return;
             }
+            print("TILES");
             if (_isHighLighted)
             {
                 if (tC.isHighLighted())
@@ -138,6 +143,8 @@ public class TouchManager : MonoBehaviour
                         }
                         else if(tC.IsRangeTile())
                         {
+                            print("RANGE TILE");
+
                             if (_ActualshipController.CanMove())
                             {
                                 _ActualshipController.SetNewPosition(tC);
@@ -150,7 +157,7 @@ public class TouchManager : MonoBehaviour
         }
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
-        //    sc.GetInfos();
+         //  sc.GetInfos();
             if (_ActualshipController == null)
             {
                 if(sc.IsAnEnemy())

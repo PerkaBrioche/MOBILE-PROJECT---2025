@@ -10,7 +10,6 @@ public class ShipSpawner : MonoBehaviour
     public shipType TypeShip;
 
     [Header("PUT THE TILES HERE")]
-    TilesController _tilesController;
     [Header("IS AN ENEMY ?")]
     [SerializeField] private bool isEnemy =false;
     
@@ -18,6 +17,7 @@ public class ShipSpawner : MonoBehaviour
     [Foldout("References")]
     [SerializeField] private GameObject _shipPrefab;
 
+    public TilesController shipTile;
     public enum shipType
     {
         Patroller,
@@ -27,7 +27,10 @@ public class ShipSpawner : MonoBehaviour
         Tank,
         SpaceFortress
     }
-    
+    [Button] private void DestroySpawner()
+    {
+        DestroyImmediate(gameObject);
+    }
     [Foldout("References")]
     [SerializeField] private UnitStats PatrollerStats;
     [Foldout("References")]
@@ -42,18 +45,14 @@ public class ShipSpawner : MonoBehaviour
     [SerializeField] private UnitStats SpaceFortressStats;
     private void Start()
     {
-        _tilesController = transform.parent.GetComponent<TilesController>();
-
-
         SpawnShip();
-
     }
     
     public void SpawnShip()
     {
-        var ship = Instantiate(_shipPrefab, _tilesController.transform.position, Quaternion.identity);
+        print(shipTile);
+        var ship = Instantiate(_shipPrefab, shipTile.transform.position, Quaternion.identity);
         _shipController = ship.GetComponent<ShipController>();
-        
         switch (TypeShip)
         {
             case shipType.Patroller:
@@ -89,6 +88,8 @@ public class ShipSpawner : MonoBehaviour
         }
         
         _shipController.Initialize(isEnemy, _shipStats,TypeShip);
-        _shipController.SetTiles(_tilesController);
+        _shipController.SetTiles(shipTile);
     }
+    
+    
 }

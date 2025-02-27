@@ -96,7 +96,6 @@ public class TurnManager : MonoBehaviour
 
     public void EnemyEndATurn()
     {
-        print("ENEMY END A TURN");
         _enemyTurn++;
         _waitingForEnemy = false;
     }
