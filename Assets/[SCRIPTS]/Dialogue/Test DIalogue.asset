@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: Test DIalogue
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 6643452661266350797, guid: b94b38422655a2d449a02e3b62bcfebc, type: 3}
+  rightSprite: {fileID: -4413219324028710878, guid: 0035d7f9f78d2ef40adb5cbe22915424, type: 3}
+  lines:
+  - leftSpeaker: 1
+    speakerName: Moustafa
+    text: Bonjour je suis gros
+  - leftSpeaker: 0
+    speakerName: Donna
+    text: BONJOUR JE SUIS DONATELL0

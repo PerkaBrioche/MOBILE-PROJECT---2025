@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
   m_Name: Tank
   m_EditorClassIdentifier: 
-  _unitAllyIcon: {fileID: -3202985947784004327, guid: 804b2460ef24a724e8281e99c060bd9e, type: 3}
-  _unitEnemyIcon: {fileID: -5799953009594196102, guid: 36a31a0644a86634a809bd9f449183c5, type: 3}
+  _unitAllyIcon: {fileID: 1010450789034852114, guid: 0283bc5b7e7a6bb49944dde04ca6816b, type: 3}
+  _unitEnemyIcon: {fileID: 2204708268438558152, guid: d66346acd41662e4a95ab74f42e4dee6, type: 3}
   _unitName: Tank
   _unitType: {fileID: 0}
-  hp: 40
-  atk: 26
-  def: 0
+  hp: 30
+  atk: 2
+  def: 10
   atkRange: 1
   _walkDistance: 2
   _attackRange: 1

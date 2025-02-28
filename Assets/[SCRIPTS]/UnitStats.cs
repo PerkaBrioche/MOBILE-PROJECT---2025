@@ -12,7 +12,6 @@ public class UnitStats : ScriptableObject
         get { return _unitAllyIcon; }
         set { _unitAllyIcon = value; }
     }
-    
     [SerializeField] private Sprite _unitEnemyIcon;
     public Sprite _unitenemyIcon
     {
@@ -41,13 +40,6 @@ public class UnitStats : ScriptableObject
     {
         get { return atk; }
         set { atk = value; }
-    }
-
-    [SerializeField] private float def;
-    public float DEF
-    {
-        get { return def; }
-        set { def = value; }
     }
     
     [SerializeField] private int atkRange;
