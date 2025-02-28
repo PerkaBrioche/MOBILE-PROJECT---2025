@@ -19,25 +19,25 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         public int AttackRange;
     }
     public RuntimeStats runtimeStats;
-
+    
     private UnitStats _myStats;
     [Space(20)] private float _speed = 1.2f;
-
+    
     private TilesController _myTilesController;
     private bounce _bounce;
     private bool isEnemy;
     private BoxCollider2D _boxCollider2D;
-
+    
     [SerializeField] private bool _isLocked = false;
     [SerializeField] private bool _hasMoved;
     private bool _hasAttacked;
-
+    
     private int _currentLockAttack;
     private bool _isInLockDown;
-
+    
     private bool _isMooving;
     private bool _isOriginCampEnemy;
-
+    
     [Header("OTHERS")]
     [SerializeField] private GameObject _shipLock;
     [SerializeField] private SpriteRenderer _shipIcon;
@@ -95,7 +95,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _isMotherShip = true;
         }
     }
-
+    
     public void Bounce()
     {
         _bounce.StartBounce();
@@ -105,16 +105,16 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         return _isMotherShip;
     }
-
+    
     private void Awake()
     {
         _bounce = GetComponent<bounce>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _shipAnimator = GetComponent<Animator>();
         if (_shipAnimator == null)
-            Debug.LogError("Animator manquant sur " + gameObject.name);
+            Debug.LogWarning("Animator manquant sur " + gameObject.name);
     }
-
+    
     public void GetPath()
     {
         if (_myTilesController == null)
@@ -122,7 +122,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         print("RECUPERER LE PATH");
         GetTilesPath();
     }
-
+    
     private void GetTilesPath()
     {
         int distance = _myStats.WalkDistance + _myStats.AttackRange;
@@ -142,7 +142,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.leftTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.upTile } : null, true);
         }
     }
-
+    
     public void Initialize(bool IsEnemy, UnitStats stats, ShipSpawner.shipType st)
     {
         _shipType = st;
@@ -173,7 +173,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         }
         SaveStartingState();
     }
-
+    
     public void SetTiles(TilesController newTiles)
     {
         if (_myTilesController != null)
@@ -194,12 +194,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _myTilesController = newTiles;
     }
-
+    
     public TilesController GetTiles()
     {
         return _myTilesController;
     }
-
+    
     public void SetNewPosition(TilesController neswtiles)
     {
         print("SET NEW POSITON");
@@ -211,7 +211,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         StartCoroutine(TranslationPosition(neswtiles.transform.position));
         SetTiles(neswtiles);
     }
-
+    
     public IEnumerator TranslationPosition(Vector2 newPosition)
     {
         SetMoving(true);
@@ -226,7 +226,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         yield return null;
         EndMovement();
     }
-
+    
     private void EndMovement()
     {
         print("FIN DE MOUVEMENT");
@@ -240,23 +240,21 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         }
         SetMoving(false);
     }
-
+    
     private void OnValidate()
     {
         if (_speed < 1)
             _speed = 1;
     }
-
+    
     public void TakeDamage(int damage)
     {
         runtimeStats.HP -= damage;
         UpdateSlider();
         PlayAnim(shipAnimations.takeDamage);
-       // ShakeManager.instance.ShakeCamera(1.2f,0.3f);  
-        
         if (runtimeStats.HP <= 0) { Die(); }
     }
-
+    
     public void Die()
     {
         if (TurnManager.Instance != null && TurnManager.Instance.IsPlayerTurn())
@@ -273,17 +271,17 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _myTilesController.SetHasAnEnemy(false);
         }
     }
-
+    
     public void ChangeCollider(bool state)
     {
         _boxCollider2D.enabled = state;
     }
-
+    
     public bool IsAnEnemy()
     {
         return isEnemy;
     }
-
+    
     public void SetLockMode(bool play)
     {
         _isLocked = play;
@@ -292,32 +290,32 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         else
             PlayAnim(shipAnimations.Unlocked);
     }
-
+    
     public bool IsLocked()
     {
         return _isLocked;
     }
-
+    
     public bool HasMoved()
     {
         return _hasMoved;
     }
-
+    
     public bool HasAttacked()
     {
         return _hasAttacked;
     }
-
+    
     public bool CanMove()
     {
         return (!HasMoved() && !IsLocked());
     }
-
+    
     public bool CanAttack()
     {
         return (!HasAttacked() && !IsLocked());
     }
-
+    
     public void SetHasAttacked(bool attack)
     {
         _hasAttacked = attack;
@@ -325,12 +323,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         if (!_isInLockDown && _myStats.CooldownAttack > 0)
             _isInLockDown = true;
     }
-
+    
     public void SetHasMoved(bool move)
     {
         _hasMoved = move;
     }
-
+    
     public void CheckLock()
     {
         if (_isLocked)
@@ -363,7 +361,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             SetLockMode(false);
         }
     }
-
+    
     public void ResetShip()
     {
         _hasMoved = false;
@@ -381,12 +379,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             }
         }
     }
-
+    
     public bool IsInLockDown()
     {
         return _isInLockDown;
     }
-
+    
     public int lockDownLeft()
     {
         return _currentLockAttack;
@@ -417,18 +415,18 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         print("HasEnemy = " + _myTilesController.HasAnEnemy());
         print("HasAlly = " + _myTilesController.HasAnAlly());
     }
-
+    
     public void ChangeCamp()
     {
         isEnemy = !isEnemy;
         SetTiles(_myTilesController);
     }
-
+    
     public bool IsMoving()
     {
         return _isMooving;
     }
-
+    
     public void SetMoving(bool state)
     {
         _isMooving = state;
@@ -448,7 +446,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         StartCoroutine(UpdateSliderLife());
     }
-
+    
     private IEnumerator UpdateSliderLife()
     {
         float alpha = 0;
@@ -500,5 +498,4 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         if (_sliderLife != null)
             _sliderLife.gameObject.SetActive(visible);
     }
-    
 }

@@ -1,22 +1,21 @@
 using System;
 using NaughtyAttributes;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipSpawner : MonoBehaviour
 {
     [Header("PUT THE SHIP STATS HERE")]
-     private UnitStats _shipStats;
+    private UnitStats _shipStats;
     public shipType TypeShip;
 
     [Header("PUT THE TILES HERE")]
     [Header("IS AN ENEMY ?")]
-    [SerializeField] private bool isEnemy =false;
+    [SerializeField] private bool isEnemy = false;
     
     private ShipController _shipController;
     [Foldout("References")]
     [SerializeField] private GameObject _shipPrefab;
-
+    
     public TilesController shipTile;
     public enum shipType
     {
@@ -53,6 +52,16 @@ public class ShipSpawner : MonoBehaviour
     
     public void SpawnShip()
     {
+        if (_shipPrefab == null)
+        {
+            Debug.LogError("_shipPrefab is not assigned in " + gameObject.name);
+            return;
+        }
+        if (shipTile == null)
+        {
+            Debug.LogError("shipTile is not assigned in " + gameObject.name);
+            return;
+        }
         var ship = Instantiate(_shipPrefab, shipTile.transform.position, Quaternion.identity);
         _shipController = ship.GetComponent<ShipController>();
         switch (TypeShip)
@@ -88,13 +97,11 @@ public class ShipSpawner : MonoBehaviour
         
         if(_shipStats == null)
         {
-            Debug.LogError("Ship Stats not found");
+            Debug.LogError("Ship Stats not found in " + gameObject.name);
             return;
         }
         
-        _shipController.Initialize(isEnemy, _shipStats,TypeShip);
+        _shipController.Initialize(isEnemy, _shipStats, TypeShip);
         _shipController.SetTiles(shipTile);
     }
-    
-    
 }

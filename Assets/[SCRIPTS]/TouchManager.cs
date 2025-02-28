@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class TouchManager : MonoBehaviour
 {
+    public static TouchManager Instance;
     private PlayerInput _playerInput;
     private InputAction _touchPosition;
     private InputAction _touchPress;
@@ -39,6 +40,7 @@ public class TouchManager : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         _playerInput = GetComponent<PlayerInput>();
         _touchPosition = _playerInput.actions["TouchPosition"];
         _touchPress = _playerInput.actions["SinglePress"];
@@ -50,6 +52,7 @@ public class TouchManager : MonoBehaviour
     {
         _gameManager = GameManager.Instance;
     }
+    
     private void OnEnable()
     {
         _touchPress.performed += OnTouched;
@@ -91,20 +94,6 @@ public class TouchManager : MonoBehaviour
         }
     }
 
-    private void PressReleased(InputAction.CallbackContext context)
-    {
-        if (!_IsHolding) { return; }
-        _IsHolding = false;
-    }
-
-    private void OnHolding(InputAction.CallbackContext context)
-    {
-    }
-
-    private void GetTouchPositon(InputAction.CallbackContext context)
-    {
-    }
-
     private void OnTouched(InputAction.CallbackContext context)
     {
         print("ON TOUCHED");
@@ -126,7 +115,7 @@ public class TouchManager : MonoBehaviour
         {
             Ib.Bounce();
         }
-        if (actualCollider.TryGetComponent(out TilesController tC)) // TILES
+        if (actualCollider.TryGetComponent(out TilesController tC))
         {
             if (tC.IsBlocked())
             {
@@ -136,16 +125,15 @@ public class TouchManager : MonoBehaviour
             {
                 if (tC.isHighLighted())
                 {
-                    if(_ActualshipController != null)
+                    if (_ActualshipController != null)
                     {
-                        if(tC.IsAnAttackTile())
+                        if (tC.IsAnAttackTile())
                         {
                             Reset();
                         }
-                        else if(tC.IsRangeTile())
+                        else if (tC.IsRangeTile())
                         {
                             print("RANGE TILE");
-
                             if (_ActualshipController.CanMove())
                             {
                                 _ActualshipController.SetNewPosition(tC);
@@ -158,12 +146,16 @@ public class TouchManager : MonoBehaviour
         }
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
-            if(sc.GetType() == ShipSpawner.shipType.MothherShip){return;}
-           sc.GetInfos();
+            if (sc.GetType() == ShipSpawner.shipType.MothherShip)
+            {
+                return;
+            }
+            sc.GetInfos();
             if (_ActualshipController == null)
             {
-                if(sc.IsAnEnemy())
+                if (sc.IsAnEnemy())
                 {
+                    // rien
                 }
                 else
                 {
@@ -174,7 +166,7 @@ public class TouchManager : MonoBehaviour
             }
             else
             {
-                if(sc.IsAnEnemy())
+                if (sc.IsAnEnemy())
                 {
                     if (_ActualshipController.IsAnEnemy())
                     {
@@ -190,7 +182,7 @@ public class TouchManager : MonoBehaviour
                 }
                 else
                 {
-                    if(_ActualshipController == sc)  // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
+                    if (_ActualshipController == sc)
                     {
                         _ActualshipController.SetLockMode(true);
                         Reset();
@@ -264,8 +256,8 @@ public class TouchManager : MonoBehaviour
         currentDraggedObject = null;
     }
 
-    // public void SetInteractionEnabled(bool enabled)
-    // {
-    //     _playerInput.enabled = enabled;
-    // }
+    public void SetInteractionEnabled(bool enabled)
+    {
+        _playerInput.enabled = enabled;
+    }
 }

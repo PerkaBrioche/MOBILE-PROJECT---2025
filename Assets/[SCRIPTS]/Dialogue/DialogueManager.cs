@@ -16,13 +16,13 @@ public class DialogueManager : MonoBehaviour
     private int index;
     private bool active;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
 
-    void Update()
+    private void Update()
     {
         if (!active) return;
         if (Input.GetMouseButtonDown(0))
@@ -64,8 +64,8 @@ public class DialogueManager : MonoBehaviour
             return;
         }
         DialogueLine line = dialogueData.lines[index];
-        leftImage.color = line.leftSpeaker ? new Color(1,1,1,1) : new Color(1,1,1,0.5f);
-        rightImage.color = line.leftSpeaker ? new Color(1,1,1,0.5f) : new Color(1,1,1,1);
+        leftImage.color = line.leftSpeaker ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0.5f);
+        rightImage.color = line.leftSpeaker ? new Color(1, 1, 1, 0.5f) : new Color(1, 1, 1, 1);
         speakerNameText.text = line.speakerName;
         dialogueText.text = line.text;
     }
@@ -86,7 +86,7 @@ public class DialogueManager : MonoBehaviour
         TouchManager.Instance.SetInteractionEnabled(true);
         TurnManager.Instance.DialogueEnded();
     }
-    
+
     private void SetAllHealthBars(bool visible)
     {
         ShipController[] ships = FindObjectsOfType<ShipController>();
