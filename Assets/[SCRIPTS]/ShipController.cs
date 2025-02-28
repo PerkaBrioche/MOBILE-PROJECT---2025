@@ -165,7 +165,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         runtimeStats.UnitName = _myStats.UnitName;
         runtimeStats.HP = _myStats.HP;  
         runtimeStats.ATK = _myStats.ATK;
-        runtimeStats.DEF = Mathf.RoundToInt(_myStats.DEF);
         runtimeStats.WalkDistance = _myStats.WalkDistance;
         runtimeStats.AttackRange = _myStats.AttackRange;
         SetOriginCamp(IsEnemy);

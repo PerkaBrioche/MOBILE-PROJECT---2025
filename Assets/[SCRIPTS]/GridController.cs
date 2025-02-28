@@ -109,7 +109,8 @@ public class GridController : MonoBehaviour
     {
         foreach (var tiles in _tilesControllers)
         {
-            tiles.ChangeTileSprite(TilesController.enumTileSprites.defaultTile);
+            var randomColor = Colors[Random.Range(0, Colors.Count)];
+            tiles.ChangeTilesColor(randomColor);
         }
     }
 

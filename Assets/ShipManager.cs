@@ -25,13 +25,17 @@ public class ShipManager : MonoBehaviour
 
     private void Update()
     {
-        if (_isCooldown) { return; }
+        if (_isCooldown)
+        {
+            return;
+        }
         if(!TurnManager.Instance.IsPlayerTurn()) { return;}
-        
         if (HasPlayedAllShips() && !CombatManager.Instance.IsInCombat())
         {
             TurnManager.Instance.CheckUnlockButton();
         }
+
+
     }
 
     private void UpdateLists()
@@ -88,10 +92,7 @@ public class ShipManager : MonoBehaviour
         {
             if(!ship.IsLocked())
             {
-                if (!ship.IsMotherShip())
-                {
-                    return false;
-                }
+                return false;
             }
         }
         return true;
@@ -100,7 +101,6 @@ public class ShipManager : MonoBehaviour
     public void ResetAllShips()
     {
         var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);
-        print("RESET ALL SHIPS");
         foreach (var ships in AllShips)
         {
             ships.ResetShip();

@@ -6,182 +6,248 @@ using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
-    
-    private bool _isPlayerTurn = false;
-    private bool _isEnemyTurn = false;
+    private bool isPlayerTurn = false;
+    private bool isEnemyTurn = false;
     public static TurnManager Instance;
-    
-    [SerializeField] private TextMeshProUGUI _turnText;
-    [SerializeField] private Button _turnButton;
+    [SerializeField] private Button turnButton;
+    [SerializeField] private Image dimBackground;
+    [SerializeField] private TextMeshProUGUI phaseTransitionText;
+    [SerializeField] private Transform blockLeftStart;
+    [SerializeField] private Transform blockLeftEnd;
+    [SerializeField] private Transform blockRightStart;
+    [SerializeField] private Transform blockRightEnd;
+    [SerializeField] private Image playerLeftBlock;
+    [SerializeField] private Image playerRightBlock;
+    [SerializeField] private Image enemyLeftBlock;
+    [SerializeField] private Image enemyRightBlock;
+    private int enemyTurn;
+    private bool actualisedCamp = false;
+    private float blockMoveDuration = 0.5f;
+    private float textDisplayDuration = 1f;
+    private float fadeDuration = 0.5f;
 
-    private int _enemyTurn;
-    private bool _waitingForEnemy = false;
-
-    private bool _actualisedCamp = false;
-    
+    public bool IsPlayerTurn() { return isPlayerTurn; }
+    public bool IsEnemyTurn() { return isEnemyTurn; }
 
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(this);
-        }
     }
-    
     private void Start()
     {
-        StartPlayerTurn();
-        LockButtonTurn();
+        if (DialogueManager.Instance != null && DialogueManager.Instance.HasDialogue())
+        {
+            DialogueManager.Instance.StartDialogue();
+            return;
+        }
+        StartCoroutine(PhaseTransition("Player Phase", () =>
+        {
+            isPlayerTurn = true;
+            if (ResetTurnManager.Instance != null)
+                ResetTurnManager.Instance.RecordStartingPositions();
+            LockButtonTurn();
+        }));
     }
-    
-    public void StartPlayerTurn()
+    public void DialogueEnded()
     {
-        _isPlayerTurn = true;
-        UpdateText("Player Turn", Color.green);
+        StartCoroutine(PhaseTransition("Player Phase", () =>
+        {
+            isPlayerTurn = true;
+            if (ResetTurnManager.Instance != null)
+                ResetTurnManager.Instance.RecordStartingPositions();
+            LockButtonTurn();
+        }));
     }
-
     public void EndPlayerTurn()
     {
-        _isPlayerTurn = false;
+        isPlayerTurn = false;
         LockButtonTurn();
         if (!CheckEndGame())
         {
-            StartEnemyTurn();
+            StartCoroutine(PhaseTransition("Enemy Phase", () =>
+            {
+                enemyTurn = 0;
+                isEnemyTurn = true;
+                actualisedCamp = true;
+            }));
         }
     }
-    
-    public void StartEnemyTurn()
-    {
-        _actualisedCamp = false;
-        StartCoroutine(waitForSwapCamp());
-        ShipManager.Instance.ChangeShipsCamp();
-        UpdateText("Enemy Turn", Color.red);
-        _enemyTurn = 0;
-        _isEnemyTurn = true;
-    }
-    
     public void EndEnemyTurn()
     {
-        _isEnemyTurn = false;
+        isEnemyTurn = false;
         ShipManager.Instance.ResetAllShips();
         if (!CheckEndGame())
         {
-            ShipManager.Instance.ChangeShipsCamp();
-            StartPlayerTurn();
-        }
-    }
-    
-    private void UpdateText(string text, Color color)
-    {
-        _turnText.text = text;
-        _turnText.color = color;
-    }
-
-    private void UnlockButtonTurn()
-    {
-        _turnButton.interactable = true;
-    }
-    
-    public void CheckUnlockButton()
-    {
-        if (_isPlayerTurn)
-        {
-            UnlockButtonTurn();
-        }
-    }
-
-    public void EnemyEndATurn()
-    {
-        _enemyTurn++;
-        _waitingForEnemy = false;
-    }
-
-    private void Update()
-    {
-        if (_isEnemyTurn)
-        {
-            if (!_waitingForEnemy && _actualisedCamp)
+            StartCoroutine(PhaseTransition("Player Phase", () =>
             {
-                if (_enemyTurn >= ShipManager.Instance.GetActualAllyShips().Count)
-                {
-                    EndEnemyTurn();
-                    _waitingForEnemy = false;
-                    return;
-                }
-                _waitingForEnemy = true;
-                if(ShipManager.Instance.GetActualAllyShip(_enemyTurn).TryGetComponent(out Enemy enemy))
-                {
-                    enemy.SetMyTurn();
-                }
-                else
-                {
-                    Debug.LogError("MISSING ENEMY COMPONENT");
-                }
-            }
-
+                isPlayerTurn = true;
+                if (ResetTurnManager.Instance != null)
+                    ResetTurnManager.Instance.RecordStartingPositions();
+                LockButtonTurn();
+            }));
         }
     }
-
+    public void ShowWinScreen()
+    {
+        StartCoroutine(PhaseTransition("VICTORY", () => { }));
+    }
+    public void ShowLoseScreen()
+    {
+        StartCoroutine(PhaseTransition("DEFEAT", () => { }));
+    }
+    private IEnumerator PhaseTransition(string phaseName, Action onComplete)
+    {
+        SetAllHealthBars(false);
+        Image leftBlock, rightBlock;
+        if (phaseName.Contains("Player") || phaseName.Contains("VICTORY"))
+        {
+            leftBlock = playerLeftBlock;
+            rightBlock = playerRightBlock;
+        }
+        else
+        {
+            leftBlock = enemyLeftBlock;
+            rightBlock = enemyRightBlock;
+        }
+        leftBlock.gameObject.SetActive(true);
+        rightBlock.gameObject.SetActive(true);
+        dimBackground.gameObject.SetActive(true);
+        phaseTransitionText.gameObject.SetActive(true);
+        RectTransform leftRect = leftBlock.rectTransform;
+        RectTransform rightRect = rightBlock.rectTransform;
+        Vector2 leftStart = blockLeftStart.GetComponent<RectTransform>().anchoredPosition;
+        Vector2 leftEnd = blockLeftEnd.GetComponent<RectTransform>().anchoredPosition;
+        Vector2 rightStart = blockRightStart.GetComponent<RectTransform>().anchoredPosition;
+        Vector2 rightEnd = blockRightEnd.GetComponent<RectTransform>().anchoredPosition;
+        leftRect.anchoredPosition = leftStart;
+        rightRect.anchoredPosition = rightStart;
+        Color dimCol = dimBackground.color;
+        dimCol.a = 0;
+        dimBackground.color = dimCol;
+        phaseTransitionText.text = "";
+        phaseTransitionText.alpha = 0;
+        float t = 0;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            dimCol.a = Mathf.Lerp(0, 0.5f, t / fadeDuration);
+            dimBackground.color = dimCol;
+            yield return null;
+        }
+        t = 0;
+        while (t < blockMoveDuration)
+        {
+            t += Time.deltaTime;
+            leftRect.anchoredPosition = Vector2.Lerp(leftStart, leftEnd, t / blockMoveDuration);
+            rightRect.anchoredPosition = Vector2.Lerp(rightStart, rightEnd, t / blockMoveDuration);
+            yield return null;
+        }
+        t = 0;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            phaseTransitionText.alpha = Mathf.Lerp(0, 1, t / fadeDuration);
+            yield return null;
+        }
+        phaseTransitionText.text = phaseName;
+        yield return new WaitForSeconds(textDisplayDuration);
+        t = 0;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            phaseTransitionText.alpha = Mathf.Lerp(1, 0, t / fadeDuration);
+            yield return null;
+        }
+        t = 0;
+        while (t < blockMoveDuration)
+        {
+            t += Time.deltaTime;
+            leftRect.anchoredPosition = Vector2.Lerp(leftEnd, leftStart, t / blockMoveDuration);
+            rightRect.anchoredPosition = Vector2.Lerp(rightEnd, rightStart, t / blockMoveDuration);
+            yield return null;
+        }
+        t = 0;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            dimCol.a = Mathf.Lerp(0.5f, 0, t / fadeDuration);
+            dimBackground.color = dimCol;
+            yield return null;
+        }
+        leftBlock.gameObject.SetActive(false);
+        rightBlock.gameObject.SetActive(false);
+        dimBackground.gameObject.SetActive(false);
+        phaseTransitionText.gameObject.SetActive(false);
+        SetAllHealthBars(true);
+        onComplete?.Invoke();
+    }
     private void LockButtonTurn()
     {
-        _turnButton.interactable = false;
+        turnButton.interactable = false;
     }
-
-
-    public bool IsPlayerTurn()
+    public void CheckUnlockButton()
     {
-        return _isPlayerTurn;
+        if (isPlayerTurn)
+            turnButton.interactable = true;
     }
-    
-    public bool IsEnemyTurn()
+    public void EnemyEndATurn()
     {
-        return _isEnemyTurn;
+        enemyTurn++;
     }
-
+    private void Update()
+    {
+        if (isEnemyTurn)
+        {
+            if (CombatManager.Instance != null && CombatManager.Instance.IsInCombat())
+                return;
+            if (!actualisedCamp)
+            {
+                StartCoroutine(waitForSwapCamp());
+            }
+            else
+            {
+                if (enemyTurn >= ShipManager.Instance.GetActualEnemyShipsCount())
+                {
+                    EndEnemyTurn();
+                    return;
+                }
+                if (ShipManager.Instance.GetEnemyShip(enemyTurn).TryGetComponent(out Enemy enemy))
+                    enemy.SetMyTurn();
+                else
+                    Debug.LogError("MISSING ENEMY COMPONENT");
+            }
+        }
+    }
     private IEnumerator waitForSwapCamp()
     {
         yield return new WaitForSeconds(0.5f);
-        _actualisedCamp = true;
+        actualisedCamp = true;
     }
-
     private bool CheckEndGame()
     {
         var ally = ShipManager.Instance.GetAllyShipsOrinalCamp();
         var enemy = ShipManager.Instance.GetEnemyShipsOrinalCamp();
-        
-        if (enemy.Count > 0)
+        if (enemy.Count == 0)
         {
-        }
-        else
-        {
-            WinGame();
+            ShowWinScreen();
             return true;
         }
-        
-        if(ally.Count > 0)
+        if (ally.Count == 0)
         {
-        }
-        else
-        {
-            LoseGame();
+            ShowLoseScreen();
             return true;
         }
-        
         return false;
-        
     }
-
-    private void WinGame()
+    private void SetAllHealthBars(bool visible)
     {
-        UpdateText("VICTORY", Color.green);
-    }
-    
-    public void LoseGame()
-    {
-        UpdateText("DEFEAT", Color.red);
+        ShipController[] ships = FindObjectsOfType<ShipController>();
+        foreach (ShipController ship in ships)
+        {
+            ship.SetHealthBarVisible(visible);
+        }
     }
 }

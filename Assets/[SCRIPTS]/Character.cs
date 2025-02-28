@@ -13,7 +13,7 @@ public class Character : MonoBehaviour
     {
         if (stats != null)
         {
-            Debug.Log("Le personnage " + stats.UnitName + " démarre avec " + stats.HP + " points de vie, " + stats.ATK + " d'attaque, et une défense de " + stats.DEF);
+            Debug.Log("Le personnage " + stats.UnitName + " démarre avec " + stats.HP + " points de vie et " + stats.ATK + " d'attaque.");
         }
         else
         {

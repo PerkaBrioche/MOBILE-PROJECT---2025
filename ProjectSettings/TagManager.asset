@@ -7,7 +7,6 @@ TagManager:
   - Tiles
   - Ship
   - Enemy
-  - Spawner
   layers:
   - Default
   - TransparentFX
