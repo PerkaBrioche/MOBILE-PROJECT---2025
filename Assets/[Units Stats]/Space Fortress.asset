@@ -16,9 +16,9 @@ MonoBehaviour:
   _unitEnemyIcon: {fileID: 620594133843963748, guid: e8e8a9d789626eb4a96257935392c0b8, type: 3}
   _unitName: Space Fortress
   _unitType: {fileID: 0}
-  hp: 24
-  atk: 20
-  def: 6
+  hp: 26
+  atk: 25
+  def: 0
   atkRange: 2
   _walkDistance: 2
   _attackRange: 2

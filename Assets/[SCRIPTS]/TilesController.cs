@@ -56,6 +56,8 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     [Foldout("OTHERS")] [SerializeField] private Sprite _attackTileSprite;
     [Foldout("OTHERS")] [SerializeField] private Sprite _enemyDetectedTileSprite;
     
+    private Sprite _defaultSpriteTile;
+    
     public enum enumTileSprites
     {
         defaultTile,
@@ -84,7 +86,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         switch (tileSprite)
         {
             case enumTileSprites.defaultTile:
-                _spriteRenderer.sprite = _tilesSprite[Random.Range(0, _tilesSprite.Count)];
+                _spriteRenderer.sprite = _defaultSpriteTile;
                 break;
             case enumTileSprites.deplacementTile:
                 _spriteRenderer.sprite = _deplacementTileSprite;
@@ -119,12 +121,12 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         _myColor = _spriteRenderer.color;
         _originalColor = _myColor;
         _bounce = GetComponent<bounce>();
-        
         GetAdjacentTiles();
     }
 
     private void Start()
     {
+        _defaultSpriteTile = _tilesSprite[Random.Range(0, _tilesSprite.Count)];
         ChangeTileSprite(enumTileSprites.defaultTile);    
     }
 

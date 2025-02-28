@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
-  m_Name: Patroller
+  m_Name: MotherShip
   m_EditorClassIdentifier: 
-  _unitAllyIcon: {fileID: 1010450789034852114, guid: 1d262d2bc5a3e624e8c192f9964bb3a0, type: 3}
-  _unitEnemyIcon: {fileID: 2204708268438558152, guid: a01a2ea5a5c3eed45aee53e753254d81, type: 3}
-  _unitName: Patroller
+  _unitAllyIcon: {fileID: -6126571086727437014, guid: 67098dc8e33fee148a22e48573f54dcf, type: 3}
+  _unitEnemyIcon: {fileID: 5867887857198940217, guid: 3fdbe84e44c95ad4c861007dcef5cacb, type: 3}
+  _unitName: MotherShip
   _unitType: {fileID: 0}
-  hp: 20
-  atk: 15
+  hp: 65
+  atk: 0
   def: 0
-  atkRange: 1
-  _walkDistance: 2
-  _attackRange: 1
+  atkRange: 0
+  _walkDistance: 0
+  _attackRange: 0
   _cooldownAttack: 0

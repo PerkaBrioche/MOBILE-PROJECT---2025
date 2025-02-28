@@ -6,12 +6,12 @@ using UnityEngine;
 public class ShipSpawner : MonoBehaviour
 {
     [Header("PUT THE SHIP STATS HERE")]
-    private UnitStats _shipStats;
+     private UnitStats _shipStats;
     public shipType TypeShip;
 
     [Header("PUT THE TILES HERE")]
     [Header("IS AN ENEMY ?")]
-    [SerializeField] private bool isEnemy = false;
+    [SerializeField] private bool isEnemy =false;
     
     private ShipController _shipController;
     [Foldout("References")]
@@ -25,7 +25,8 @@ public class ShipSpawner : MonoBehaviour
         Rider,
         SpacceBerzerker,
         Tank,
-        SpaceFortress
+        SpaceFortress,
+        MothherShip
     }
     [Button] private void DestroySpawner()
     {
@@ -43,7 +44,8 @@ public class ShipSpawner : MonoBehaviour
     [SerializeField] private UnitStats TankStats;
     [Foldout("References")]
     [SerializeField] private UnitStats SpaceFortressStats;
-    
+    [Foldout("References")]
+    [SerializeField] private UnitStats MotherShipStats;
     private void Start()
     {
         SpawnShip();
@@ -51,7 +53,6 @@ public class ShipSpawner : MonoBehaviour
     
     public void SpawnShip()
     {
-        print(shipTile);
         var ship = Instantiate(_shipPrefab, shipTile.transform.position, Quaternion.identity);
         _shipController = ship.GetComponent<ShipController>();
         switch (TypeShip)
@@ -80,6 +81,9 @@ public class ShipSpawner : MonoBehaviour
                 _shipStats = SpaceFortressStats;
                 ship.AddComponent<Fortress>();
                 break;
+            case shipType.MothherShip:
+                _shipStats = MotherShipStats;
+                break;
         }
         
         if(_shipStats == null)
@@ -88,7 +92,9 @@ public class ShipSpawner : MonoBehaviour
             return;
         }
         
-        _shipController.Initialize(isEnemy, _shipStats, TypeShip);
+        _shipController.Initialize(isEnemy, _shipStats,TypeShip);
         _shipController.SetTiles(shipTile);
     }
+    
+    
 }

@@ -16,9 +16,9 @@ MonoBehaviour:
   _unitEnemyIcon: {fileID: -5799953009594196102, guid: 36a31a0644a86634a809bd9f449183c5, type: 3}
   _unitName: Tank
   _unitType: {fileID: 0}
-  hp: 30
-  atk: 2
-  def: 10
+  hp: 40
+  atk: 26
+  def: 0
   atkRange: 1
   _walkDistance: 2
   _attackRange: 1

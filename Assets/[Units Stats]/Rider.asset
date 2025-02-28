@@ -16,10 +16,10 @@ MonoBehaviour:
   _unitEnemyIcon: {fileID: -2440781651108524487, guid: 628de6ea106450e46b8d3157424ead28, type: 3}
   _unitName: Rider
   _unitType: {fileID: 0}
-  hp: 22
-  atk: 19
-  def: 7
+  hp: 25
+  atk: 17
+  def: 0
   atkRange: 1
   _walkDistance: 2
-  _attackRange: 2
+  _attackRange: 1
   _cooldownAttack: 0

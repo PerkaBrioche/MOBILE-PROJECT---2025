@@ -25,17 +25,13 @@ public class ShipManager : MonoBehaviour
 
     private void Update()
     {
-        if (_isCooldown)
-        {
-            return;
-        }
+        if (_isCooldown) { return; }
         if(!TurnManager.Instance.IsPlayerTurn()) { return;}
+        
         if (HasPlayedAllShips() && !CombatManager.Instance.IsInCombat())
         {
             TurnManager.Instance.CheckUnlockButton();
         }
-
-
     }
 
     private void UpdateLists()
@@ -92,7 +88,10 @@ public class ShipManager : MonoBehaviour
         {
             if(!ship.IsLocked())
             {
-                return false;
+                if (!ship.IsMotherShip())
+                {
+                    return false;
+                }
             }
         }
         return true;
