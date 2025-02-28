@@ -87,6 +87,7 @@ public class ShipSpawner : MonoBehaviour
                 break;
         }
         
+        
         if(_shipStats == null)
         {
             Debug.LogError("Ship Stats not found");
