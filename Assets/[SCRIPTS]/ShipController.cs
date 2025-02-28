@@ -481,6 +481,11 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         return _myStats;
     }
-    
+    public void SetHealthBarVisible(bool visible)
+    {
+        if (_sliderLife != null)
+            _sliderLife.gameObject.SetActive(visible);
+    }
+
     
 }
