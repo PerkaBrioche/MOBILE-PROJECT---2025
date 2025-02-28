@@ -23,7 +23,7 @@ public class ResetTurnManager : MonoBehaviour
         {
             if (ship.gameObject.scene.isLoaded)
             {
-                ship.SaveStartingState();
+              //  ship.SaveStartingState();
             }
         }
     }
@@ -39,7 +39,7 @@ public class ResetTurnManager : MonoBehaviour
         {
             if (ship.gameObject.scene.isLoaded)
             {
-                ship.ResetTurnState();
+               // ship.ResetTurnState();
             }
         }
     }

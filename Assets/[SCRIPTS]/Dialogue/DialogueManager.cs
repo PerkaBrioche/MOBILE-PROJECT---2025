@@ -47,7 +47,7 @@ public class DialogueManager : MonoBehaviour
     {
         yield return null;
         SetAllHealthBars(false);
-        TouchManager.Instance.SetInteractionEnabled(false);
+       // TouchManager.Instance.SetInteractionEnabled(false);
         dialoguePanel.SetActive(true);
         backgroundDarkener.gameObject.SetActive(true);
         leftImage.sprite = dialogueData.leftSprite;
@@ -83,8 +83,8 @@ public class DialogueManager : MonoBehaviour
         backgroundDarkener.gameObject.SetActive(false);
         active = false;
         SetAllHealthBars(true);
-        TouchManager.Instance.SetInteractionEnabled(true);
-        TurnManager.Instance.DialogueEnded();
+       // TouchManager.Instance.SetInteractionEnabled(true);
+        //TurnManager.Instance.DialogueEnded();
     }
     
     private void SetAllHealthBars(bool visible)
@@ -92,7 +92,7 @@ public class DialogueManager : MonoBehaviour
         ShipController[] ships = FindObjectsOfType<ShipController>();
         foreach (ShipController ship in ships)
         {
-            ship.SetHealthBarVisible(visible);
+          //  ship.SetHealthBarVisible(visible);
         }
     }
 }
