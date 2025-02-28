@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Vaisseau_tortue_0: -5799953009594196102
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

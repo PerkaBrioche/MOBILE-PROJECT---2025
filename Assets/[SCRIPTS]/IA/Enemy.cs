@@ -30,7 +30,6 @@ public class Enemy : MonoBehaviour
     
     public virtual void SetMyTurn()
     {
-        print("SET MY TURN");
         if (TurnManager.Instance.IsPlayerTurn())
         {
             return;

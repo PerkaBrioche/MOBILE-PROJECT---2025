@@ -4374,7 +4374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TypeShip: 4
+  TypeShip: 6
   isEnemy: 1
   _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
   shipTile: {fileID: 1928254464}
@@ -7815,7 +7815,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TypeShip: 0
+  TypeShip: 6
   isEnemy: 0
   _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
   shipTile: {fileID: 1832839997}

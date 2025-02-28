@@ -150,7 +150,6 @@ public class TurnManager : MonoBehaviour
 
     private bool CheckEndGame()
     {
-
         var ally = ShipManager.Instance.GetAllyShipsOrinalCamp();
         var enemy = ShipManager.Instance.GetEnemyShipsOrinalCamp();
         

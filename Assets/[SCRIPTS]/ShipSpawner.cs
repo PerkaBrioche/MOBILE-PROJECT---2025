@@ -83,6 +83,7 @@ public class ShipSpawner : MonoBehaviour
                 break;
             case shipType.MothherShip:
                 _shipStats = MotherShipStats;
+                ship.AddComponent<MotherShip>();
                 break;
         }
         

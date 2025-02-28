@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Vaisseau_grenouille_0: 620594133843963748
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

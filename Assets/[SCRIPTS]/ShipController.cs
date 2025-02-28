@@ -285,6 +285,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     public void SetLockMode(bool play)
     {
         _isLocked = play;
+        if(_isMotherShip){return;}
         if (play) { PlayAnim(shipAnimations.locked); }
         else { PlayAnim(shipAnimations.Unlocked); }
     }

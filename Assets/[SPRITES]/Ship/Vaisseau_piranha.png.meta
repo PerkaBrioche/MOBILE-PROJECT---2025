@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Vaisseau_piranha_0: -3897670269028065187
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

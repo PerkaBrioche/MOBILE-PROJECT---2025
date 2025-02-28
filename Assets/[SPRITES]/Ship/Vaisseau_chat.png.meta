@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Vaisseau_chat_0: 1010450789034852114
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
