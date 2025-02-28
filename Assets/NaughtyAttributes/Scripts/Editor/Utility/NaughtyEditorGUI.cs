@@ -169,6 +169,10 @@ namespace NaughtyAttributes.Editor
                     if (!Application.isPlaying)
                     {
                         // Set target object and scene dirty to serialize changes to disk
+                        if(target == null){
+                            Debug.LogError("Je t'aime, arrêter de détruire mes spawners svp");
+                            return;
+                        }   
                         EditorUtility.SetDirty(target);
 
                         PrefabStage stage = PrefabStageUtility.GetCurrentPrefabStage();

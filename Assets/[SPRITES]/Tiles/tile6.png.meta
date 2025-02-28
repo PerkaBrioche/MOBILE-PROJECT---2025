@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d66346acd41662e4a95ab74f42e4dee6
+guid: 9f450632812dfc54aa9ca5409cc22943
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2204708268438558152
-    second: Vaisseau_serpent_0
+      213: 5743873777988211750
+    second: tile6_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -152,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Vaisseau_serpent_0
+      name: tile6_0
       rect:
         serializedVersion: 2
-        x: 101
-        y: 44
-        width: 1299
-        height: 1414
+        x: 0
+        y: 0
+        width: 142
+        height: 142
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8c595a53d72b89e10800000000000000
-      internalID: 2204708268438558152
+      spriteID: 6241babc4c656bf40800000000000000
+      internalID: 5743873777988211750
       vertices: []
       indices: 
       edges: []
@@ -187,7 +187,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Vaisseau_serpent_0: 2204708268438558152
+      tile6_0: 5743873777988211750
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

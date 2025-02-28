@@ -6,9 +6,12 @@ public class Rider : Enemy
 {
     private TilesController _myTile;
     private ShipController _shipController;
+    
+    private bool _reset = false;
 
     private void Start()
     {
+        _reset = true;
         base.Start();
         _shipController = GetComponent<ShipController>();
     }
@@ -16,7 +19,10 @@ public class Rider : Enemy
     public override void SetMyTurn()
     {
         base.SetMyTurn();
-        StartCoroutine(Wait(1.5f));
+        if (!_shipController.IsLocked())
+        {
+            StartCoroutine(Wait(1.5f));
+        }
     }
     
     private IEnumerator Wait(float time)
@@ -40,24 +46,22 @@ public class Rider : Enemy
 
     public void GoOpossite()
     {
+        print("GO OPPOSITE");
         ShipController closestEnemy = FindClosestEnemy();
         TilesController enemyTile = closestEnemy != null ? closestEnemy.GetTiles() : null;
         TilesController myTile = _shipController.GetTiles();
-        
         Func<TilesController, TilesController> retreatDirection;
         if(enemyTile != null && myTile != null)
         {
             retreatDirection = GetOpossiteDirection(enemyTile, myTile);
-            MoveInDirection(retreatDirection);
+            MoveInDirection(retreatDirection, _shipController.GetTiles());
         }
         else
         {
-            MoveInDirection(t => t.upTile);
+            MoveInDirection(t => t.upTile, _shipController.GetTiles());
         }
-
-        _shipController.SetHasMoved(true);
         _shipController.SetLockMode(true);
-        SetMyTurn();
+        EndTurn();
     }
 }
 

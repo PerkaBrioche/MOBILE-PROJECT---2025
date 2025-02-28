@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -96,55 +95,49 @@ public class TouchManager : MonoBehaviour
 
     private void PressReleased(InputAction.CallbackContext context)
     {
-        if (!_IsHolding) { return; }
+        if (!_IsHolding) return;
         _IsHolding = false;
     }
 
-    private void OnHolding(InputAction.CallbackContext context)
-    {
-    }
+    private void OnHolding(InputAction.CallbackContext context) { }
 
-    private void GetTouchPositon(InputAction.CallbackContext context)
-    {
-    }
+    private void GetTouchPositon(InputAction.CallbackContext context) { }
 
     private void OnTouched(InputAction.CallbackContext context)
     {
-        if(!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch()){return;}
+        if (!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch())
+        {
+            Debug.LogError("PROBLEM TOUCH");
+            return;
+        }
         _gameManager.TouchScreen();
         Vector2 touchedPosition = _touchPosition.ReadValue<Vector2>();
         _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPosition);
         actualCollider = GetCollider();
         if (actualCollider == null)
-        {
             return;
-        }
         if (actualCollider.TryGetComponent(out bounce.IBounce Ib))
-        {
             Ib.Bounce();
-        }
         if (actualCollider.TryGetComponent(out TilesController tC))
         {
             if (tC.IsBlocked())
-            {
                 return;
-            }
+            print("TILES");
             if (_isHighLighted)
             {
                 if (tC.isHighLighted())
                 {
-                    if(_ActualshipController != null)
+                    if (_ActualshipController != null)
                     {
-                        if(tC.IsAnAttackTile())
+                        if (tC.IsAnAttackTile())
                         {
                             Reset();
                         }
-                        else if(tC.IsRangeTile())
+                        else if (tC.IsRangeTile())
                         {
+                            print("RANGE TILE");
                             if (_ActualshipController.CanMove())
-                            {
                                 _ActualshipController.SetNewPosition(tC);
-                            }
                         }
                     }
                 }
@@ -183,7 +176,7 @@ public class TouchManager : MonoBehaviour
                 }
                 else
                 {
-                    if(_ActualshipController == sc)
+                    if (_ActualshipController == sc)
                     {
                         _ActualshipController.SetLockMode(true);
                         Reset();
@@ -211,9 +204,7 @@ public class TouchManager : MonoBehaviour
     {
         Collider2D hit = Physics2D.OverlapPoint(_actualTouchedPosition);
         if (hit != null)
-        {
             return hit;
-        }
         return null;
     }
 
@@ -248,9 +239,7 @@ public class TouchManager : MonoBehaviour
     {
         _IsHolding = false;
         if (_isDragging && currentDraggable != null)
-        {
             currentDraggable.OnEndDrag();
-        }
         _isDragging = false;
         _isScrolling = false;
         currentDraggable = null;

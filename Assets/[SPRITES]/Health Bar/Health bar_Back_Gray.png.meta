@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0283bc5b7e7a6bb49944dde04ca6816b
+guid: 3ba11e22a42848742ba00b1445668b34
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1010450789034852114
-    second: Vaisseau_chat_0
+      213: -5893773506966590882
+    second: Health bar_Back_Gray_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -152,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Vaisseau_chat_0
+      name: Health bar_Back_Gray_0
       rect:
         serializedVersion: 2
-        x: 79
-        y: 47
-        width: 1312
-        height: 1424
+        x: 70
+        y: 70
+        width: 1198
+        height: 115
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 21f7f6793a7d50e00800000000000000
-      internalID: 1010450789034852114
+      spriteID: e5ae5a2d83c153ea0800000000000000
+      internalID: -5893773506966590882
       vertices: []
       indices: 
       edges: []
@@ -186,8 +186,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Vaisseau_chat_0: 1010450789034852114
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

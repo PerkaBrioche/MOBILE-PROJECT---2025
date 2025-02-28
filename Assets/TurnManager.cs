@@ -202,7 +202,13 @@ public class TurnManager : MonoBehaviour
     {
         if (isEnemyTurn)
         {
-            if (!waitingForEnemy && actualisedCamp)
+            if (CombatManager.Instance != null && CombatManager.Instance.IsInCombat())
+                return;
+            if (!actualisedCamp)
+            {
+                StartCoroutine(waitForSwapCamp());
+            }
+            else
             {
                 if (enemyTurn >= ShipManager.Instance.GetActualEnemyShipsCount())
                 {
