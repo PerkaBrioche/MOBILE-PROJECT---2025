@@ -53,11 +53,11 @@ public class Tank : Enemy
                 PlayPathAutomatically();
                 break;
             case 2:
-                MoveInDirection(GetOpossiteDirection(FindClosestEnemy().GetTiles(), _shipController.GetTiles()), _shipController.GetTiles());
+                MoveInDirection(GetOpossiteDirection(FindClosestEnemy()[0].GetTiles(), _shipController.GetTiles()), _shipController.GetTiles());
                 EndTurn();
                 break;
             case 3:
-                MoveInDirection(GetOpossiteDirection(FindClosestEnemy().GetTiles(), _shipController.GetTiles()));
+                MoveInDirection(GetOpossiteDirection(FindClosestEnemy()[0].GetTiles(), _shipController.GetTiles()));
                 EndTurn();
                 break;
         }

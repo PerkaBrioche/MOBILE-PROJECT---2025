@@ -67,7 +67,7 @@ public class Enemy : MonoBehaviour
 
         if (canMoove)
         {
-            print("PLAY AUTOMMATICALLY MOVE");
+            
             if (_shipController.HasMoved())
             {
                 _shipController.SetLockMode(true);
@@ -78,13 +78,23 @@ public class Enemy : MonoBehaviour
             
             _shipController.SetHasMoved(true);
             
+            ShipController closestEnemy = FindClosestEnemy()[0];
+
             if (targetile != null)
             {
                 Move(targetile);
             }
             else
             {
-                Move(FindBestTile(FindClosestEnemy().GetTiles()));
+                if (closestEnemy != null)
+                {
+                    Move(FindBestTile(closestEnemy.GetTiles()));
+                }
+                else
+                {
+                    EndTurn();
+                    TurnManager.Instance.EnemyEndATurn();
+                }
             }
             EndTurn();
         }
@@ -148,8 +158,10 @@ public class Enemy : MonoBehaviour
     #region MOVEMENT
     public void MoveInDirection(Func<TilesController, TilesController> direction, TilesController originTiles = null)
     {
-        print("PLAY MOVE IN DIRECTION MOVE");
-
+        var listEnemyClosest = FindClosestEnemy();
+        foreach (var pos in listEnemyClosest)
+        {
+        }
         TilesController finalTile = null;
         int distance = _unitStats.WalkDistance;
         if (originTiles == null)
@@ -163,9 +175,33 @@ public class Enemy : MonoBehaviour
         finalTile = originTiles;
         
         TilesController directionTile = direction(originTiles);
-        if (!IsTileValid(directionTile)) // BLOCKED
+        if (!IsTileValid(directionTile)) // BLOCKED AGAINST WALL
+        {
+            for (int i = 1; i < listEnemyClosest.Count; i++)
+            {
+                var retreatDirection = GetOpossiteDirection(listEnemyClosest[i].GetTiles(), originTiles);
+                var newTile = retreatDirection(originTiles);
+                print("originTiles = " + originTiles + " listEnemyClosest[i].GetTiles() = " + listEnemyClosest[i].GetTiles() + " retreatDirection = " + retreatDirection);
+
+            //    print("TRY WITH THE NEXT ENEMY + " + listEnemyClosest[i].GetUnitStats().name + " TILE = " + newTile);
+                if (!IsTileValid(newTile))
+                {
+                    print("BLOCKED AGAINST WALL");
+                }
+                else
+                {
+                    directionTile = newTile;
+                    finalTile = directionTile;
+                    break;
+                }
+            }
+        }
+
+        if (!IsTileValid(directionTile))// SI APRES TOUT CA TOUJOURS PAS BON
         {
             Move(originTiles);
+            print("BLOCKED AGAINST WALL FINAL");
+            return;
         }
         for (int i = 0; i < distance; i++)
         {
@@ -282,68 +318,55 @@ public class Enemy : MonoBehaviour
         return (null);
     }
 
-    public ShipController FindClosestEnemy()
+    public List<ShipController> FindClosestEnemy()
     {
         List<ShipController> allyShips = ShipManager.Instance.GetAllyShipsOrinalCamp();
         if (allyShips == null || allyShips.Count == 0)
         {
             return null;
         }
-        
+    
         TilesController enemyTile = _shipController.GetTiles();
-        ShipController closestShip = null;
-        int minDistance = int.MaxValue;
+        List<(ShipController ship, int distance)> shipDistances = new List<(ShipController, int)>();
+        
         foreach (ShipController ally in allyShips)
         {
             TilesController allyTile = ally.GetTiles();
-            if (allyTile == null) { continue; }
-            
+            if (allyTile == null)
+                continue;
             int distance = CalculateManhattanDistance(allyTile, enemyTile);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                closestShip = ally;
-            }
-            else if (distance == minDistance)
-            {
-                if(_shipController.GetType() == ShipSpawner.shipType.SpacceBerzerker)
-                {
-                    if (ally.runtimeStats.HP < closestShip.runtimeStats.HP)
-                    {
-                        closestShip = ally;
-                    }
-                    else if (ally.runtimeStats.HP == closestShip.runtimeStats.HP)
-                    {
-                        if (ally.runtimeStats.ATK < closestShip.runtimeStats.ATK)
-                        {
-                            closestShip = ally;
-                        }
-                    }
-                }
-                else // PAS BERSERKER
-                {
-                    if (ally.runtimeStats.ATK < closestShip.runtimeStats.ATK)
-                    {
-                        closestShip = ally;
-                    }
-                    else if (ally.runtimeStats.ATK == closestShip.runtimeStats.ATK)
-                    {
-                        if (ally.runtimeStats.HP < closestShip.runtimeStats.HP)
-                        {
-                            closestShip = ally;
-                        }
-                    }
-                }
-            }
+            shipDistances.Add((ally, distance));
         }
-        
-        if (closestShip == null)
+        shipDistances.Sort((a, b) =>
         {
-            return  (null);
+            int cmp = a.distance.CompareTo(b.distance);
+            if (cmp == 0)
+            {
+                if (_shipController.GetType() == ShipSpawner.shipType.SpacceBerzerker)
+                {
+                    cmp = a.ship.runtimeStats.HP.CompareTo(b.ship.runtimeStats.HP);
+                    if (cmp == 0)
+                        cmp = a.ship.runtimeStats.ATK.CompareTo(b.ship.runtimeStats.ATK);
+                }
+                else
+                {
+                    cmp = a.ship.runtimeStats.ATK.CompareTo(b.ship.runtimeStats.ATK);
+                    if (cmp == 0)
+                        cmp = a.ship.runtimeStats.HP.CompareTo(b.ship.runtimeStats.HP);
+                }
+            }
+            return cmp;
+        });
+    
+        List<ShipController> sortedShips = new List<ShipController>();
+        foreach (var entry in shipDistances)
+        {
+            print(entry.ship.GetUnitStats().name + " " + entry.distance);
+            sortedShips.Add(entry.ship);
         }
-
-        return closestShip;
+        return sortedShips;
     }
+    
     protected int CalculateManhattanDistance(TilesController a, TilesController b)
     {
         int dx = Mathf.Abs(a.GetColumnPosition() - b.GetColumnPosition());

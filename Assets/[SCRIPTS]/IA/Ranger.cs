@@ -36,12 +36,12 @@ public class Ranger : Enemy
     private void CheckCondition()
     {
         _myTile = _shipController.GetTiles();
-        _closestEnemy = FindClosestEnemy();
-        int distanceTarget = CalculateManhattanDistance(_closestEnemy.GetTiles(), _shipController.GetTiles());
+        _closestEnemy = FindClosestEnemy()[0];
+        int distanceTarget = CalculateManhattanDistance(_closestEnemy.GetTiles(),_myTile);
         if (distanceTarget <= 0)
         {
             print("TOO CLOSE");
-            MoveInDirection(GetOpossiteDirection(_closestEnemy.GetTiles(), _myTile), _shipController.GetTiles());
+            MoveInDirection(GetOpossiteDirection(_closestEnemy.GetTiles(), _myTile), _myTile);
             EndTurn();
         }
         else

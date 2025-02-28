@@ -118,13 +118,15 @@ public class GridController : MonoBehaviour
         
     }
 
-    public void ResetAllTiles()
+    public void ResetAllTiles(bool noBounce = false)
     {
         foreach (var tiles in _tilesControllers)
         {
-            tiles.ResetTiles();
+            tiles.ResetTiles(noBounce);
         }
+        print("END TILES RESET");
     } 
+
     
     
     

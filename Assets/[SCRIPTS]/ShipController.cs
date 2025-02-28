@@ -118,27 +118,26 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             return;
         }
-        print("RECUPERER LE PATH");
         GetTilesPath();
     }
 
     private void GetTilesPath()
     {
-        int distance = _myStats.WalkDistance + _myStats.AttackRange;
+        int distance = runtimeStats.WalkDistance + runtimeStats.AttackRange;
         if (distance > 0)
         {
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, runtimeStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile, runtimeStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile, runtimeStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, runtimeStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
         }
         int diagonal = distance - 1;
         if (diagonal > 0)
         {
-            _myTilesController.GetTiles(diagonal, t => t.upTile != null ? t.upTile.rightTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.downTile } : null, true);
-            _myTilesController.GetTiles(diagonal, t => t.upTile != null ? t.upTile.leftTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.downTile } : null, true);
-            _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.rightTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.upTile } : null, true);
-            _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.leftTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.upTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.upTile != null ? t.upTile.rightTile : null, runtimeStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.downTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.upTile != null ? t.upTile.leftTile : null, runtimeStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.downTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.rightTile : null, runtimeStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.upTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.leftTile : null, runtimeStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.upTile } : null, true);
         }
     }
 
@@ -258,9 +257,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         runtimeStats.HP -= damage;
         UpdateSlider();
         PlayAnim(shipAnimations.takeDamage);
-       // ShakeManager.instance.ShakeCamera(1.2f,0.3f);  
         
-        if (runtimeStats.HP <= 0) { Die(); }
+        ShakeManager.instance.ShakeCamera(0.3f,0.15f);  
+        
     }
 
     public void Die()
@@ -328,6 +327,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _hasAttacked = attack;
         if(_shipType == ShipSpawner.shipType.Rider)
         {
+            runtimeStats.WalkDistance--;
             SetHasMoved(false);
         }
         CheckLock();
@@ -379,6 +379,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void ResetShip()
     {
+        runtimeStats.WalkDistance = GetUnitStats().WalkDistance;
         _hasMoved = false;
         _hasAttacked = false;
         SetLockMode(false);
@@ -473,6 +474,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _sliderLife.value = Mathf.Lerp(originalValue, runtimeStats.HP, alpha);
             yield return null;
         }
+        if (runtimeStats.HP <= 0) { Die(); }
         yield return null;
     }
 

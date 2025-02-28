@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -107,7 +108,6 @@ public class TouchManager : MonoBehaviour
 
     private void OnTouched(InputAction.CallbackContext context)
     {
-        print("ON TOUCHED");
         if (!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch())
         {
             Debug.LogError("PROBLEM TOUCH");
@@ -159,7 +159,7 @@ public class TouchManager : MonoBehaviour
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
             if(sc.GetType() == ShipSpawner.shipType.MothherShip){return;}
-           sc.GetInfos();
+       //    sc.GetInfos();
             if (_ActualshipController == null)
             {
                 if(sc.IsAnEnemy())
@@ -197,23 +197,23 @@ public class TouchManager : MonoBehaviour
                     }
                     else
                     {
-                        Reset();
-                        sc.GetPath();
+                        Reset(true);
                         _ActualshipController = sc;
+                        sc.GetPath();
                     }
                 }
             }
         }
     }
 
-    public void Reset()
+    public void Reset(bool noBounce = false)
     {
-        _gridController.ResetAllTiles();
+        _gridController.ResetAllTiles(noBounce);
         _ActualshipController = null;
         _ActualtilesController = null;
         _isHighLighted = false;
     }
-
+    
     private Collider2D GetCollider()
     {
         Collider2D hit = Physics2D.OverlapPoint(_actualTouchedPosition);

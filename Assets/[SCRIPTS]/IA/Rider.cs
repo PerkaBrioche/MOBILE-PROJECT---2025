@@ -47,7 +47,7 @@ public class Rider : Enemy
     public void GoOpossite()
     {
         print("GO OPPOSITE");
-        ShipController closestEnemy = FindClosestEnemy();
+        ShipController closestEnemy = FindClosestEnemy()[0];
         TilesController enemyTile = closestEnemy != null ? closestEnemy.GetTiles() : null;
         TilesController myTile = _shipController.GetTiles();
         Func<TilesController, TilesController> retreatDirection;

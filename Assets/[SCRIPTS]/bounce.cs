@@ -61,13 +61,18 @@ public class bounce : MonoBehaviour
     }  
     
         
-    public void ResetTransform()
+    public void ResetTransform(bool noBounce = false)
     {
+        if (noBounce)
+        {
+            transform.localScale = originalScale;
+            return;
+        }
         StartCoroutine(ResetScale());
     }
     private IEnumerator ResetScale()
-    {
-        float alpha = 1;
+    { 
+        float alpha = 1f;
         Vector3 targetScale = transform.localScale;
         while (alpha > 0)
         {
@@ -76,5 +81,7 @@ public class bounce : MonoBehaviour
             transform.localScale = newScaleObject;
             yield return null;
         }
+        
+        
     }
 }

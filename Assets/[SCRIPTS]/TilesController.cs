@@ -32,6 +32,8 @@ public class TilesController : MonoBehaviour, bounce.IBounce
 
     [Space(20)] [Foldout("References")] 
     [SerializeField] private SpriteRenderer _spriteRenderer;
+     [Foldout("References")] 
+    [SerializeField] private SpriteRenderer _tileAttackRenderer;
 
     [Foldout("References")] [SerializeField]
     private bounce _bounce;
@@ -85,19 +87,19 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         switch (tileSprite)
         {
             case enumTileSprites.defaultTile:
-                _spriteRenderer.sprite = _defaultSpriteTile;
+                _tileAttackRenderer.sprite = null;
                 break;
             case enumTileSprites.deplacementTile:
-                _spriteRenderer.sprite = _deplacementTileSprite;
+                _tileAttackRenderer.sprite = _deplacementTileSprite;
                 break;
             case enumTileSprites.enemyDetectedTile:
-                _spriteRenderer.sprite = _enemyDetectedTileSprite;
+                _tileAttackRenderer.sprite = _enemyDetectedTileSprite;
                 break;
             case enumTileSprites.blurTile:  
-                _spriteRenderer.sprite = _blurTileSprite;
+                _tileAttackRenderer.sprite = _blurTileSprite;
                 break;
             case enumTileSprites.attackTile:
-                _spriteRenderer.sprite = _attackTileSprite;
+                _tileAttackRenderer.sprite = _attackTileSprite;
                 break;
         }
     }
@@ -126,7 +128,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     private void Start()
     {
         _defaultSpriteTile = _tilesSprite[Random.Range(0, _tilesSprite.Count)];
-        ChangeTileSprite(enumTileSprites.defaultTile);    
+        _spriteRenderer.sprite = _defaultSpriteTile;
     }
 
     [Button("Get Adjacent Tiles")]
@@ -187,10 +189,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         StartCoroutine(RevealTiles(_tileSprite, seconds));
     }
 
-    public void ResetTiles()
+    public void ResetTiles(bool noBounce = false)
     {
         ChangeTileSprite(enumTileSprites.defaultTile);
-        _bounce.ResetTransform();
+        _bounce.ResetTransform(noBounce);
+
         SetHighlight(false);
         SetIsAttackTile(false);
         SetIsRangeTile(false);
