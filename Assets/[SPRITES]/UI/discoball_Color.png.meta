@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      discoball_Color_0: 4781457824334696599
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
