@@ -36,7 +36,6 @@ public class Enemy : MonoBehaviour
         }
         if (_shipController.IsLocked())
         {
-            print("IL EST LOCK C'EST COOKED POUR TOI");
             TurnManager.Instance.EnemyEndATurn();
             EndTurn();
             return;
@@ -56,10 +55,10 @@ public class Enemy : MonoBehaviour
         enemyOnTile.Clear();
         foreach (var tile in _tilesDetected)
         {
-            if (tile == null) {continue;}
+            if (tile == null)
+                continue;
             if (tile.HasAnEnemy() && tile.IsAnAttackTile())
             {
-                print("ADD ENEMY ON TILE OUAHHH"); 
                 enemyOnTile.Add(tile.GetShipController());
                 canMoove = false;
             }
@@ -67,7 +66,6 @@ public class Enemy : MonoBehaviour
 
         if (canMoove)
         {
-            print("PLAY AUTOMMATICALLY MOVE");
             if (_shipController.HasMoved())
             {
                 _shipController.SetLockMode(true);
@@ -118,13 +116,9 @@ public class Enemy : MonoBehaviour
             _targetShips = lowestLife;
             Attack(lowestLife);
             _shipController.SetHasAttacked(true);
-            if (_shipController.GetType() != ShipSpawner.shipType.Rider)
+            if (_shipController.GetType() != ShipSpawner.shipType.Rider || _shipController.HasMoved())
             {
                 _shipController.SetLockMode(true);
-            }
-            else
-            {
-                _shipController.SetHasMoved(false);
             }
             StartCoroutine(WaitAnimationFight());
         }
@@ -148,8 +142,6 @@ public class Enemy : MonoBehaviour
     #region MOVEMENT
     public void MoveInDirection(Func<TilesController, TilesController> direction, TilesController originTiles = null)
     {
-        print("PLAY MOVE IN DIRECTION MOVE");
-
         TilesController finalTile = null;
         int distance = _unitStats.WalkDistance;
         if (originTiles == null)
@@ -163,7 +155,7 @@ public class Enemy : MonoBehaviour
         finalTile = originTiles;
         
         TilesController directionTile = direction(originTiles);
-        if (!IsTileValid(directionTile)) // BLOCKED
+        if (!IsTileValid(directionTile)) 
         {
             Move(originTiles);
         }
@@ -177,6 +169,7 @@ public class Enemy : MonoBehaviour
         }
         if (finalTile != null)
         {
+            print("FINAL TILE ++ " + finalTile);
             Move(finalTile);
         }
     }
@@ -193,6 +186,7 @@ public class Enemy : MonoBehaviour
         if (t != null)
         {
             print(t + " TILE " + t.IsBlocked() + " " + t.HasAnEnemy() + " " + t.HasAnAlly());
+
             if (!t.IsBlocked() && !t.HasAnEnemy() && !t.HasAnAlly())
             {
                 return true;
@@ -210,14 +204,18 @@ public class Enemy : MonoBehaviour
     
     private IEnumerator WaitAnimationFight()
     {
-        yield return new WaitForSeconds(0); 
+        yield return new WaitForSeconds(3); 
         if(_shipController.GetType() != ShipSpawner.shipType.Rider)
         {
             TurnManager.Instance.EnemyEndATurn();
         }
-        else // RIDER
+        else if (!_shipController.HasMoved()) // RIDER
         {
             GoCoward();
+        }
+        else
+        {
+            TurnManager.Instance.EnemyEndATurn();
         }
     }
 
@@ -255,6 +253,7 @@ public class Enemy : MonoBehaviour
         {
             if (t.IsRangeTile())
             {
+                print("add tile = " + t);
                 walkTiles.Add(t);
             }
         }

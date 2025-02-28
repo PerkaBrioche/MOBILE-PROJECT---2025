@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 67098dc8e33fee148a22e48573f54dcf
+guid: d66346acd41662e4a95ab74f42e4dee6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6126571086727437014
-    second: Foteresse_chien_0
+      213: 2204708268438558152
+    second: Vaisseau_serpent_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -152,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Foteresse_chien_0
+      name: Vaisseau_serpent_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 76
-        width: 1509
-        height: 1394
+        x: 101
+        y: 44
+        width: 1299
+        height: 1414
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a25ae6c7e0c0afaa0800000000000000
-      internalID: -6126571086727437014
+      spriteID: 8c595a53d72b89e10800000000000000
+      internalID: 2204708268438558152
       vertices: []
       indices: 
       edges: []
@@ -187,7 +187,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Foteresse_chien_0: -6126571086727437014
+      Vaisseau_serpent_0: 2204708268438558152
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

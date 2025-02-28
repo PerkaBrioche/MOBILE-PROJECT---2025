@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class TilesController : MonoBehaviour, bounce.IBounce
 {
@@ -30,8 +29,8 @@ public class TilesController : MonoBehaviour, bounce.IBounce
   [SerializeField]   private bool _isRangeTiles;
 
 
-    [Space(20)] [Foldout("References")] 
-    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [Space(20)] [Foldout("References")] [SerializeField]
+    private SpriteRenderer _spriteRenderer;
 
     [Foldout("References")] [SerializeField]
     private bounce _bounce;
@@ -48,62 +47,21 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     
     [Foldout("OTHERS")]
     [SerializeField] private GameObject _shipSpawner;
-    [Foldout("OTHERS")]
-    [SerializeField] private List<Sprite> _tilesSprite;
 
-    [Foldout("OTHERS")] [SerializeField] private Sprite _deplacementTileSprite;
-    [Foldout("OTHERS")] [SerializeField] private Sprite _blurTileSprite;
-    [Foldout("OTHERS")] [SerializeField] private Sprite _attackTileSprite;
-    [Foldout("OTHERS")] [SerializeField] private Sprite _enemyDetectedTileSprite;
+    private GameObject _shipSpawbner;
+    [Button]
     
-    private Sprite _defaultSpriteTile;
-    
-    public enum enumTileSprites
+    private void PlaceSpawner()
     {
-        defaultTile,
-        deplacementTile, 
-        blurTile,
-        enemyDetectedTile,
-        attackTile,
+        if(transform.childCount > 0) { return; }
+        _shipSpawbner = Instantiate(_shipSpawner, transform.position, Quaternion.identity, transform);
     }
-    
-    [Button] private void PlaceSpawner()
+    [Button]
+    private void DestroySpawner()
     {
-        Transform parentSpawner = GameObject.FindGameObjectWithTag("Spawner").transform;
-        var spawner = Instantiate(_shipSpawner, transform.position, Quaternion.identity, parentSpawner);
-        if(spawner.TryGetComponent<ShipSpawner>(out ShipSpawner shipSpawner))
-        {
-            shipSpawner.shipTile = this;
-        }
-        else
-        {
-            print("NO SPAWNER COMPONENT");
-        }
+        DestroyImmediate(transform.GetChild(0).gameObject);
     }
 
-    public void ChangeTileSprite(enumTileSprites tileSprite)
-    {
-        switch (tileSprite)
-        {
-            case enumTileSprites.defaultTile:
-                _spriteRenderer.sprite = _defaultSpriteTile;
-                break;
-            case enumTileSprites.deplacementTile:
-                _spriteRenderer.sprite = _deplacementTileSprite;
-                break;
-            case enumTileSprites.enemyDetectedTile:
-                _spriteRenderer.sprite = _enemyDetectedTileSprite;
-                break;
-            case enumTileSprites.blurTile:  
-                _spriteRenderer.sprite = _blurTileSprite;
-                break;
-            case enumTileSprites.attackTile:
-                _spriteRenderer.sprite = _attackTileSprite;
-                break;
-        }
-    }
-    
-    
 
     public enum TileColor
     {
@@ -121,13 +79,8 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         _myColor = _spriteRenderer.color;
         _originalColor = _myColor;
         _bounce = GetComponent<bounce>();
+        
         GetAdjacentTiles();
-    }
-
-    private void Start()
-    {
-        _defaultSpriteTile = _tilesSprite[Random.Range(0, _tilesSprite.Count)];
-        ChangeTileSprite(enumTileSprites.defaultTile);    
     }
 
     [Button("Get Adjacent Tiles")]
@@ -139,6 +92,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         _rightTile = DetectAdjacent(Vector2.right);
     }
 
+    public void ChangeTilesColor(Color color)
+    {
+        _spriteRenderer.color = color;
+        _myColor = color;
+    }
 
     public void Bounce()
     {
@@ -164,32 +122,28 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     public void HighLightTiles(float seconds, bool attackTiles, bool lockdown = false)
     {
         SetHighlight(true);
-        enumTileSprites _tileSprite = enumTileSprites.defaultTile;
-        
-        if(lockdown) // TILE QUI PEUT ETRE ATTAQUER
+        var color = Color.white;
+        if(lockdown)
         {
-            _tileSprite = enumTileSprites.attackTile;
             SetIsAttackTile(true);
-            if (HasAnEnemy())
-            {
-                _tileSprite = enumTileSprites.enemyDetectedTile;
-            }
+            color = Color.red;
         }
-        else if (attackTiles) // TILE QUI MONTRE L'ATTAQUE LIMITATION
+        else if (attackTiles)
         {
-            _tileSprite = enumTileSprites.blurTile;
+            SetIsRangeTile(false);
+            color = Color.red;
         }
-        else // TILE DE DEPLACEMENT
+        else
         {
             SetIsRangeTile(true);
-            _tileSprite = enumTileSprites.deplacementTile;
+            color = Color.green;
         }
-        StartCoroutine(RevealTiles(_tileSprite, seconds));
+        StartCoroutine(RevealTiles(color, seconds));
     }
 
     public void ResetTiles()
     {
-        ChangeTileSprite(enumTileSprites.defaultTile);
+        ChangeTilesColor(_originalColor);
         _bounce.ResetTransform();
         SetHighlight(false);
         SetIsAttackTile(false);
@@ -203,7 +157,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
        bool isEnemy = _shipController.IsAnEnemy();
        int attackRange = distance - walkDistance;
        int realAttackRange = _shipController.runtimeStats.AttackRange;
-       int attackrangelEFT = _shipController.runtimeStats.AttackRange;
        int baseWalkDistance = walkDistance;
 
        bool lockdown = _shipController.HasMoved();
@@ -253,6 +206,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
            {
                if (isEnemy)
                {
+                   print("ENEMY WALK DISTANCE + " + walkDistance);
                    tile.HighLightTiles(seconds, false);
                    walkDistance--;
                    continue;
@@ -262,9 +216,13 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                {
                    break;
                }
+
                if (tile.HasAnEnemy())
                {
-                   if(lockdown || attackrangelEFT > 0)
+                  // print("realAttackRange = " + _shipController.runtimeStats.AttackRange  + " walkDistance = " + walkDistance);
+                  
+                   print(tile + " HAS AN ENEMY");    
+                   if(lockdown || walkDistance > _shipController.runtimeStats.AttackRange)
                    {
                        tile.HighLightTiles(seconds, true, true);
                    }
@@ -308,7 +266,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                        }
                    }
                }
-               attackrangelEFT--;
+
                walkDistance--;
            }
            else
@@ -401,10 +359,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
            // --- Fin logique des tuiles ---
        }
 
-       // if (_shipController.GetType() == ShipSpawner.shipType.Rider)
-       // {
-       //     _shipController.SetHasMoved(false);
-       // }
        if (TurnManager.Instance.IsEnemyTurn() && tilesForEnemy.Count > 0)
        {
            EnemyManager.Instance.AddTiles(tilesForEnemy);
@@ -436,10 +390,10 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     return tilesControllers;
 }
 
-    private IEnumerator RevealTiles(enumTileSprites enumSprite, float seconds)
+    private IEnumerator RevealTiles(Color color, float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        ChangeTileSprite(enumSprite);
+        ChangeTilesColor(color);
         _bounce.StartBouncePARAM(0, 0, true);
     }
 
@@ -524,17 +478,17 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         return neighbors;
     }
 
-    // public void Debug()
-    // {
-    //     StopAllCoroutines();
-    //     StartCoroutine(DebugColor());
-    // }
-    // private IEnumerator DebugColor()
-    // {
-    //     ChangeTilesColor(Color.magenta);
-    //     yield return  new WaitForSeconds(2);
-    //     ChangeTilesColor(Color.white);
-    // }
+    public void Debug()
+    {
+        StopAllCoroutines();
+        StartCoroutine(DebugColor());
+    }
+    private IEnumerator DebugColor()
+    {
+        ChangeTilesColor(Color.magenta);
+        yield return  new WaitForSeconds(2);
+        ChangeTilesColor(Color.white);
+    }
     
     public void SetColumAndRowPosition(int column, int row)
     {

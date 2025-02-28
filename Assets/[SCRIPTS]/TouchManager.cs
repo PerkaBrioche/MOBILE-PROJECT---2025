@@ -110,19 +110,13 @@ public class TouchManager : MonoBehaviour
 
     private void OnTouched(InputAction.CallbackContext context)
     {
-        print("ON TOUCHED");
-        if (!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch())
-        {
-            Debug.LogError("PROBLEM TOUCH");
-            return;
-        }
+        if(!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch()){return;}
         _gameManager.TouchScreen();
         Vector2 touchedPosition = _touchPosition.ReadValue<Vector2>();
         _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPosition);
         actualCollider = GetCollider();
         if (actualCollider == null)
         {
-            Debug.LogError("NO COLLIDER");
             return;
         }
         if (actualCollider.TryGetComponent(out bounce.IBounce Ib))
@@ -147,8 +141,6 @@ public class TouchManager : MonoBehaviour
                         }
                         else if(tC.IsRangeTile())
                         {
-                            print("RANGE TILE");
-
                             if (_ActualshipController.CanMove())
                             {
                                 _ActualshipController.SetNewPosition(tC);
@@ -161,8 +153,6 @@ public class TouchManager : MonoBehaviour
         }
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
-            if(sc.GetType() == ShipSpawner.shipType.MothherShip){return;}
-           sc.GetInfos();
             if (_ActualshipController == null)
             {
                 if(sc.IsAnEnemy())
@@ -267,8 +257,8 @@ public class TouchManager : MonoBehaviour
         currentDraggedObject = null;
     }
 
-    // public void SetInteractionEnabled(bool enabled)
-    // {
-    //     _playerInput.enabled = enabled;
-    // }
+    public void SetInteractionEnabled(bool enabled)
+    {
+        _playerInput.enabled = enabled;
+    }
 }

@@ -196,8 +196,6 @@ public class TurnManager : MonoBehaviour
     public void EnemyEndATurn()
     {
         enemyTurn++;
-        _enemyTurn++;
-        _waitingForEnemy = false;
     }
     private void Update()
     {

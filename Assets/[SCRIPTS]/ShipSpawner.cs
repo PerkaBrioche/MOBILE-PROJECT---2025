@@ -10,28 +10,13 @@ public class ShipSpawner : MonoBehaviour
     public shipType TypeShip;
 
     [Header("PUT THE TILES HERE")]
+    TilesController _tilesController;
     [Header("IS AN ENEMY ?")]
     [SerializeField] private bool isEnemy = false;
     
     private ShipController _shipController;
     [Foldout("References")]
     [SerializeField] private GameObject _shipPrefab;
-
-    public TilesController shipTile;
-    public enum shipType
-    {
-        Patroller,
-        Ranger,
-        Rider,
-        SpacceBerzerker,
-        Tank,
-        SpaceFortress,
-        MothherShip
-    }
-    [Button] private void DestroySpawner()
-    {
-        DestroyImmediate(gameObject);
-    }
     [Foldout("References")]
     [SerializeField] private UnitStats PatrollerStats;
     [Foldout("References")]
@@ -44,8 +29,6 @@ public class ShipSpawner : MonoBehaviour
     [SerializeField] private UnitStats TankStats;
     [Foldout("References")]
     [SerializeField] private UnitStats SpaceFortressStats;
-    [Foldout("References")]
-    [SerializeField] private UnitStats MotherShipStats;
 
     public enum shipType
     {
@@ -65,8 +48,9 @@ public class ShipSpawner : MonoBehaviour
     
     public void SpawnShip()
     {
-        var ship = Instantiate(_shipPrefab, shipTile.transform.position, Quaternion.identity);
+        var ship = Instantiate(_shipPrefab, _tilesController.transform.position, Quaternion.identity);
         _shipController = ship.GetComponent<ShipController>();
+        
         switch (TypeShip)
         {
             case shipType.Patroller:
@@ -93,10 +77,6 @@ public class ShipSpawner : MonoBehaviour
                 _shipStats = SpaceFortressStats;
                 ship.AddComponent<Fortress>();
                 break;
-            case shipType.MothherShip:
-                _shipStats = MotherShipStats;
-                ship.AddComponent<MotherShip>();
-                break;
         }
         
         if(_shipStats == null)
@@ -105,12 +85,8 @@ public class ShipSpawner : MonoBehaviour
             return;
         }
         
-        _shipController.Initialize(isEnemy, _shipStats,TypeShip);
-        _shipController.SetTiles(shipTile);
         _shipController.Initialize(isEnemy, _shipStats, TypeShip);
         _shipController.SetTiles(_tilesController);
         _shipController.SaveStartingState();
     }
-    
-    
 }
