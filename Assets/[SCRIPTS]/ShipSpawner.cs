@@ -29,16 +29,9 @@ public class ShipSpawner : MonoBehaviour
     [SerializeField] private UnitStats TankStats;
     [Foldout("References")]
     [SerializeField] private UnitStats SpaceFortressStats;
-
-    public enum shipType
-    {
-        Patroller,
-        Ranger,
-        Rider,
-        SpacceBerzerker,
-        Tank,
-        SpaceFortress
-    }
+    [Foldout("References")]
+    [SerializeField] private UnitStats MotherShipStats;
+    
     
     private void Start()
     {

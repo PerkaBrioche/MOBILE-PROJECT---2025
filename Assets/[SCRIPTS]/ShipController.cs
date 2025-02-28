@@ -26,8 +26,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private bool isEnemy;
     private BoxCollider2D _boxCollider2D;
 
-    [SerializeField] private bool _isLocked = false;
     private bool _hasMoved;
+    // TURN
+    private bool _isLocked = false;
     private bool _hasAttacked;
 
     private int _currentLockAttack;
@@ -48,14 +49,37 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private RuntimeStats _initialStats;
     private Sprite _shipSprite;
 
-    private ShipSpawner.shipType _shipType;
+    private ShipSpawner _shipType;
+    
+    public enum shipAnimations
+    {
+        takeDamage,
+        locked,
+        Unlocked,
+    }
+    
+    public void PlayAnim(shipAnimations anim)
+    {
+        switch (anim)
+        {
+            case shipAnimations.takeDamage:
+                _shipAnimator.SetTrigger("TakeDamage");
+                break;
+            case shipAnimations.locked:
+                _shipAnimator.SetBool("Locked", true);
+                break;
+            case shipAnimations.Unlocked:
+                _shipAnimator.SetBool("Locked", false);
+                break;
+        }
+    }
     
     public void SetType(ShipSpawner.shipType type)
     {
         _shipType = type;
     }
     
-    public new ShipSpawner.shipType GetType()
+    public ShipSpawner.shipType GetType()
     {
         return _shipType;
     }
