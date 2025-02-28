@@ -21,7 +21,6 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private Image enemyLeftBlock;
     [SerializeField] private Image enemyRightBlock;
     private int enemyTurn;
-    private bool waitingForEnemy = false;
     private bool actualisedCamp = false;
     private float blockMoveDuration = 0.5f;
     private float textDisplayDuration = 1f;
@@ -72,6 +71,7 @@ public class TurnManager : MonoBehaviour
             {
                 enemyTurn = 0;
                 isEnemyTurn = true;
+                actualisedCamp = true;
             }));
         }
     }
@@ -133,7 +133,7 @@ public class TurnManager : MonoBehaviour
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
-            dimCol.a = Mathf.Lerp(0, 0.9f, t / fadeDuration);
+            dimCol.a = Mathf.Lerp(0, 0.5f, t / fadeDuration);
             dimBackground.color = dimCol;
             yield return null;
         }
@@ -173,7 +173,7 @@ public class TurnManager : MonoBehaviour
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
-            dimCol.a = Mathf.Lerp(0.9f, 0, t / fadeDuration);
+            dimCol.a = Mathf.Lerp(0.5f, 0, t / fadeDuration);
             dimBackground.color = dimCol;
             yield return null;
         }
@@ -196,21 +196,24 @@ public class TurnManager : MonoBehaviour
     public void EnemyEndATurn()
     {
         enemyTurn++;
-        waitingForEnemy = false;
     }
     private void Update()
     {
         if (isEnemyTurn)
         {
-            if (!waitingForEnemy && actualisedCamp)
+            if (CombatManager.Instance != null && CombatManager.Instance.IsInCombat())
+                return;
+            if (!actualisedCamp)
+            {
+                StartCoroutine(waitForSwapCamp());
+            }
+            else
             {
                 if (enemyTurn >= ShipManager.Instance.GetActualEnemyShipsCount())
                 {
                     EndEnemyTurn();
-                    waitingForEnemy = false;
                     return;
                 }
-                waitingForEnemy = true;
                 if (ShipManager.Instance.GetEnemyShip(enemyTurn).TryGetComponent(out Enemy enemy))
                     enemy.SetMyTurn();
                 else
