@@ -8,7 +8,9 @@ using UnityEngine.UI;
 
 public class ShipController : MonoBehaviour, bounce.IBounce
 {
-    [System.Serializable]
+    private float _speedSlider = 1.3f;
+    
+    private bool _isMotherShip = false;
     public struct RuntimeStats {
         public string UnitName;
         public int HP;
@@ -28,6 +30,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     [SerializeField] private bool _isLocked = false;
     private bool _hasMoved;
+    // TURN
+    private bool _isLocked = false;
+    [SerializeField] private bool _hasMoved;
     private bool _hasAttacked;
 
     private int _currentLockAttack;
@@ -47,10 +52,36 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private bool _isDead = false;
     private RuntimeStats _initialStats;
     private Sprite _shipSprite;
+    
+    private Animator _shipAnimator;
 
     private ShipSpawner.shipType _shipType;
     
     public void SetType(ShipSpawner.shipType type)
+    public enum shipAnimations
+    {
+        takeDamage,
+        locked,
+        Unlocked,
+    }
+    
+    public void PlayAnim(shipAnimations anim)
+    {
+        switch (anim)
+        {
+            case shipAnimations.takeDamage:
+                _shipAnimator.SetTrigger("TakeDamage");
+                break;
+            case shipAnimations.locked:
+                _shipAnimator.SetBool("Locked", true);
+                break;
+            case shipAnimations.Unlocked:
+                _shipAnimator.SetBool("Locked", false);
+                break;
+        }
+    }
+    
+    public void SetType( ShipSpawner.shipType type)
     {
         _shipType = type;
     }
@@ -62,17 +93,27 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private void Start()
     {
         _currentLockAttack = _myStats.CooldownAttack;
+        if(GetType() == ShipSpawner.shipType.MothherShip)
+        {
+            _isMotherShip = true;
+        }
     }
 
     public void Bounce()
     {
         _bounce.StartBounce();
     }
+    
+    public bool IsMotherShip()
+    {
+        return _isMotherShip;
+    }
 
     private void Awake()
     {
         _bounce = GetComponent<bounce>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
+        _shipAnimator = GetComponent<Animator>();
     }
 
     public void GetPath()
@@ -81,6 +122,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             return;
         }
+        print("RECUPERER LE PATH");
         GetTilesPath();
     }
 
@@ -150,6 +192,11 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _myTilesController.ChangeCollider(false);
         _myTilesController.SetShipController(this);
     }
+    
+    public void SetOnlyTile(TilesController newTiles)
+    {
+        _myTilesController = newTiles;
+    }
 
     public TilesController GetTiles()
     {
@@ -158,8 +205,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void SetNewPosition(TilesController neswtiles)
     {
+        print("SET NEW POSITON");
         SetHasMoved(true);
-        CheckLock();
+        if (GetType() != ShipSpawner.shipType.Rider)
+        {
+            CheckLock();
+        }
         StartCoroutine(TranslationPosition(neswtiles.transform.position));
         SetTiles(neswtiles);
     }
@@ -181,11 +232,14 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     private void EndMovement()
     {
+        print("FIN DE MOUVEMENT");
         if (TurnManager.Instance.IsEnemyTurn())
         {
             if(transform.TryGetComponent(out Enemy enemy))
             {
                 print("J'APPELLE LE TURN DE L'ENEMY");
+                enemy.SetMyTurn();
+                print("ON LANCE LE MY TUNT");
                 enemy.SetMyTurn();
             }
         }
@@ -202,9 +256,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void TakeDamage(int damage)
     {
-        print("TAKE DAMAGE");
         runtimeStats.HP -= damage;
         UpdateSlider();
+        PlayAnim(shipAnimations.takeDamage);
+       // ShakeManager.instance.ShakeCamera(1.2f,0.3f);  
+        
+        if (runtimeStats.HP <= 0) { Die(); }
     }
 
     public void Die()
@@ -222,6 +279,11 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _myTilesController.ChangeCollider(true);
             _myTilesController.SetHasAnEnemy(false);
         }
+        _myTilesController.ChangeCollider(true);
+        _myTilesController.SetHasAnAlly(false);
+        _myTilesController.SetHasAnEnemy(false);
+        _myTilesController.ResetTiles();
+        Destroy(gameObject);
     }
 
     public void ChangeCollider(bool state)
@@ -238,6 +300,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _isLocked = play;
         _shipIcon.color = play ? Color.gray : Color.white;
+        if(_isMotherShip){return;}
+        if (play) { PlayAnim(shipAnimations.locked); }
+        else { PlayAnim(shipAnimations.Unlocked); }
     }
 
     public bool IsLocked()
@@ -279,7 +344,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         CheckLock();
         if (!_isInLockDown && _myStats.CooldownAttack > 0)
         {
-            print("LOCK DOWN");
             _isInLockDown = true;
         }
     }
@@ -305,7 +369,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                     return;
                 }
             }
-            if (_hasMoved && _hasAttacked)
+            if (_hasMoved && _hasAttacked && _shipType != ShipSpawner.shipType.Rider)
             {
                 SetLockMode(true);
                 return;
@@ -376,6 +440,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         print("HasAttacked = " + _hasAttacked);
         print("IsLocked = " + _isLocked);
         print("IsInLockDown = " + _isInLockDown);
+        print("HasEnemy = " + _myTilesController.HasAnEnemy());
+        print("HasAlly = " + _myTilesController.HasAnAlly());   
     }
 
     public void ChangeCamp()
@@ -406,9 +472,23 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     
     private void UpdateSlider()
     {
-        _sliderLife.value = runtimeStats.HP;
+        StartCoroutine(UpdateSliderLife());
     }
     
+
+    private IEnumerator UpdateSliderLife()
+    {
+        float alpha = 0;
+        float originalValue = _sliderLife.value;
+        while (alpha <= 1)
+        {
+            alpha += Time.deltaTime * _speedSlider;
+            _sliderLife.value = Mathf.Lerp(originalValue, runtimeStats.HP, alpha);
+            yield return null;
+        }
+        yield return null;
+    }
+
     public Sprite GetSprite()
     {
         return _shipSprite;
