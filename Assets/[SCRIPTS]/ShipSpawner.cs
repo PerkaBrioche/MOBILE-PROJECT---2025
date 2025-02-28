@@ -52,16 +52,6 @@ public class ShipSpawner : MonoBehaviour
     
     public void SpawnShip()
     {
-        if (_shipPrefab == null)
-        {
-            Debug.LogError("_shipPrefab is not assigned in " + gameObject.name);
-            return;
-        }
-        if (shipTile == null)
-        {
-            Debug.LogError("shipTile is not assigned in " + gameObject.name);
-            return;
-        }
         var ship = Instantiate(_shipPrefab, shipTile.transform.position, Quaternion.identity);
         _shipController = ship.GetComponent<ShipController>();
         switch (TypeShip)

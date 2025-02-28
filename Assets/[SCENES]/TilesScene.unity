@@ -1392,7 +1392,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1127035512}
         m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
         m_MethodName: EndPlayerTurn
         m_Mode: 1
@@ -3155,6 +3155,7 @@ MonoBehaviour:
   SpaceBerzerkerStats: {fileID: 11400000, guid: 6b511a6a1be760b489fe024917ed7837, type: 2}
   TankStats: {fileID: 11400000, guid: e1a270747217482488a8b060b18fb8be, type: 2}
   SpaceFortressStats: {fileID: 11400000, guid: 07431dd51d00d584a809188c6649e13c, type: 2}
+  MotherShipStats: {fileID: 0}
 --- !u!1001 &761129824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3276,7 +3277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TypeShip: 5
+  TypeShip: 0
   isEnemy: 1
   _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
   shipTile: {fileID: 1773916222}
@@ -3286,6 +3287,7 @@ MonoBehaviour:
   SpaceBerzerkerStats: {fileID: 11400000, guid: 6b511a6a1be760b489fe024917ed7837, type: 2}
   TankStats: {fileID: 11400000, guid: e1a270747217482488a8b060b18fb8be, type: 2}
   SpaceFortressStats: {fileID: 11400000, guid: 07431dd51d00d584a809188c6649e13c, type: 2}
+  MotherShipStats: {fileID: 0}
 --- !u!1001 &783744288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8494,6 +8496,7 @@ MonoBehaviour:
   SpaceBerzerkerStats: {fileID: 11400000, guid: 6b511a6a1be760b489fe024917ed7837, type: 2}
   TankStats: {fileID: 11400000, guid: e1a270747217482488a8b060b18fb8be, type: 2}
   SpaceFortressStats: {fileID: 11400000, guid: 07431dd51d00d584a809188c6649e13c, type: 2}
+  MotherShipStats: {fileID: 0}
 --- !u!1001 &1729154344
 PrefabInstance:
   m_ObjectHideFlags: 0
