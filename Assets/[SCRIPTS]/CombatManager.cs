@@ -6,25 +6,11 @@ using UnityEngine.UI;
 
 public class CombatManager : MonoBehaviour
 {
-    public Transform leftStartPoint;
-    public Transform rightStartPoint;
-    public Transform leftCombatPoint;
-    public Transform rightCombatPoint;
-    [SerializeField] private RawImage _bgFight;
-    public float moveSpeed = 2f;
-    public float attackDelay = 1f;
-    public UnityEngine.RectTransform topBorder;
-    public UnityEngine.RectTransform bottomBorder;
-    public float borderAnimationDuration = 0.3f;
-    public float targetBorderHeight = 100f;
 
     private ShipController _attackerShip;
     private ShipController _targetShip;
-    
     public static CombatManager Instance;
     private bool _isInCombat = false;
-    
-    [SerializeField] private Transform _shipContainer;
 
     private void Awake()
     {
@@ -41,8 +27,6 @@ public class CombatManager : MonoBehaviour
 
     public void StartCombat(ShipController attacker, ShipController target)
     {
-        TouchManager tm = FindObjectOfType<TouchManager>();
-        if (tm != null) tm.SetInteractionEnabled(false);
         _attackerShip = attacker;
         _targetShip = target;
         Fight();
@@ -110,8 +94,8 @@ public class CombatManager : MonoBehaviour
         int damage = _attackerShip.runtimeStats.ATK - _targetShip.runtimeStats.DEF;
         if (damage < 1) damage = 1;
         _targetShip.TakeDamage(damage);
-        if (_targetShip.runtimeStats.HP <= 0)
-            _targetShip.Die();
+        // if (_targetShip.runtimeStats.HP <= 0)
+        //     _targetShip.Die();
     }
 
     // private IEnumerator AnimateBordersIn()

@@ -9,6 +9,8 @@ using UnityEngine.UI;
 public class ShipController : MonoBehaviour, bounce.IBounce
 {
     private float _speedSlider = 1.3f;
+    
+    private bool _isMotherShip = false;
     public struct RuntimeStats {
         public string UnitName;
         public int HP;
@@ -87,11 +89,20 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private void Start()
     {
         _currentLockAttack = _myStats.CooldownAttack;
+        if(GetType() == ShipSpawner.shipType.MothherShip)
+        {
+            _isMotherShip = true;
+        }
     }
 
     public void Bounce()
     {
         _bounce.StartBounce();
+    }
+    
+    public bool IsMotherShip()
+    {
+        return _isMotherShip;
     }
 
     private void Awake()
@@ -247,6 +258,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         runtimeStats.HP -= damage;
         UpdateSlider();
         PlayAnim(shipAnimations.takeDamage);
+       // ShakeManager.instance.ShakeCamera(1.2f,0.3f);  
+        
+        if (runtimeStats.HP <= 0) { Die(); }
     }
 
     public void Die()
