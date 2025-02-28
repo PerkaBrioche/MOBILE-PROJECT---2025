@@ -60,6 +60,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     
     public void PlayAnim(shipAnimations anim)
     {
+        if (_shipAnimator == null)
+            return;
         switch (anim)
         {
             case shipAnimations.takeDamage:
@@ -98,6 +100,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _bounce = GetComponent<bounce>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _shipAnimator = GetComponent<Animator>();
+        if (_shipAnimator == null)
+            Debug.LogError("Animator manquant sur " + gameObject.name);
     }
 
     public void GetPath()
@@ -150,7 +154,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         runtimeStats.WalkDistance = _myStats.WalkDistance;
         runtimeStats.AttackRange = _myStats.AttackRange;
         SetOriginCamp(IsEnemy);
-        if(_sliderLife != null)
+        if (_sliderLife != null)
         {
             _sliderLife.minValue = 0;
             _sliderLife.maxValue = _myStats.HP;
@@ -270,13 +274,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         _isLocked = play;
         if (play)
-        {
             PlayAnim(shipAnimations.locked);
-        }
         else
-        {
             PlayAnim(shipAnimations.Unlocked);
-        }
     }
 
     public bool IsLocked()
@@ -401,7 +401,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         print("IsLocked = " + _isLocked);
         print("IsInLockDown = " + _isInLockDown);
         print("HasEnemy = " + _myTilesController.HasAnEnemy());
-        print("HasAlly = " + _myTilesController.HasAnAlly());   
+        print("HasAlly = " + _myTilesController.HasAnAlly());
     }
 
     public void ChangeCamp()
@@ -466,7 +466,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     
     public void ResetTurnState()
     {
-        if(_isDead)
+        if (_isDead)
         {
             gameObject.SetActive(true);
             _isDead = false;
@@ -483,7 +483,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     
     public void SetHealthBarVisible(bool visible)
     {
-        if(_sliderLife != null)
+        if (_sliderLife != null)
             _sliderLife.gameObject.SetActive(visible);
     }
     
