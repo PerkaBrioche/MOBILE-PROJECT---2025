@@ -55,7 +55,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     [Foldout("OTHERS")] [SerializeField] private Sprite _blurTileSprite;
     [Foldout("OTHERS")] [SerializeField] private Sprite _attackTileSprite;
     [Foldout("OTHERS")] [SerializeField] private Sprite _enemyDetectedTileSprite;
-    
     private Sprite _defaultSpriteTile;
     
     public enum enumTileSprites
@@ -177,6 +176,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         }
         else if (attackTiles) // TILE QUI MONTRE L'ATTAQUE LIMITATION
         {
+            SetIsRangeTile(false);
             _tileSprite = enumTileSprites.blurTile;
         }
         else // TILE DE DEPLACEMENT
@@ -205,6 +205,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
        int realAttackRange = _shipController.runtimeStats.AttackRange;
        int attackrangelEFT = _shipController.runtimeStats.AttackRange;
        int baseWalkDistance = walkDistance;
+       
+       if(diagonal)
+       {
+           attackrangelEFT--;
+       }
 
        bool lockdown = _shipController.HasMoved();
        float seconds = 0f;
@@ -270,8 +275,9 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                    }
                    else
                    {
+                       print("ENEMY MAIS PAS DE RANGE LEFT");
                        tile.HighLightTiles(seconds, true);
-                   } 
+                   }
                    break;
                }
                
