@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Vaisseau_lapin_0: 3857521897465514409
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

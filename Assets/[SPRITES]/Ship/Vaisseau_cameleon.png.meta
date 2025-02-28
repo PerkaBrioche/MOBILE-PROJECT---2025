@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Vaisseau_cameleon_0: 5080181488534593991
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

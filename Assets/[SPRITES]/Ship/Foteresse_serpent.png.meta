@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Foteresse_serpent_0: 5867887857198940217
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

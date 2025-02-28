@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Vaisseau_fennec_0: -1859483539367982969
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -487,19 +487,4 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _sliderLife.gameObject.SetActive(visible);
     }
     
-    public void PlayAnim(shipAnimations anim)
-    {
-        switch (anim)
-        {
-            case shipAnimations.takeDamage:
-                _shipAnimator.SetTrigger("TakeDamage");
-                break;
-            case shipAnimations.locked:
-                _shipAnimator.SetBool("Locked", true);
-                break;
-            case shipAnimations.Unlocked:
-                _shipAnimator.SetBool("Locked", false);
-                break;
-        }
-    }
 }
