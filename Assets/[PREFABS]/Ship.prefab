@@ -420,13 +420,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a41de3c60080fe4ca76cf6cf0ab21d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runtimeStats:
-    UnitName: 
-    HP: 0
-    ATK: 0
-    WalkDistance: 0
-    AttackRange: 0
   _isLocked: 0
+  _hasMoved: 0
   _shipLock: {fileID: 48821235788501683}
   _shipIcon: {fileID: 7619627619274169737}
   _RawNumber: {fileID: 270125359349707587}
@@ -610,7 +605,7 @@ SpriteRenderer:
   m_Size: {x: 0.45, y: 0.85}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5851584179102804812
