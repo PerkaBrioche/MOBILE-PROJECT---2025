@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
   m_Name: Ranger
   m_EditorClassIdentifier: 
-  _unitAllyIcon: {fileID: 1010450789034852114, guid: 0283bc5b7e7a6bb49944dde04ca6816b, type: 3}
-  _unitEnemyIcon: {fileID: 2204708268438558152, guid: d66346acd41662e4a95ab74f42e4dee6, type: 3}
+  _unitAllyIcon: {fileID: -3548074318666612580, guid: 18e3069df186c24418d53f325efa1c70, type: 3}
+  _unitEnemyIcon: {fileID: 5080181488534593991, guid: 7d5d8f8acbcbc3c43857209bcd8e0d53, type: 3}
   _unitName: Ranger
   _unitType: {fileID: 0}
   hp: 18
   atk: 12
-  def: 3
+  def: 0
   atkRange: 2
   _walkDistance: 2
   _attackRange: 2

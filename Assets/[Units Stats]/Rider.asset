@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
   m_Name: Rider
   m_EditorClassIdentifier: 
-  _unitAllyIcon: {fileID: 1010450789034852114, guid: 0283bc5b7e7a6bb49944dde04ca6816b, type: 3}
-  _unitEnemyIcon: {fileID: 2204708268438558152, guid: d66346acd41662e4a95ab74f42e4dee6, type: 3}
+  _unitAllyIcon: {fileID: 3857521897465514409, guid: feb6dedb696df334ea14d9b7284b8867, type: 3}
+  _unitEnemyIcon: {fileID: -2440781651108524487, guid: 628de6ea106450e46b8d3157424ead28, type: 3}
   _unitName: Rider
-  hp: 22
-  atk: 19
-  def: 7
+  _unitType: {fileID: 0}
+  hp: 25
+  atk: 17
+  def: 0
   atkRange: 1
   _walkDistance: 2
-  _attackRange: 2
-  canMooveAndShoot: 1
+  _attackRange: 1
   _cooldownAttack: 0

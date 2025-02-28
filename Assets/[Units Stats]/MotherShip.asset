@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
+  m_Name: MotherShip
+  m_EditorClassIdentifier: 
+  _unitAllyIcon: {fileID: -6126571086727437014, guid: 67098dc8e33fee148a22e48573f54dcf, type: 3}
+  _unitEnemyIcon: {fileID: 5867887857198940217, guid: 3fdbe84e44c95ad4c861007dcef5cacb, type: 3}
+  _unitName: MotherShip
+  _unitType: {fileID: 0}
+  hp: 65
+  atk: 0
+  def: 0
+  atkRange: 0
+  _walkDistance: 0
+  _attackRange: 0
+  _cooldownAttack: 0
