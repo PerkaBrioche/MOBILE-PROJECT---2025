@@ -33,7 +33,7 @@ public class CombatManager : MonoBehaviour
     {
         TouchManager tm = UnityEngine.Object.FindFirstObjectByType<TouchManager>();
         if (tm != null)
-            tm.SetInteractionEnabled(false);
+            //tm.SetInteractionEnabled(false);
         _attackerShip = attacker;
         _targetShip = target;
         _isInCombat = true;
@@ -79,7 +79,7 @@ public class CombatManager : MonoBehaviour
         _attackerShip.transform.position = originalPosition;
         TouchManager tm2 = UnityEngine.Object.FindFirstObjectByType<TouchManager>();
         if (tm2 != null)
-            tm2.SetInteractionEnabled(true);
+            //tm2.SetInteractionEnabled(true);
         if (_targetShip.runtimeStats.HP <= 0)
             _targetShip.Die();
         _isInCombat = false;
