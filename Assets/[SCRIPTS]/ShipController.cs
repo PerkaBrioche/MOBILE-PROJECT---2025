@@ -326,6 +326,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     public void SetHasAttacked(bool attack)
     {
         _hasAttacked = attack;
+        if(_shipType == ShipSpawner.shipType.Rider)
+        {
+            SetHasMoved(false);
+        }
         CheckLock();
         if (!_isInLockDown && _myStats.CooldownAttack > 0)
         {
@@ -336,6 +340,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     public void SetHasMoved(bool move)
     {
         _hasMoved = move;
+        CheckLock();
     }
 
     public void CheckLock()
@@ -354,7 +359,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                     return;
                 }
             }
-            if (_hasMoved && _hasAttacked && _shipType != ShipSpawner.shipType.Rider)
+            if (_hasMoved && _hasAttacked)
             {
                 SetLockMode(true);
                 return;
@@ -365,7 +370,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             if (_hasMoved || _hasAttacked)
             {
-                print("JE ME LOCK GAGAGA");
                 SetLockMode(true);
                 return;
             }
