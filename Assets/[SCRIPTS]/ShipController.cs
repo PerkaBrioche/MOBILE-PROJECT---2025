@@ -205,7 +205,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void SetNewPosition(TilesController neswtiles)
     {
-        print("SET NEW POSITON");
         SetHasMoved(true);
         if (GetType() != ShipSpawner.shipType.Rider)
         {

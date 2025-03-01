@@ -124,7 +124,6 @@ public class GridController : MonoBehaviour
         {
             tiles.ResetTiles(noBounce);
         }
-        print("END TILES RESET");
     } 
 
     

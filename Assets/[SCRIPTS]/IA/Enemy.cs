@@ -317,60 +317,165 @@ public class Enemy : MonoBehaviour
         
         return (null);
     }
-
-    public List<ShipController> FindClosestEnemy()
+    
+   public List<ShipController> FindClosestEnemy()
+{
+    List<ShipController> allyShips = ShipManager.Instance.GetAllyShipsOrinalCamp();
+    if (allyShips == null || allyShips.Count == 0)
     {
-        List<ShipController> allyShips = ShipManager.Instance.GetAllyShipsOrinalCamp();
-        if (allyShips == null || allyShips.Count == 0)
-        {
-            return null;
-        }
-    
-        TilesController enemyTile = _shipController.GetTiles();
-        List<(ShipController ship, int distance)> shipDistances = new List<(ShipController, int)>();
-        
-        foreach (ShipController ally in allyShips)
-        {
-            TilesController allyTile = ally.GetTiles();
-            if (allyTile == null)
-                continue;
-            int distance = CalculateManhattanDistance(allyTile, enemyTile);
-            shipDistances.Add((ally, distance));
-        }
-        shipDistances.Sort((a, b) =>
-        {
-            int cmp = a.distance.CompareTo(b.distance);
-            if (cmp == 0)
-            {
-                if (_shipController.GetType() == ShipSpawner.shipType.SpacceBerzerker)
-                {
-                    cmp = a.ship.runtimeStats.HP.CompareTo(b.ship.runtimeStats.HP);
-                    if (cmp == 0)
-                        cmp = a.ship.runtimeStats.ATK.CompareTo(b.ship.runtimeStats.ATK);
-                }
-                else
-                {
-                    cmp = a.ship.runtimeStats.ATK.CompareTo(b.ship.runtimeStats.ATK);
-                    if (cmp == 0)
-                        cmp = a.ship.runtimeStats.HP.CompareTo(b.ship.runtimeStats.HP);
-                }
-            }
-            return cmp;
-        });
-    
-        List<ShipController> sortedShips = new List<ShipController>();
-        foreach (var entry in shipDistances)
-        {
-            print(entry.ship.GetUnitStats().name + " " + entry.distance);
-            sortedShips.Add(entry.ship);
-        }
-        return sortedShips;
+        return null;
     }
     
+    TilesController enemyTile = _shipController.GetTiles();
+    
+    List<(ShipController ship, int distance)> shipDistances = new List<(ShipController, int)>();
+    foreach (ShipController ally in allyShips)
+    {
+        TilesController allyTile = ally.GetTiles();
+        if (allyTile == null)
+            continue;
+        
+        int pathDist = FindPath(enemyTile, allyTile) != null ? FindPath(enemyTile, allyTile).Count : -1;
+        print( "PATH DISTANCE OF "+ ally.GetUnitStats().name + " = " + pathDist);
+        if (pathDist < 0)
+        {
+            print("PAS DE CHEMIN POSSIBLE");
+            continue;
+        }
+     //   int distance = CalculateManhattanDistance(allyTile, enemyTile);
+        shipDistances.Add((ally, pathDist));
+    }
+    
+    shipDistances.Sort((a, b) =>
+    {
+        int cmp = a.distance.CompareTo(b.distance);
+        if (cmp == 0)
+        {
+            if (_shipController.GetType() == ShipSpawner.shipType.SpacceBerzerker)
+            {
+                cmp = a.ship.runtimeStats.HP.CompareTo(b.ship.runtimeStats.HP);
+                if (cmp == 0)
+                    cmp = a.ship.runtimeStats.ATK.CompareTo(b.ship.runtimeStats.ATK);
+            }
+            else
+            {
+                cmp = a.ship.runtimeStats.ATK.CompareTo(b.ship.runtimeStats.ATK);
+                if (cmp == 0)
+                    cmp = a.ship.runtimeStats.HP.CompareTo(b.ship.runtimeStats.HP);
+            }
+        }
+        return cmp;
+    });
+    
+    List<ShipController> sortedShips = new List<ShipController>();
+    foreach (var entry in shipDistances)
+    {
+        sortedShips.Add(entry.ship);
+    }
+    
+    return sortedShips;
+}
+
+
+
+    // public List<ShipController> FindClosestEnemy()
+    // {
+    //     List<ShipController> allyShips = ShipManager.Instance.GetAllyShipsOrinalCamp();
+    //     if (allyShips == null || allyShips.Count == 0)
+    //     {
+    //         return null;
+    //     }
+    //
+    //     TilesController enemyTile = _shipController.GetTiles();
+    //     List<(ShipController ship, int distance)> shipDistances = new List<(ShipController, int)>();
+    //     
+    //     foreach (ShipController ally in allyShips)
+    //     {
+    //         TilesController allyTile = ally.GetTiles();
+    //         if (allyTile == null)
+    //             continue;
+    //         int distance = CalculateManhattanDistance(allyTile, enemyTile);
+    //         shipDistances.Add((ally, distance));
+    //     }
+    //     shipDistances.Sort((a, b) =>
+    //     {
+    //         int cmp = a.distance.CompareTo(b.distance);
+    //         if (cmp == 0)
+    //         {
+    //             if (_shipController.GetType() == ShipSpawner.shipType.SpacceBerzerker)
+    //             {
+    //                 cmp = a.ship.runtimeStats.HP.CompareTo(b.ship.runtimeStats.HP);
+    //                 if (cmp == 0)
+    //                     cmp = a.ship.runtimeStats.ATK.CompareTo(b.ship.runtimeStats.ATK);
+    //             }
+    //             else
+    //             {
+    //                 cmp = a.ship.runtimeStats.ATK.CompareTo(b.ship.runtimeStats.ATK);
+    //                 if (cmp == 0)
+    //                     cmp = a.ship.runtimeStats.HP.CompareTo(b.ship.runtimeStats.HP);
+    //             }
+    //         }
+    //         return cmp;
+    //     });
+    //
+    //     List<ShipController> sortedShips = new List<ShipController>();
+    //     foreach (var entry in shipDistances)
+    //     {
+    //         print(entry.ship.GetUnitStats().name + " " + entry.distance);
+    //         sortedShips.Add(entry.ship);
+    //     }
+    //     return sortedShips;
+    // }
+
+    public List<TilesController> FindPath(TilesController start, TilesController goal) // SCRIPT CHATGPT OPTIONNEL (CONSTRUCTION ET DESTRUCTION DE CHEMIN)
+    {
+        if (start == goal)
+            return new List<TilesController> { start };
+
+        Queue<TilesController> queue = new Queue<TilesController>();
+        Dictionary<TilesController, TilesController> parents = new Dictionary<TilesController, TilesController>();
+    
+        queue.Enqueue(start);
+        parents[start] = null; 
+
+        print("START = " + start + " GOAL = " + goal);
+        while (queue.Count > 0)
+        {
+            TilesController current = queue.Dequeue();
+            foreach (TilesController neighbor in current.GetNeighbors())
+            {
+                if (neighbor != null && !parents.ContainsKey(neighbor))
+                {
+                    if (!neighbor.IsBlocked() && !neighbor.HasAnEnemy() && !neighbor.HasAnAlly() || neighbor == goal || neighbor == start) // TILES BONNE
+                    {
+                        parents[neighbor] = current; 
+                        queue.Enqueue(neighbor);
+                    }
+                
+                    if (neighbor == goal)
+                    {
+                        print("GOAL FOUND = " + neighbor);
+                        List<TilesController> path = new List<TilesController>();
+                        TilesController pathTile = goal;
+                        while (pathTile != null)
+                        {
+                            print("PATH TILE = " + pathTile);
+                            path.Add(pathTile);
+                            pathTile = parents[pathTile];
+                        }
+                        path.Reverse();
+                        return path;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     protected int CalculateManhattanDistance(TilesController a, TilesController b)
     {
-        int dx = Mathf.Abs(a.GetColumnPosition() - b.GetColumnPosition());
-        int dy = Mathf.Abs(a.GetRowPosition() - b.GetRowPosition());
+        int dx = Mathf.Abs(a.GetColumnPosition() - b.GetColumnPosition());  // ALLY
+        int dy = Mathf.Abs(a.GetRowPosition() - b.GetRowPosition());  // ENEMY
         return (dx + dy) -1;
     }
 
