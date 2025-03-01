@@ -274,6 +274,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                {
                    if(lockdown || attackrangelEFT > 0)
                    {
+                       if(_shipController.GetType() == ShipSpawner.shipType.Rider && _shipController.HasAttacked())
+                       {
+                           tile.HighLightTiles(seconds, true);
+                           break;
+                       }
                        tile.HighLightTiles(seconds, true, true);
                    }
                    else

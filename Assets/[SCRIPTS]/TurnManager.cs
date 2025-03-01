@@ -19,6 +19,8 @@ public class TurnManager : MonoBehaviour
 
     private bool _actualisedCamp = false;
     
+    private TouchManager TouchManager;
+    
 
     private void Awake()
     {
@@ -30,16 +32,19 @@ public class TurnManager : MonoBehaviour
         {
             Destroy(this);
         }
+        
+        TouchManager = FindFirstObjectByType<TouchManager>();
     }
     
     private void Start()
     {
         StartPlayerTurn();
-        LockButtonTurn();
+        UnlockButtonTurn();
     }
     
     public void StartPlayerTurn()
     {
+        UnlockButtonTurn();
         _isPlayerTurn = true;
         UpdateText("Player Turn", Color.green);
     }
@@ -48,6 +53,7 @@ public class TurnManager : MonoBehaviour
     {
         _isPlayerTurn = false;
         LockButtonTurn();
+        TouchManager.Reset();
         if (!CheckEndGame())
         {
             StartEnemyTurn();
@@ -66,6 +72,7 @@ public class TurnManager : MonoBehaviour
     
     public void EndEnemyTurn()
     {
+        TouchManager.Reset();
         _isEnemyTurn = false;
         ShipManager.Instance.ResetAllShips();
         if (!CheckEndGame())

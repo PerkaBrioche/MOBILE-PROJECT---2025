@@ -67,29 +67,30 @@ public class TouchManager : MonoBehaviour
 
     private void Update()
     {
-        if (_IsHolding)
-        {
-            if (_isDragging && currentDraggable != null)
-            {
-                Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
-                _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPos);
-                _actualTouchedPosition.z = 0f;
-                currentDraggable.OnDrag(_actualTouchedPosition);
-            }
-            else if (_isScrolling && canScroll)
-            {
-                Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
-                Vector3 currentTouchWorldPos = Camera.main.ScreenToWorldPoint(touchedPos);
-                currentTouchWorldPos.z = 0f;
-                float deltaY = currentTouchWorldPos.y - _scrollStartTouchPos.y;
-                float newCameraY = Mathf.Clamp(_scrollStartCameraY - deltaY * 0.75f, scrollMinY, scrollMaxY);
-                Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, newCameraY, Camera.main.transform.position.z);
-            }
-        }
-        else
-        {
-            _actualholdTime = 0;
-        }
+        // if (_IsHolding)
+        // {
+        //     print("IS HOLDING");
+        //     if (_isDragging && currentDraggable != null)
+        //     {
+        //         Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
+        //         _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPos);
+        //         _actualTouchedPosition.z = 0f;
+        //         currentDraggable.OnDrag(_actualTouchedPosition);
+        //     }
+        //     else if (_isScrolling && canScroll)
+        //     {
+        //         Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
+        //         Vector3 currentTouchWorldPos = Camera.main.ScreenToWorldPoint(touchedPos);
+        //         currentTouchWorldPos.z = 0f;
+        //         float deltaY = currentTouchWorldPos.y - _scrollStartTouchPos.y;
+        //         float newCameraY = Mathf.Clamp(_scrollStartCameraY - deltaY * 0.75f, scrollMinY, scrollMaxY);
+        //         Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, newCameraY, Camera.main.transform.position.z);
+        //     }
+        // }
+        // else
+        // {
+        //     _actualholdTime = 0;
+        // }
     }
 
     private void PressReleased(InputAction.CallbackContext context)
@@ -113,6 +114,7 @@ public class TouchManager : MonoBehaviour
             Debug.LogError("PROBLEM TOUCH");
             return;
         }
+        print("TOUCHED");
         _gameManager.TouchScreen();
         Vector2 touchedPosition = _touchPosition.ReadValue<Vector2>();
         _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPosition);
@@ -192,7 +194,7 @@ public class TouchManager : MonoBehaviour
                 {
                     if(_ActualshipController == sc)  // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
                     {
-                        _ActualshipController.SetLockMode(true);
+                       // _ActualshipController.SetLockMode(true);
                         Reset();
                     }
                     else

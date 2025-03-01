@@ -28,6 +28,7 @@ public class ShipManager : MonoBehaviour
         if (_isCooldown) { return; }
         if(!TurnManager.Instance.IsPlayerTurn()) { return;}
         
+        return; // LAISSE MOI TRANQUILLE AVEC MES RETURNS FR
         if (HasPlayedAllShips() && !CombatManager.Instance.IsInCombat())
         {
             TurnManager.Instance.CheckUnlockButton();
