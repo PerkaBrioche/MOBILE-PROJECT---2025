@@ -126,7 +126,6 @@ public class TouchManager : MonoBehaviour
 
     private void OnTouched(InputAction.CallbackContext context)
     {
-        _touchPress.Disable();
         if (!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch())
         {
             Debug.LogError("PROBLEM TOUCH");

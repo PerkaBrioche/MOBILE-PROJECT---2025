@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour
     public void TouchScreen(InputAction action)
     {
         if (!_canTouch) return;
-        actionS = action;
         _canTouch = false;
         StartCoroutine(CoolDownTouch());
     }
@@ -45,7 +44,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(cooldownTouch);
         _canTouch = true;
-        actionS.Enable();
     }
     
 
