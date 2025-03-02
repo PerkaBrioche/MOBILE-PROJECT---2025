@@ -281,12 +281,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         switch (tileType)
         {
             case TilesController.tileType.HealTile:
-                _myTilesController.SetTileType(TilesController.tileType.defaultTile);
                 ApplyHealth();
+                _myTilesController.SetTileType(TilesController.tileType.defaultTile);
                 break;
             case TilesController.tileType.DamageTile:
-                _myTilesController.SetTileType(TilesController.tileType.defaultTile);
                 SetBonusDamage(true);
+                _myTilesController.SetTileType(TilesController.tileType.defaultTile);
                 break;
         }
     }
@@ -555,6 +555,16 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     public void SetBonusDamage(bool state)
     {
         _hasBonusDamage = state;
+        
+        if (state)
+        {
+            runtimeStats.ATK +=5;
+        }
+        else
+        {
+            runtimeStats.ATK -=5;
+        }
+        
     }
     public bool HasBonusDamage()
     {

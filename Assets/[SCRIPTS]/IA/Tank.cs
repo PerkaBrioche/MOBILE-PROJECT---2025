@@ -57,6 +57,7 @@ public class Tank : Enemy
         {
             case 1:
                 PlayPathAutomatically();
+                _isCoward = false;
                 break;
             case 2:
                 MoveInDirection(GetOpossiteDirection(FindClosestEnemy()[0].GetTiles(), _shipController.GetTiles()), _shipController.GetTiles());

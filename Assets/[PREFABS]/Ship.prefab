@@ -457,7 +457,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a41de3c60080fe4ca76cf6cf0ab21d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hasMoved: 0
   _shipLock: {fileID: 48821235788501683}
   _shipIcon: {fileID: 7619627619274169737}
   _RawNumber: {fileID: 270125359349707587}
