@@ -162,7 +162,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         return null;
     }
 
-    public void HighLightTiles(float seconds, bool attackTiles, bool lockdown = false)
+    public void HighLightTiles(float seconds, bool attackTiles, bool lockdown = false, TilesController tile = null)
     {
         SetHighlight(true);
         enumTileSprites _tileSprite = enumTileSprites.defaultTile;
@@ -175,6 +175,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
             {
                 _tileSprite = enumTileSprites.enemyDetectedTile;
                 _shipController.PlayAnim(ShipController.shipAnimations.InDanger);
+                _shipController.SetLifePrewiew();
             }
         }
         else if (attackTiles) // TILE QUI MONTRE L'ATTAQUE LIMITATION

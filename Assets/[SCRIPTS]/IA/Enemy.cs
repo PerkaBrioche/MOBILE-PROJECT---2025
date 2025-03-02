@@ -59,7 +59,6 @@ public class Enemy : MonoBehaviour
             if (tile == null) {continue;}
             if (tile.HasAnEnemy() && tile.IsAnAttackTile())
             {
-                print("ADD ENEMY ON TILE OUAHHH"); 
                 enemyOnTile.Add(tile.GetShipController());
                 canMoove = false;
             }

@@ -88,17 +88,9 @@ public class TurnManager : MonoBehaviour
         _turnText.color = color;
     }
 
-    private void UnlockButtonTurn()
+    public void UnlockButtonTurn()
     {
         _turnButton.interactable = true;
-    }
-    
-    public void CheckUnlockButton()
-    {
-        if (_isPlayerTurn)
-        {
-            UnlockButtonTurn();
-        }
     }
 
     public void EnemyEndATurn()
@@ -133,7 +125,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    private void LockButtonTurn()
+    public void LockButtonTurn()
     {
         _turnButton.interactable = false;
     }

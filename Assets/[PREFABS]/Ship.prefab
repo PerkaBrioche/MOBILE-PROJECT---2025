@@ -467,6 +467,7 @@ MonoBehaviour:
   - {fileID: 6937817954938267909, guid: d8315ac0958ac3a418e8a5ff1be6f7da, type: 3}
   - {fileID: -6470460504253458178, guid: 7ca8be9090f551b4ea2aeeeaf0514c25, type: 3}
   _sliderLife: {fileID: 4858668437807762329}
+  _sliderLifePrewiew: {fileID: 7934908890867932325}
   _textController: {fileID: 8235401123965158563}
 --- !u!114 &4483572757704033794
 MonoBehaviour:
@@ -1470,7 +1471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.92941177}
+  m_Color: {r: 1, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

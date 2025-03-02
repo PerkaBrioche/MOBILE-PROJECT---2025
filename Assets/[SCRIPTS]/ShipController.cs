@@ -32,7 +32,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     // TURN
     private bool _isLocked = false;
-    [SerializeField] private bool _hasMoved;
+    private bool _hasMoved;
     private bool _hasAttacked;
 
     private int _currentLockAttack;
@@ -190,6 +190,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _sliderLife.maxValue = _myStats.HP;
             UpdateSlider();
         }
+        
+        _sliderLifePrewiew.minValue = 0;
+        _sliderLifePrewiew.maxValue = _myStats.HP;
     }
 
     public void SetTiles(TilesController newTiles)
@@ -218,6 +221,16 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         return _myTilesController;
     }
 
+    public void SetLifePrewiew()
+    {
+        if (TouchManager.Instance.GetActualShipController() == null)
+        {
+            print("NO SHIP SELECTED");
+            return;
+        }
+        print(  "runtimeStats.HP = "+ runtimeStats.HP + " l'autre ATK = " + TouchManager.Instance.GetActualShipController().runtimeStats.ATK);
+        _sliderLifePrewiew.value = (runtimeStats.HP - TouchManager.Instance.GetActualShipController().runtimeStats.ATK);
+    }
     public void SetNewPosition(TilesController neswtiles)
     {
         SetHasMoved(true);

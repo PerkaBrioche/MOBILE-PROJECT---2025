@@ -28,10 +28,14 @@ public class ShipManager : MonoBehaviour
         if (_isCooldown) { return; }
         if(!TurnManager.Instance.IsPlayerTurn()) { return;}
         
-        return; // LAISSE MOI TRANQUILLE AVEC MES RETURNS FR
-        if (HasPlayedAllShips() && !CombatManager.Instance.IsInCombat())
+   //     return; // LAISSE MOI TRANQUILLE AVEC MES RETURNS FR
+        if (IsShipInAction())
         {
-            TurnManager.Instance.CheckUnlockButton();
+            TurnManager.Instance.LockButtonTurn();
+        }
+        else
+        {
+            TurnManager.Instance.UnlockButtonTurn();
         }
     }
 
@@ -97,6 +101,19 @@ public class ShipManager : MonoBehaviour
         }
         return true;
     }
+    public bool IsShipInAction()
+    {
+        UpdateLists();
+        foreach (var ship in _listaAllyShips)
+        {
+            if(ship.IsMoving())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     
     public void ResetAllShips()
     {

@@ -31,12 +31,15 @@ public class TouchManager : MonoBehaviour
     private Vector3 _scrollStartTouchPos;
     private float _scrollStartCameraY;
 
-    private ShipController _ActualshipController = null;
+    private ShipController _ActualshipController;
     private TilesController _ActualtilesController;
     [SerializeField] private GridController _gridController;
 
     private bool _isHighLighted;
     private CombatManager _combatManager;
+    
+    public static TouchManager Instance;
+    
 
     private void Awake()
     {
@@ -44,6 +47,15 @@ public class TouchManager : MonoBehaviour
         _touchPosition = _playerInput.actions["TouchPosition"];
         _touchPress = _playerInput.actions["SinglePress"];
         _combatManager = FindFirstObjectByType<CombatManager>();
+        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
     }
 
     private void Start()
@@ -63,6 +75,12 @@ public class TouchManager : MonoBehaviour
         // _holdPress.started -= OnHoldStarted;
         // _holdPress.canceled -= OnHoldCanceled;
     }
+
+    public ShipController GetActualShipController()
+    {
+        return _ActualshipController;
+    }
+    
 
     private void Update()
     {
@@ -171,8 +189,8 @@ public class TouchManager : MonoBehaviour
                 {
                     _isHighLighted = true;
                 }
-                sc.GetPath();
                 _ActualshipController = sc;
+                sc.GetPath();
             }
             else
             {
@@ -201,7 +219,7 @@ public class TouchManager : MonoBehaviour
                     {
                         Reset(true);
                         _ActualshipController = sc;
-                        sc.GetPath();
+                        _ActualshipController.GetPath();
                     }
                 }
             }
