@@ -61,6 +61,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private Animator _shipAnimator;
     private ShipSpawner.shipType _shipType;
     
+    private bool _hasBonusDamage;
+    
+
+    
     public enum shipAnimations
     {
         takeDamage,
@@ -259,7 +263,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     private void EndMovement()
     {
-        print("FIN DE MOUVEMENT");
         if (TurnManager.Instance.IsEnemyTurn())
         {
             if(transform.TryGetComponent(out Enemy enemy))
@@ -269,7 +272,36 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             }
         }
         SetMoving(false);
+        CheckTileType();
     }
+
+    private void CheckTileType()
+    {
+        var tileType = _myTilesController.GetTileType();
+        switch (tileType)
+        {
+            case TilesController.tileType.HealTile:
+                _myTilesController.SetTileType(TilesController.tileType.defaultTile);
+                ApplyHealth();
+                break;
+            case TilesController.tileType.DamageTile:
+                _myTilesController.SetTileType(TilesController.tileType.defaultTile);
+                SetBonusDamage(true);
+                break;
+        }
+    }
+
+    private void ApplyHealth()
+    {
+        runtimeStats.HP += 15;
+        if(runtimeStats.HP > _myStats.HP)
+        {
+            runtimeStats.HP = _myStats.HP;
+        }
+        UpdateSlider();
+    }
+    
+    
 
     private void OnValidate()
     {
@@ -520,6 +552,13 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         return _myStats;
     }
-    
+    public void SetBonusDamage(bool state)
+    {
+        _hasBonusDamage = state;
+    }
+    public bool HasBonusDamage()
+    {
+        return _hasBonusDamage;
+    }
     
 }

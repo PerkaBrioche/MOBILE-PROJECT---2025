@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4754699468955094, guid: 51b9f23d1dfbd7148b32346030e9f81b, type: 3}
+  m_Sprite: {fileID: -6561638262626599477, guid: cc574e715152293498cbedd712903be9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -136,7 +136,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blockInteraction: 0
-  _isRangeTiles: 0
   _spriteRenderer: {fileID: 6578500546799195207}
   _tileAttackRenderer: {fileID: 3214082899815915765}
   _bounce: {fileID: 2949985889879029692}
@@ -152,6 +151,7 @@ MonoBehaviour:
   _blurTileSprite: {fileID: -2799503063137979404, guid: 2638752d9e4fd2947bd8adb795f446e0, type: 3}
   _attackTileSprite: {fileID: 425836683147999448, guid: af4d5038fb3067549acfdce94084f5fb, type: 3}
   _enemyDetectedTileSprite: {fileID: -5718123564679910689, guid: 3ced1fd1e1bcdfd41907b52fc5f28b67, type: 3}
+  _tileType: 0
 --- !u!114 &2949985889879029692
 MonoBehaviour:
   m_ObjectHideFlags: 0

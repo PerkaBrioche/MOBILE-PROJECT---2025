@@ -128,7 +128,7 @@ public class TouchManager : MonoBehaviour
     {
         if (!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch())
         {
-            Debug.LogError("PROBLEM TOUCH");
+           // Debug.LogError("PROBLEM TOUCH");
             return;
         }
         _gameManager.TouchScreen(_touchPress);

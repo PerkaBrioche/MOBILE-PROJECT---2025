@@ -27,7 +27,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
 
     private bool _isHighLighted;
     private bool _isAttackTiles;
-  [SerializeField]   private bool _isRangeTiles;
+   private bool _isRangeTiles;
 
 
     [Space(20)] [Foldout("References")] 
@@ -58,7 +58,8 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     [Foldout("OTHERS")] [SerializeField] private Sprite _attackTileSprite;
     [Foldout("OTHERS")] [SerializeField] private Sprite _enemyDetectedTileSprite;
     private Sprite _defaultSpriteTile;
-    
+
+    private bool _hasAsteroide;
     public enum enumTileSprites
     {
         defaultTile,
@@ -68,6 +69,15 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         attackTile,
     }
     
+    public enum tileType
+    {
+        defaultTile,
+        HealTile,
+        DamageTile,
+        asteroid,
+    }
+    
+    [SerializeField] private tileType _tileType;
     [Button] private void PlaceSpawner()
     {
         Transform parentSpawner = GameObject.FindGameObjectWithTag("Spawner").transform;
@@ -104,6 +114,15 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         }
     }
     
+    public tileType GetTileType()
+    {
+        return _tileType;
+    }
+    
+    public void SetTileType(tileType type)
+    {
+        _tileType = type;
+    }
     
 
     public enum TileColor
@@ -114,10 +133,36 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         Yellow,
         Magenta
     }
+    
+    private void UpdateTile()
+    {
+        _spriteRenderer.sprite = _tilesSprite[Random.Range(0, _tilesSprite.Count)];
+        switch (_tileType)
+        {
+            case tileType.HealTile:
+                _spriteRenderer.color = Color.green;
+                break;
+            case tileType.DamageTile:
+                _spriteRenderer.color = Color.red;
+                break;
+            case tileType.asteroid:
+                _spriteRenderer.sprite = null;
+                break;
+            case tileType.defaultTile:
+                _spriteRenderer.color = Color.white;
+                break;
+        }   
+    }
+
+    private void OnValidate()
+    {
+        UpdateTile();
+    }
 
 
     private void Awake()
     {
+        _spriteRenderer.color = Color.white;
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _myColor = _spriteRenderer.color;
         _originalColor = _myColor;
@@ -129,9 +174,26 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     {
         _defaultSpriteTile = _tilesSprite[Random.Range(0, _tilesSprite.Count)];
         _spriteRenderer.sprite = _defaultSpriteTile;
+        
+        ApplyTileType();
     }
 
-    [Button("Get Adjacent Tiles")]
+    private void ApplyTileType()
+    {
+        switch (_tileType)
+        {
+            case tileType.HealTile:
+                break;
+            case tileType.DamageTile:
+                break;
+            case tileType.asteroid:
+                _hasAsteroide = true;   
+                _blockInteraction = true;
+                _spriteRenderer.sprite = null;
+                break;
+        }
+    }
+
     private void GetAdjacentTiles()
     {
         _upTile = DetectAdjacent(Vector2.up);
@@ -236,6 +298,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
            if (tile == null)
            {
                continue;
+           }
+
+           if (tile.HasAsteroide())
+           {
+               break;
            }
 
            if (lockdown)
@@ -431,7 +498,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     {
         TilesController adjacent = sideFuncs[i](tile);
 
-        if (adjacent != null && !adjacent.HasAnAlly())
+        if (adjacent != null && !adjacent.HasAnAlly() && !adjacent.HasAsteroide())
         {
             adjacent.HighLightTiles(seconds, attack);
         }
@@ -561,5 +628,15 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     public bool IsBlocked()
     {
         return _blockInteraction;
+    }
+    
+    public void SetHasAsteroide(bool hasAsteroide)
+    {
+        _hasAsteroide = hasAsteroide;
+    }
+    
+    public bool HasAsteroide()
+    {
+        return _hasAsteroide;
     }
 }

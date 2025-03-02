@@ -91,11 +91,14 @@ public class CombatManager : MonoBehaviour
 
     private void Fight()
     {
-        int damage = _attackerShip.runtimeStats.ATK - _targetShip.runtimeStats.DEF;
+        int damage = _attackerShip.runtimeStats.ATK;
         if (damage < 1) damage = 1;
+        if (_attackerShip.HasBonusDamage())
+        {
+            damage += 5;
+            _attackerShip.SetBonusDamage(false);
+        }
         _targetShip.TakeDamage(damage);
-        // if (_targetShip.runtimeStats.HP <= 0)
-        //     _targetShip.Die();
     }
 
     // private IEnumerator AnimateBordersIn()
