@@ -138,6 +138,7 @@ public class Enemy : MonoBehaviour
             }
             StartCoroutine(WaitAnimationFight());
         }
+        print("END TURN");
         EndTurn();
     }
 

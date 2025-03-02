@@ -174,6 +174,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
             if (HasAnEnemy())
             {
                 _tileSprite = enumTileSprites.enemyDetectedTile;
+                _shipController.PlayAnim(ShipController.shipAnimations.InDanger);
             }
         }
         else if (attackTiles) // TILE QUI MONTRE L'ATTAQUE LIMITATION
@@ -191,9 +192,12 @@ public class TilesController : MonoBehaviour, bounce.IBounce
 
     public void ResetTiles(bool noBounce = false)
     {
+        if(_shipController != null)
+        {
+            _shipController.PlayAnim(ShipController.shipAnimations.NoDanger);
+        }
         ChangeTileSprite(enumTileSprites.defaultTile);
         _bounce.ResetTransform(noBounce);
-
         SetHighlight(false);
         SetIsAttackTile(false);
         SetIsRangeTile(false);
@@ -268,13 +272,31 @@ public class TilesController : MonoBehaviour, bounce.IBounce
 
                if (tile.HasAnAlly())
                {
+                   if (diagonal)
+                   {
+                       if (!lockdown)
+                       {
+                           print("ALLY DIAGONAL");
+                           var sideTiles = CheckTiles(sideFuncs, tile, seconds, false);
+                           if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
+                           {
+                               foreach (var st in sideTiles)
+                               {
+                                   if (st != null && !tilesForEnemy.Contains(st))
+                                   {
+                                       tilesForEnemy.Add(st);
+                                   }
+                               }
+                           }
+                       }
+                   }
                    break;
                }
                if (tile.HasAnEnemy())
                {
                    if(lockdown || attackrangelEFT > 0)
                    {
-                       if(_shipController.GetType() == ShipSpawner.shipType.Rider && _shipController.HasAttacked())
+                       if(_shipController.GetType() == ShipSpawner.shipType.Rider && _shipController.HasAttacked() || _shipController.IsInLockDown())
                        {
                            tile.HighLightTiles(seconds, true);
                            break;
@@ -327,24 +349,14 @@ public class TilesController : MonoBehaviour, bounce.IBounce
            }
            else
            {
-               // RED TILES
-               if (tile.HasAnAlly() && !isEnemy)
-               {
-                   break;
-               }
+               bool hideMyself = tile.HasAnAlly() && !isEnemy;
 
                if (diagonal) // DIAGONAL
                {
                    if (tile == tilesControllers[distance - 1]) // DERNIERE CASE
                    {
-                       if (attackRange == 1 && (baseWalkDistance + 1) < 2)
-                       {
-                       }
-                       else if (attackRange == 2 && (baseWalkDistance + 1) == 2)
-                       {
-                           break;
-                       }
-                       else
+
+                       if (attackRange == 2 && (baseWalkDistance + 1) == 2) { }else
                        {
                            var sideTiles = CheckTiles(sideFuncs, tile, seconds, true);
                            if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
@@ -357,8 +369,9 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                                    }
                                }
                            }
-                           break;
                        }
+                       break;
+
                    }
                    else
                    {
@@ -374,10 +387,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                            }
                        }
                    }
+
                }
                else
                {
-                   if (tile != tilesControllers[distance - 1])
+                   if (tile != tilesControllers[distance - 1] || (baseWalkDistance) == 3)
                    {
                        var sideTiles = CheckTiles(sideFuncs, tile, seconds, true);
                        if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
@@ -387,23 +401,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                                if (st != null && !tilesForEnemy.Contains(st))
                                {
                                    tilesForEnemy.Add(st);
-                               }
-                           }
-                       }
-                   }
-                   else
-                   {
-                       if ((baseWalkDistance) == 3)
-                       {
-                           var sideTiles = CheckTiles(sideFuncs, tile, seconds, true);
-                           if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
-                           {
-                               foreach (var st in sideTiles)
-                               {
-                                   if (st != null && !tilesForEnemy.Contains(st))
-                                   {
-                                       tilesForEnemy.Add(st);
-                                   }
                                }
                            }
                        }
@@ -412,13 +409,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
 
                tile.HighLightTiles(seconds, true);
            }
-           // --- Fin logique des tuiles ---
        }
-
-       // if (_shipController.GetType() == ShipSpawner.shipType.Rider)
-       // {
-       //     _shipController.SetHasMoved(false);
-       // }
        if (TurnManager.Instance.IsEnemyTurn() && tilesForEnemy.Count > 0)
        {
            EnemyManager.Instance.AddTiles(tilesForEnemy);

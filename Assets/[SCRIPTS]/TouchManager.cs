@@ -43,8 +43,7 @@ public class TouchManager : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _touchPosition = _playerInput.actions["TouchPosition"];
         _touchPress = _playerInput.actions["SinglePress"];
-        _holdPress = _playerInput.actions["HoldPress"];
-        _combatManager = FindObjectOfType<CombatManager>();
+        _combatManager = FindFirstObjectByType<CombatManager>();
     }
 
     private void Start()
@@ -54,15 +53,15 @@ public class TouchManager : MonoBehaviour
     private void OnEnable()
     {
         _touchPress.performed += OnTouched;
-        _holdPress.started += OnHoldStarted;
-        _holdPress.canceled += OnHoldCanceled;
+        // _holdPress.started += OnHoldStarted;
+        // _holdPress.canceled += OnHoldCanceled;
     }
 
     private void OnDisable()
     {
         _touchPress.performed -= OnTouched;
-        _holdPress.started -= OnHoldStarted;
-        _holdPress.canceled -= OnHoldCanceled;
+        // _holdPress.started -= OnHoldStarted;
+        // _holdPress.canceled -= OnHoldCanceled;
     }
 
     private void Update()
@@ -93,29 +92,30 @@ public class TouchManager : MonoBehaviour
         // }
     }
 
-    private void PressReleased(InputAction.CallbackContext context)
-    {
-        if (!_IsHolding) { return; }
-        _IsHolding = false;
-    }
-
-    private void OnHolding(InputAction.CallbackContext context)
-    {
-    }
-
-    private void GetTouchPositon(InputAction.CallbackContext context)
-    {
-    }
+    // private void PressReleased(InputAction.CallbackContext context)
+    // {
+    //     if (!_IsHolding) { return; }
+    //     _IsHolding = false;
+    // }
+    //
+    // private void OnHolding(InputAction.CallbackContext context)
+    // {
+    // }
+    //
+    // private void GetTouchPositon(InputAction.CallbackContext context)
+    // {
+    // }
 
     private void OnTouched(InputAction.CallbackContext context)
     {
+        _touchPress.Disable();
         if (!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch())
         {
             Debug.LogError("PROBLEM TOUCH");
             return;
         }
-        print("TOUCHED");
-        _gameManager.TouchScreen();
+        _gameManager.TouchScreen(_touchPress);
+
         Vector2 touchedPosition = _touchPosition.ReadValue<Vector2>();
         _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPosition);
         actualCollider = GetCollider();
@@ -226,45 +226,45 @@ public class TouchManager : MonoBehaviour
         return null;
     }
 
-    private void OnHoldStarted(InputAction.CallbackContext context)
-    {
-        _IsHolding = true;
-        Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
-        _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPos);
-        _actualTouchedPosition.z = 0f;
-        Collider2D hitCollider = Physics2D.OverlapPoint(_actualTouchedPosition);
-        if (hitCollider != null && hitCollider.TryGetComponent<IDraggable>(out var draggable))
-        {
-            currentDraggedObject = hitCollider.gameObject;
-            currentDraggable = draggable;
-            _isDragging = true;
-            _isScrolling = false;
-            currentDraggable.OnBeginDrag();
-        }
-        else
-        {
-            _isDragging = false;
-            if (canScroll)
-            {
-                _isScrolling = true;
-                _scrollStartTouchPos = _actualTouchedPosition;
-                _scrollStartCameraY = Camera.main.transform.position.y;
-            }
-        }
-    }
-
-    private void OnHoldCanceled(InputAction.CallbackContext context)
-    {
-        _IsHolding = false;
-        if (_isDragging && currentDraggable != null)
-        {
-            currentDraggable.OnEndDrag();
-        }
-        _isDragging = false;
-        _isScrolling = false;
-        currentDraggable = null;
-        currentDraggedObject = null;
-    }
+    // private void OnHoldStarted(InputAction.CallbackContext context)
+    // {
+    //     _IsHolding = true;
+    //     Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
+    //     _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPos);
+    //     _actualTouchedPosition.z = 0f;
+    //     Collider2D hitCollider = Physics2D.OverlapPoint(_actualTouchedPosition);
+    //     if (hitCollider != null && hitCollider.TryGetComponent<IDraggable>(out var draggable))
+    //     {
+    //         currentDraggedObject = hitCollider.gameObject;
+    //         currentDraggable = draggable;
+    //         _isDragging = true;
+    //         _isScrolling = false;
+    //         currentDraggable.OnBeginDrag();
+    //     }
+    //     else
+    //     {
+    //         _isDragging = false;
+    //         if (canScroll)
+    //         {
+    //             _isScrolling = true;
+    //             _scrollStartTouchPos = _actualTouchedPosition;
+    //             _scrollStartCameraY = Camera.main.transform.position.y;
+    //         }
+    //     }
+    // }
+    //
+    // private void OnHoldCanceled(InputAction.CallbackContext context)
+    // {
+    //     _IsHolding = false;
+    //     if (_isDragging && currentDraggable != null)
+    //     {
+    //         currentDraggable.OnEndDrag();
+    //     }
+    //     _isDragging = false;
+    //     _isScrolling = false;
+    //     currentDraggable = null;
+    //     currentDraggedObject = null;
+    // }
 
     // public void SetInteractionEnabled(bool enabled)
     // {

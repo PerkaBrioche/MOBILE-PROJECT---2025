@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -40,18 +41,24 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private bool _isMooving;
     private bool _isOriginCampEnemy;
 
-    [Header("OTHERS")] 
+    [Foldout("OTHERS")] 
     [SerializeField] private GameObject _shipLock;
+    [Foldout("OTHERS")] 
     [SerializeField] private SpriteRenderer _shipIcon;
-    
+    [Foldout("OTHERS")] 
     [SerializeField] private SpriteRenderer _RawNumber;
+    [Foldout("OTHERS")] 
     [SerializeField] private List<Sprite> _numbers;
+    [Foldout("OTHERS")] 
     [SerializeField] private Slider _sliderLife;
-    private Sprite _shipSprite;
+    [Foldout("OTHERS")] 
+    [SerializeField] private Slider _sliderLifePrewiew;
+    [Foldout("OTHERS")] 
+    [SerializeField] private textController _textController;
+
     
+    private Sprite _shipSprite;
     private Animator _shipAnimator;
-
-
     private ShipSpawner.shipType _shipType;
     
     public enum shipAnimations
@@ -59,6 +66,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         takeDamage,
         locked,
         Unlocked,
+        InDanger,
+        NoDanger
     }
     
     public void PlayAnim(shipAnimations anim)
@@ -73,6 +82,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 break;
             case shipAnimations.Unlocked:
                 _shipAnimator.SetBool("Locked", false);
+                break;
+            case shipAnimations.InDanger:
+                _shipAnimator.SetBool("InDanger", true);
+                break;
+            case shipAnimations.NoDanger:
+                _shipAnimator.SetBool("InDanger", false);
                 break;
         }
     }
@@ -256,6 +271,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         runtimeStats.HP -= damage;
         UpdateSlider();
         PlayAnim(shipAnimations.takeDamage);
+        _textController.ShowDamage(damage);
         
         ShakeManager.instance.ShakeCamera(0.3f,0.15f);  
         
@@ -350,6 +366,11 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         }
         if (_shipType != ShipSpawner.shipType.SpaceFortress)
         {
+            if (_shipType == ShipSpawner.shipType.Tank && HasMoved() && IsInLockDown())
+            {
+                SetLockMode(true);
+                return;
+            }
             if (_hasAttacked)
             {
                 if (_shipType != ShipSpawner.shipType.Rider)

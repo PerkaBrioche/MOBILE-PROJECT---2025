@@ -15,8 +15,14 @@ public class Tank : Enemy
     }
     public override void SetMyTurn()
     {
+        if(_isCoward && _shipController.HasMoved()) // LOCK
+        {
+        }
+        else
+        {
+            StartCoroutine(Wait(1.5f));
+        }
         base.SetMyTurn();
-        StartCoroutine(Wait(1.5f));
     }
     
     private IEnumerator Wait(float time)
