@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Dialogue_Snake1_0: -8134585107818311587
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Dialogue_Squirrel2_0: -7950741353036276250
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

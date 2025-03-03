@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Dialogue_Cameleon1_0: 7965485675481875629
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

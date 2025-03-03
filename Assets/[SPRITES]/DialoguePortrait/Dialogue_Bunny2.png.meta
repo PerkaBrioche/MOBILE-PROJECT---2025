@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Dialogue_Bunny2_0: 2626422983528723171
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

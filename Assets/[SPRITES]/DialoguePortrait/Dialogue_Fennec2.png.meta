@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Dialogue_Fennec2_0: 3323784346912201741
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
