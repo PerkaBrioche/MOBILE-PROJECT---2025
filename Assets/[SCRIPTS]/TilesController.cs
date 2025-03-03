@@ -81,6 +81,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         HealTile,
         DamageTile,
         asteroid,
+        exit,
     }
     
     [SerializeField] private tileType _tileType;
@@ -131,19 +132,8 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         ApplyTileType();
     }
     
-
-    public enum TileColor
-    {
-        Red,
-        Blue,
-        Green,
-        Yellow,
-        Magenta
-    }
-    
     private void UpdateTile()
     {
-        _spriteRenderer.sprite = _tilesSprite[Random.Range(0, _tilesSprite.Count)];
         switch (_tileType)
         {
             case tileType.HealTile:
@@ -156,7 +146,11 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 _spriteRenderer.sprite = _asteroidSprites[Random.Range(0, _asteroidSprites.Count)];
                 break;
             case tileType.defaultTile:
+                _spriteRenderer.sprite = _tilesSprite[Random.Range(0, _tilesSprite.Count)];
                 _spriteRenderer.color = Color.white;
+                break;
+            case tileType.exit:
+                _spriteRenderer.color = Color.black;
                 break;
         }   
     }
@@ -208,6 +202,9 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 _healthParticule.SetActive(false);
                 _damageParticule.SetActive(false);
                 break;
+            case tileType.exit:
+                _spriteRenderer.color = Color.black;
+                break;  
         }
     }
 
@@ -548,7 +545,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     }
 
     public void ChangeCollider(bool enabled)
-    {
+    { 
         _boxCollider2D.enabled = enabled;
     }
     

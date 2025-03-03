@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
+using Febucci.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -15,11 +18,28 @@ public class DialogueManager : MonoBehaviour
     public Image backgroundDarkener;
     private int index;
     private bool active;
+    private TypewriterByCharacter typewriter;
+    
+    private Transform actualSpeaker;
+    private bool _isTalking = false;
+    
+    [SerializeField] private List<ShipController> _shipsList = new List<ShipController>();
+    
+    
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+        
+        typewriter = dialogueText.GetComponent<TypewriterByCharacter>();
+
+
+    }
+
+    private void Start()
+    {
+        _shipsList = ShipManager.Instance.GetAllships();
     }
 
     void Update()
@@ -46,7 +66,6 @@ public class DialogueManager : MonoBehaviour
     private IEnumerator StartDialogueCoroutine()
     {
         yield return null;
-        SetAllHealthBars(false);
        // TouchManager.Instance.SetInteractionEnabled(false);
         dialoguePanel.SetActive(true);
         backgroundDarkener.gameObject.SetActive(true);
@@ -63,11 +82,14 @@ public class DialogueManager : MonoBehaviour
             EndDialogue();
             return;
         }
+        
+        typewriter.ShowText(dialogueData.lines[index].text);
+        
         DialogueLine line = dialogueData.lines[index];
         leftImage.color = line.leftSpeaker ? new Color(1,1,1,1) : new Color(1,1,1,0.5f);
         rightImage.color = line.leftSpeaker ? new Color(1,1,1,0.5f) : new Color(1,1,1,1);
+        actualSpeaker = line.leftSpeaker ? leftImage.transform : rightImage.transform;
         speakerNameText.text = line.speakerName;
-        dialogueText.text = line.text;
     }
 
     public void NextLine()
@@ -82,17 +104,36 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         backgroundDarkener.gameObject.SetActive(false);
         active = false;
-        SetAllHealthBars(true);
-       // TouchManager.Instance.SetInteractionEnabled(true);
-        //TurnManager.Instance.DialogueEnded();
+        ShipsSpawned();
+        TurnManager.Instance.DialogueEnded();
     }
     
-    private void SetAllHealthBars(bool visible)
+
+    private void ShipsSpawned()
     {
-        ShipController[] ships = FindObjectsOfType<ShipController>();
-        foreach (ShipController ship in ships)
+        var shipsSpawners = FindObjectsOfType<ShipSpawner>();
+        foreach (var shipSpawner in shipsSpawners)
         {
-          //  ship.SetHealthBarVisible(visible);
+            shipSpawner.SpawnShip();
         }
     }
+    public void CharacterTalking()
+    {
+        if(actualSpeaker == null) return;
+        if (actualSpeaker.TryGetComponent(out Animation anim))
+        {
+            anim.Play();
+        }
+        else
+        {
+            Debug.LogError("MISSING ANIMATION COMPONENT");
+        }
+    }
+    private IEnumerator ScaleCharacter()
+    {
+        _isTalking = true;
+        yield return new WaitForSeconds(0.02f);
+        _isTalking = false;
+    }
+    
 }

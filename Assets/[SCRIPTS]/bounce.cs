@@ -19,7 +19,7 @@ public class bounce : MonoBehaviour
     }
     
     
-    private void Start()
+    private void Awake()
     {
         originalScale = transform.localScale;
     }
@@ -29,7 +29,6 @@ public class bounce : MonoBehaviour
     {
         if(bounceForce == 0) {bounceForce = _bounceForce;}
         if(bounceDuration == 0) {bounceDuration = _bounceDuration;}
-        
         StartCoroutine(bounceEnumerator(bounceForce, bounceDuration, holded));
     }
     
@@ -37,6 +36,26 @@ public class bounce : MonoBehaviour
     {
         StartCoroutine(bounceEnumerator(_bounceForce, _bounceDuration, false));
     }
+
+    public void BounceSpawn()
+    {
+        StartCoroutine(BounceSpawnRoutine());
+    }
+    private IEnumerator BounceSpawnRoutine()
+    {
+        float alpha = 0f;
+        Vector3 targetScale = new Vector3(originalScale.x , originalScale.y );
+        Vector3 scaleSpaw = new Vector3(0, 0, 0);
+        while (alpha <= 1)
+        {
+            alpha += Time.deltaTime;
+            Vector3 newScaleObject = Vector3.Lerp(scaleSpaw, targetScale, alpha);
+            transform.localScale = newScaleObject;
+            yield return null;
+        }
+    }  
+    
+    
     
 
     private IEnumerator bounceEnumerator(float bounceForce, float bounceDuration, bool stay)

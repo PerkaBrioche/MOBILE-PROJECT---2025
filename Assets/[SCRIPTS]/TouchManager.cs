@@ -281,8 +281,8 @@ public class TouchManager : MonoBehaviour
     //     currentDraggedObject = null;
     // }
 
-    // public void SetInteractionEnabled(bool enabled)
-    // {
-    //     _playerInput.enabled = enabled;
-    // }
+     public void SetInteractionEnabled(bool enabled)
+     {
+         _playerInput.enabled = enabled;
+     }
 }
