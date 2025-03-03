@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Dialogue_Frog1_0: -5688537641475193305
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Dialogue_Sheep2_0: -2004821113440207182
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
