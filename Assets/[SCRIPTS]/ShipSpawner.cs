@@ -1,6 +1,5 @@
 using System;
 using NaughtyAttributes;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipSpawner : MonoBehaviour
@@ -86,7 +85,7 @@ public class ShipSpawner : MonoBehaviour
         
         if(_shipStats == null)
         {
-            Debug.LogError("Ship Stats not found");
+            Debug.LogError("Ship Stats not found in " + gameObject.name);
             return;
         }
         
@@ -95,6 +94,4 @@ public class ShipSpawner : MonoBehaviour
         _shipController.Spawn();
 
     }
-    
-    
 }

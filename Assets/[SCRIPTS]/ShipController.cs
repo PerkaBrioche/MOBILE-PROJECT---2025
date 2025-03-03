@@ -70,6 +70,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     }
     public void PlayAnim(shipAnimations anim)
     {
+        if (_shipAnimator == null)
+            return;
         switch (anim)
         {
             case shipAnimations.takeDamage:
@@ -122,8 +124,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _bounce = GetComponent<bounce>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _shipAnimator = GetComponent<Animator>();
+        if (_shipAnimator == null)
+            Debug.LogWarning("Animator manquant sur " + gameObject.name);
     }
-
+    
     public void GetPath()
     {
         if (_myTilesController == null) return;
@@ -173,7 +177,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         runtimeStats.WalkDistance = _myStats.WalkDistance;
         runtimeStats.AttackRange = _myStats.AttackRange;
         SetOriginCamp(IsEnemy);
-        if(_sliderLife != null)
+        if (_sliderLife != null)
         {
             _sliderLife.minValue = 0;
             _sliderLife.maxValue = _myStats.HP;

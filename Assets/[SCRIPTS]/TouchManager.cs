@@ -62,6 +62,7 @@ public class TouchManager : MonoBehaviour
     {
         _gameManager = GameManager.Instance;
     }
+    
     private void OnEnable()
     {
         _touchPress.performed += OnTouched;
@@ -155,13 +156,13 @@ public class TouchManager : MonoBehaviour
             {
                 if (tC.isHighLighted())
                 {
-                    if(_ActualshipController != null)
+                    if (_ActualshipController != null)
                     {
-                        if(tC.IsAnAttackTile())
+                        if (tC.IsAnAttackTile())
                         {
                             Reset();
                         }
-                        else if(tC.IsRangeTile())
+                        else if (tC.IsRangeTile())
                         {
                             if (_ActualshipController.CanMove())
                             {
@@ -177,8 +178,9 @@ public class TouchManager : MonoBehaviour
         {
             if (_ActualshipController == null)
             {
-                if(sc.IsAnEnemy())
+                if (sc.IsAnEnemy())
                 {
+                    // rien
                 }
                 else
                 {
@@ -190,7 +192,7 @@ public class TouchManager : MonoBehaviour
             }
             else
             {
-                if(sc.IsAnEnemy())
+                if (sc.IsAnEnemy())
                 {
                     if (_ActualshipController.IsAnEnemy())
                     {
