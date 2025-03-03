@@ -485,9 +485,17 @@ PrefabInstance:
       value: Tiles (14)
       objectReference: {fileID: 0}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -5247697427920573995, guid: 1d6331a69b4639c4fabc306a1507e293, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -562,6 +570,10 @@ PrefabInstance:
       value: Tiles (70)
       objectReference: {fileID: 0}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: rowPosition
       value: 8
       objectReference: {fileID: 0}
@@ -573,6 +585,10 @@ PrefabInstance:
       propertyPath: columnPosition
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2703931211985048796, guid: f8b630458eb10ed4c8e37335c89357ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -652,9 +668,17 @@ PrefabInstance:
       value: Tiles (13)
       objectReference: {fileID: 0}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2703931211985048796, guid: f8b630458eb10ed4c8e37335c89357ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1350,7 +1374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TypeShip: 0
+  TypeShip: 3
   isEnemy: 1
   _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
   shipTile: {fileID: 1769605367}
@@ -2037,6 +2061,10 @@ PrefabInstance:
       value: Tiles (53)
       objectReference: {fileID: 0}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: rowPosition
       value: 8
       objectReference: {fileID: 0}
@@ -2048,6 +2076,10 @@ PrefabInstance:
       propertyPath: columnPosition
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2703931211985048796, guid: f8b630458eb10ed4c8e37335c89357ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2134,6 +2166,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 605533450}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _rightTile
       value: 
       objectReference: {fileID: 605533450}
@@ -2141,6 +2177,10 @@ PrefabInstance:
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2703931211985048796, guid: f8b630458eb10ed4c8e37335c89357ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3382,13 +3422,17 @@ PrefabInstance:
       value: Tiles (5)
       objectReference: {fileID: 0}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
     - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3819767841704402762, guid: e4b1fcd849eae83489d4c2062be4fd8d, type: 3}
+      objectReference: {fileID: -5247697427920573995, guid: 1d6331a69b4639c4fabc306a1507e293, type: 3}
     - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -3414,6 +3458,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74ac95fd2e3e864aa6908caeab9c5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &765431916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 765431917}
+  - component: {fileID: 765431918}
+  m_Layer: 0
+  m_Name: ShipSpawner 1(Clone)
+  m_TagString: Untagged
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &765431917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765431916}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.8873177, y: -3.3541415, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1245590361}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &765431918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765431916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TypeShip: 3
+  isEnemy: 1
+  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
+  shipTile: {fileID: 82729742}
+  PatrollerStats: {fileID: 11400000, guid: 0ebc91b330c14a54b951a54981b3e054, type: 2}
+  RangerStats: {fileID: 11400000, guid: 428f509a05d0fcb4db0094270e9229b2, type: 2}
+  RiderStats: {fileID: 11400000, guid: 2e83982fc65038544bbd7766956ad04b, type: 2}
+  SpaceBerzerkerStats: {fileID: 11400000, guid: 6b511a6a1be760b489fe024917ed7837, type: 2}
+  TankStats: {fileID: 11400000, guid: e1a270747217482488a8b060b18fb8be, type: 2}
+  SpaceFortressStats: {fileID: 11400000, guid: 07431dd51d00d584a809188c6649e13c, type: 2}
+  MotherShipStats: {fileID: 11400000, guid: 3165f04528bcac245b065c6447e1433e, type: 2}
 --- !u!1001 &783744288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3475,6 +3574,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 566370171}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _rightTile
       value: 
       objectReference: {fileID: 1674912121}
@@ -3482,6 +3585,10 @@ PrefabInstance:
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -5247697427920573995, guid: 1d6331a69b4639c4fabc306a1507e293, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3930,9 +4037,17 @@ PrefabInstance:
       value: Tiles (54)
       objectReference: {fileID: 0}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2703931211985048796, guid: f8b630458eb10ed4c8e37335c89357ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5690,7 +5805,7 @@ Transform:
   - {fileID: 471739707}
   - {fileID: 1046906054}
   - {fileID: 1676217113}
-  - {fileID: 1488489081}
+  - {fileID: 765431917}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1257450142
@@ -7340,61 +7455,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 457306361492826273, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
   m_PrefabInstance: {fileID: 1471873227}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1488489080
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1488489081}
-  - component: {fileID: 1488489082}
-  m_Layer: 0
-  m_Name: ShipSpawner 1(Clone)
-  m_TagString: Untagged
-  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1488489081
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488489080}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.926094, y: -3.3541415, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1245590361}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1488489082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488489080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04aa51253c22cf7499d80206137941a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TypeShip: 0
-  isEnemy: 1
-  _shipPrefab: {fileID: 2584803787075401790, guid: c7852db992bb39a428cf60bf12525454, type: 3}
-  shipTile: {fileID: 783744290}
-  PatrollerStats: {fileID: 11400000, guid: 0ebc91b330c14a54b951a54981b3e054, type: 2}
-  RangerStats: {fileID: 11400000, guid: 428f509a05d0fcb4db0094270e9229b2, type: 2}
-  RiderStats: {fileID: 11400000, guid: 2e83982fc65038544bbd7766956ad04b, type: 2}
-  SpaceBerzerkerStats: {fileID: 11400000, guid: 6b511a6a1be760b489fe024917ed7837, type: 2}
-  TankStats: {fileID: 11400000, guid: e1a270747217482488a8b060b18fb8be, type: 2}
-  SpaceFortressStats: {fileID: 11400000, guid: 07431dd51d00d584a809188c6649e13c, type: 2}
-  MotherShipStats: {fileID: 11400000, guid: 3165f04528bcac245b065c6447e1433e, type: 2}
 --- !u!1001 &1497995624
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7755,6 +7815,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 685165439}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _rightTile
       value: 
       objectReference: {fileID: 82729742}
@@ -7762,6 +7826,10 @@ PrefabInstance:
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2703931211985048796, guid: f8b630458eb10ed4c8e37335c89357ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8933,9 +9001,17 @@ PrefabInstance:
       value: Tiles (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -5247697427920573995, guid: 1d6331a69b4639c4fabc306a1507e293, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9273,9 +9349,17 @@ PrefabInstance:
       value: Tiles (9)
       objectReference: {fileID: 0}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2703931211985048796, guid: f8b630458eb10ed4c8e37335c89357ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9456,9 +9540,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 981680613}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 4754699468955094, guid: 51b9f23d1dfbd7148b32346030e9f81b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9545,9 +9637,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 523259449}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 5743873777988211750, guid: 9f450632812dfc54aa9ca5409cc22943, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10034,6 +10134,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 698840208}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _rightTile
       value: 
       objectReference: {fileID: 1578718840}
@@ -10041,6 +10145,10 @@ PrefabInstance:
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2703931211985048796, guid: f8b630458eb10ed4c8e37335c89357ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10108,6 +10216,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1774697656}
     - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: _tileType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408854163311722135, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
       propertyPath: _rightTile
       value: 
       objectReference: {fileID: 489224526}
@@ -10115,6 +10227,10 @@ PrefabInstance:
       propertyPath: _shipSpawner
       value: 
       objectReference: {fileID: 3307375311096509251, guid: f3d7726fcf1fb2442829eb6377d03bf1, type: 3}
+    - target: {fileID: 6578500546799195207, guid: 777dcd807dcf7804fbc2f280c1157e3b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2138743572502155685, guid: cba182656c1101c478252dd8bb4aa4e7, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
