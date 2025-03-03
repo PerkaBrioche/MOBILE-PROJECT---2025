@@ -12,13 +12,11 @@ public class UnitStats : ScriptableObject
     [SerializeField] private string _unitName;
     public string UnitName { get { return _unitName; } set { _unitName = value; } }
     [SerializeField] private Component _unitType;
-    
     [Header("Pilotes")]
     [SerializeField] private Sprite _piloteAllie;
     public Sprite PiloteAllie { get { return _piloteAllie; } set { _piloteAllie = value; } }
     [SerializeField] private Sprite _piloteEnnemi;
     public Sprite PiloteEnnemi { get { return _piloteEnnemi; } set { _piloteEnnemi = value; } }
-    
     [Header("Statistiques de combat")]
     [SerializeField] private int hp;
     public int HP { get { return hp; } set { hp = value; } }
@@ -28,13 +26,11 @@ public class UnitStats : ScriptableObject
     public float DEF { get { return def; } set { def = value; } }
     [SerializeField] private int atkRange;
     public int AtkRange { get { return atkRange; } set { atkRange = value; } }
-    
     [Header("DEPLACEMENT HORIZONTAL ET VERTICAL")]
     [SerializeField] private int _walkDistance;
     public int WalkDistance { get { return _walkDistance; } }
     [SerializeField] private int _attackRange;
     public int AttackRange { get { return _attackRange; } }
-    
     [Space(10)]
     [Header("OTHERS")]
     [SerializeField] private int _cooldownAttack;

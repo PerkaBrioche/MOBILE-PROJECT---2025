@@ -81,6 +81,68 @@ public class CombatManager : MonoBehaviour
         _isInCombat = false;
     }
 
+    public void PreviewCombat(ShipController attacker, ShipController target)
+    {
+        _attackerShip = attacker;
+        _targetShip = target;
+        int predictedDamage = attacker.runtimeStats.ATK;
+        int predictedHP = target.runtimeStats.HP - predictedDamage;
+        if (attackerHPText != null)
+            attackerHPText.text = attacker.runtimeStats.HP.ToString();
+        if (attackerAtkText != null)
+            attackerAtkText.text = attacker.runtimeStats.ATK.ToString();
+        if (targetHPText != null)
+            targetHPText.text = predictedHP.ToString();
+        if (targetAtkText != null)
+            targetAtkText.text = target.runtimeStats.ATK.ToString();
+        if (attackerPilotImage != null)
+            attackerPilotImage.sprite = attacker.IsAnEnemy() ? attacker.GetUnitStats().PiloteEnnemi : attacker.GetUnitStats().PiloteAllie;
+        if (targetPilotImage != null)
+            targetPilotImage.sprite = target.IsAnEnemy() ? target.GetUnitStats().PiloteEnnemi : target.GetUnitStats().PiloteAllie;
+        StartCoroutine(BlinkTargetHP());
+    }
+
+    private IEnumerator BlinkTargetHP()
+    {
+        float blinkDuration = 0.5f;
+        int blinkCount = 3;
+        Color originalColor = targetHPText.color;
+        for (int i = 0; i < blinkCount; i++)
+        {
+            targetHPText.color = Color.clear;
+            yield return new WaitForSeconds(blinkDuration);
+            targetHPText.color = originalColor;
+            yield return new WaitForSeconds(blinkDuration);
+        }
+    }
+
+    public void DisplayAttackerStats(ShipController attacker)
+    {
+        _attackerShip = attacker;
+        if (attackerHPText != null)
+            attackerHPText.text = attacker.runtimeStats.HP.ToString();
+        if (attackerAtkText != null)
+            attackerAtkText.text = attacker.runtimeStats.ATK.ToString();
+        if (attackerPilotImage != null)
+            attackerPilotImage.sprite = attacker.IsAnEnemy() ? attacker.GetUnitStats().PiloteEnnemi : attacker.GetUnitStats().PiloteAllie;
+    }
+
+    public void ClearPreview()
+    {
+        if (attackerHPText != null)
+            attackerHPText.text = "";
+        if (attackerAtkText != null)
+            attackerAtkText.text = "";
+        if (targetHPText != null)
+            targetHPText.text = "";
+        if (targetAtkText != null)
+            targetAtkText.text = "";
+        if (attackerPilotImage != null)
+            attackerPilotImage.sprite = null;
+        if (targetPilotImage != null)
+            targetPilotImage.sprite = null;
+    }
+
     public bool IsInCombat()
     {
         return _isInCombat;

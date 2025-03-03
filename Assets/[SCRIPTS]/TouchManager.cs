@@ -36,6 +36,7 @@ public class TouchManager : MonoBehaviour
 
     private bool _isHighLighted;
     private CombatManager _combatManager;
+    private ShipController _previewTarget = null;
 
     private void Awake()
     {
@@ -126,7 +127,7 @@ public class TouchManager : MonoBehaviour
         {
             Ib.Bounce();
         }
-        if (actualCollider.TryGetComponent(out TilesController tC)) // TILES
+        if (actualCollider.TryGetComponent(out TilesController tC))
         {
             if (tC.IsBlocked())
             {
@@ -145,7 +146,6 @@ public class TouchManager : MonoBehaviour
                         else if(tC.IsRangeTile())
                         {
                             print("RANGE TILE");
-
                             if (_ActualshipController.CanMove())
                             {
                                 _ActualshipController.SetNewPosition(tC);
@@ -159,7 +159,7 @@ public class TouchManager : MonoBehaviour
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
             if(sc.GetType() == ShipSpawner.shipType.MothherShip){return;}
-           sc.GetInfos();
+            sc.GetInfos();
             if (_ActualshipController == null)
             {
                 if(sc.IsAnEnemy())
@@ -168,6 +168,7 @@ public class TouchManager : MonoBehaviour
                 else
                 {
                     _isHighLighted = true;
+                    _combatManager.DisplayAttackerStats(sc);
                 }
                 sc.GetPath();
                 _ActualshipController = sc;
@@ -183,14 +184,27 @@ public class TouchManager : MonoBehaviour
                     }
                     if (sc.GetTiles().HasAnEnemy() && sc.GetTiles().IsAnAttackTile() && _ActualshipController.CanAttack() && !_ActualshipController.IsInLockDown())
                     {
-                        _ActualshipController.SetHasAttacked(true);
-                        _combatManager.StartCombat(_ActualshipController, sc);
+                        if(_previewTarget == null || _previewTarget != sc)
+                        {
+                            _previewTarget = sc;
+                            _combatManager.PreviewCombat(_ActualshipController, sc);
+                        }
+                        else
+                        {
+                            _ActualshipController.SetHasAttacked(true);
+                            _combatManager.StartCombat(_ActualshipController, sc);
+                            _previewTarget = null;
+                            Reset();
+                        }
                     }
-                    Reset();
+                    else
+                    {
+                        Reset();
+                    }
                 }
                 else
                 {
-                    if(_ActualshipController == sc)  // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
+                    if(_ActualshipController == sc)
                     {
                         _ActualshipController.SetLockMode(true);
                         Reset();
@@ -212,6 +226,8 @@ public class TouchManager : MonoBehaviour
         _ActualshipController = null;
         _ActualtilesController = null;
         _isHighLighted = false;
+        _previewTarget = null;
+        _combatManager.ClearPreview();
     }
 
     private Collider2D GetCollider()
