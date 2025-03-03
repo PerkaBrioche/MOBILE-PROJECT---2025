@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tank : Enemy
@@ -7,7 +8,7 @@ public class Tank : Enemy
     private TilesController _myTile;
     private ShipController _shipController;
     private bool _isCoward = false;
-    private bool _hasbeenCoward = false;
+    private bool _hasBeenCoward = false;
     private void Start()
     {
         base.Start(); 
@@ -15,8 +16,21 @@ public class Tank : Enemy
     }
     public override void SetMyTurn()
     {
+        if(_isCoward && _shipController.HasMoved()) // LOCK
+        {
+        }
+        else
+        {
+            if (_hasBeenCoward)
+            {
+                _hasBeenCoward = false;
+            }
+            else
+            {
+                StartCoroutine(Wait(1.5f));
+            }
+        }
         base.SetMyTurn();
-        StartCoroutine(Wait(1.5f));
     }
     
     private IEnumerator Wait(float time)
@@ -50,17 +64,20 @@ public class Tank : Enemy
         switch (_shipController.lockDownLeft())
         {
             case 1:
+                _isCoward = false;
+                _hasBeenCoward = true;
                 PlayPathAutomatically();
                 break;
             case 2:
-                MoveInDirection(GetOpossiteDirection(FindClosestEnemy().GetTiles(), _shipController.GetTiles()), _shipController.GetTiles());
+                MoveInDirection(GetOpossiteDirection(FindClosestEnemy()[0].GetTiles(), _shipController.GetTiles()), _shipController.GetTiles());
+                _shipController.SetHasMoved(true);
                 EndTurn();
                 break;
             case 3:
-                MoveInDirection(GetOpossiteDirection(FindClosestEnemy().GetTiles(), _shipController.GetTiles()));
+                MoveInDirection(GetOpossiteDirection(FindClosestEnemy()[0].GetTiles(), _shipController.GetTiles()));
+                _shipController.SetHasMoved(true);
                 EndTurn();
                 break;
         }
-        _shipController.SetHasMoved(true);
     }
 }

@@ -109,8 +109,7 @@ public class GridController : MonoBehaviour
     {
         foreach (var tiles in _tilesControllers)
         {
-            var randomColor = Colors[Random.Range(0, Colors.Count)];
-            tiles.ChangeTilesColor(randomColor);
+            tiles.ChangeTileSprite(TilesController.enumTileSprites.defaultTile);
         }
     }
 
@@ -119,13 +118,14 @@ public class GridController : MonoBehaviour
         
     }
 
-    public void ResetAllTiles()
+    public void ResetAllTiles(bool noBounce = false)
     {
         foreach (var tiles in _tilesControllers)
         {
-            tiles.ResetTiles();
+            tiles.ResetTiles(noBounce);
         }
     } 
+
     
     
     

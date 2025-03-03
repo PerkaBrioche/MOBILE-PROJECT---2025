@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -9,9 +8,6 @@ public class MenuManager : MonoBehaviour
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
-    
-    public GameObject optionsMenu;
-    public GameObject levelSelector;
 
     public void SetMasterVolume(float volume)
     {
@@ -33,22 +29,13 @@ public class MenuManager : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit();
+        Application.Quit(); //ne fonctionne que en mode build donc tkt il marche NORMALEMENT :)
         Debug.Log("Quit Game");
     }
-    
-    public void ToggleOptions()
+
+    public void CloseMenu()
     {
-        if (optionsMenu != null)
-        {
-            optionsMenu.SetActive(!optionsMenu.activeSelf);
-            levelSelector.SetActive(!levelSelector.activeSelf);
-        }
-    }
-    
-    public void LoadScene(int sceneNumber)
-    {
-        SceneManager.LoadScene(sceneNumber);
+        gameObject.SetActive(false);
     }
     
 //    ⠀⣠⣤⣶⣶⣦⣄⡀  ⠀⢀⣤⣴⣶⣶⣤⣀⠀
@@ -56,9 +43,10 @@ public class MenuManager : MonoBehaviour
 //    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 //    ⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏
 //    ⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⠀
-//    ⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀
+//    ⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀
 //    ⠀⠀⠀⠀⠀⠉⢿⣿⣿⣿⠟⠋⠀⠀⠀⠀⠀
 //    ⠀⠀⠀⠀⠀⠀⠀⠙⠻⠁⠀⠀⠀
 //          ^^^^^^
 //         GAB + MAX⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    
 }

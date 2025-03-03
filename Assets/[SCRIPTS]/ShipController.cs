@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -31,7 +32,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     // TURN
     private bool _isLocked = false;
-    [SerializeField] private bool _hasMoved;
+    private bool _hasMoved;
     private bool _hasAttacked;
 
     private int _currentLockAttack;
@@ -40,25 +41,39 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private bool _isMooving;
     private bool _isOriginCampEnemy;
 
-    [Header("OTHERS")] 
+    [Foldout("OTHERS")] 
     [SerializeField] private GameObject _shipLock;
+    [Foldout("OTHERS")] 
     [SerializeField] private SpriteRenderer _shipIcon;
-    
+    [Foldout("OTHERS")] 
     [SerializeField] private SpriteRenderer _RawNumber;
+    [Foldout("OTHERS")] 
     [SerializeField] private List<Sprite> _numbers;
+    [Foldout("OTHERS")] 
     [SerializeField] private Slider _sliderLife;
-    private Sprite _shipSprite;
+    [Foldout("OTHERS")] 
+    [SerializeField] private Slider _sliderLifePrewiew;
+    [Foldout("OTHERS")] 
+    [SerializeField] private textController _textController;
+
     
+    private Sprite _shipSprite;
     private Animator _shipAnimator;
-
-
     private ShipSpawner.shipType _shipType;
+    
+    private bool _hasBonusDamage;
+    
+
     
     public enum shipAnimations
     {
         takeDamage,
         locked,
         Unlocked,
+        InDanger,
+        NoDanger,
+        Heal,
+        Buff,
     }
     
     public void PlayAnim(shipAnimations anim)
@@ -73,6 +88,18 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 break;
             case shipAnimations.Unlocked:
                 _shipAnimator.SetBool("Locked", false);
+                break;
+            case shipAnimations.InDanger:
+                _shipAnimator.SetBool("InDanger", true);
+                break;
+            case shipAnimations.NoDanger:
+                _shipAnimator.SetBool("InDanger", false);
+                break;
+            case shipAnimations.Heal:
+                _shipAnimator.SetTrigger("getHeal");
+                break;
+            case shipAnimations.Buff:
+                _shipAnimator.SetTrigger("getBufff");
                 break;
         }
     }
@@ -118,27 +145,26 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             return;
         }
-        print("RECUPERER LE PATH");
         GetTilesPath();
     }
 
     private void GetTilesPath()
     {
-        int distance = _myStats.WalkDistance + _myStats.AttackRange;
+        int distance = runtimeStats.WalkDistance + runtimeStats.AttackRange;
         if (distance > 0)
         {
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
-            _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, _myStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.upTile, runtimeStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.downTile, runtimeStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.rightTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.leftTile, runtimeStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
+            _myTilesController.GetTiles(distance, _tilesController => _tilesController.rightTile, runtimeStats.WalkDistance, new List<Func<TilesController, TilesController>> { t => t.upTile, t => t.downTile });
         }
         int diagonal = distance - 1;
         if (diagonal > 0)
         {
-            _myTilesController.GetTiles(diagonal, t => t.upTile != null ? t.upTile.rightTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.downTile } : null, true);
-            _myTilesController.GetTiles(diagonal, t => t.upTile != null ? t.upTile.leftTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.downTile } : null, true);
-            _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.rightTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.upTile } : null, true);
-            _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.leftTile : null, _myStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.upTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.upTile != null ? t.upTile.rightTile : null, runtimeStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.downTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.upTile != null ? t.upTile.leftTile : null, runtimeStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.downTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.rightTile : null, runtimeStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.leftTile, t => t.upTile } : null, true);
+            _myTilesController.GetTiles(diagonal, t => t.downTile != null ? t.downTile.leftTile : null, runtimeStats.WalkDistance - 1, diagonal > 1 ? new List<Func<TilesController, TilesController>> { t => t.rightTile, t => t.upTile } : null, true);
         }
     }
 
@@ -165,6 +191,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         runtimeStats.UnitName = _myStats.UnitName;
         runtimeStats.HP = _myStats.HP;  
         runtimeStats.ATK = _myStats.ATK;
+        runtimeStats.DEF = Mathf.RoundToInt(_myStats.DEF);
         runtimeStats.WalkDistance = _myStats.WalkDistance;
         runtimeStats.AttackRange = _myStats.AttackRange;
         SetOriginCamp(IsEnemy);
@@ -175,6 +202,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _sliderLife.maxValue = _myStats.HP;
             UpdateSlider();
         }
+        
+        _sliderLifePrewiew.minValue = 0;
+        _sliderLifePrewiew.maxValue = _myStats.HP;
     }
 
     public void SetTiles(TilesController newTiles)
@@ -203,9 +233,18 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         return _myTilesController;
     }
 
+    public void SetLifePrewiew()
+    {
+        if (TouchManager.Instance.GetActualShipController() == null)
+        {
+            print("NO SHIP SELECTED");
+            return;
+        }
+        print(  "runtimeStats.HP = "+ runtimeStats.HP + " l'autre ATK = " + TouchManager.Instance.GetActualShipController().runtimeStats.ATK);
+        _sliderLifePrewiew.value = (runtimeStats.HP - TouchManager.Instance.GetActualShipController().runtimeStats.ATK);
+    }
     public void SetNewPosition(TilesController neswtiles)
     {
-        print("SET NEW POSITON");
         SetHasMoved(true);
         if (GetType() != ShipSpawner.shipType.Rider)
         {
@@ -232,17 +271,47 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     private void EndMovement()
     {
-        print("FIN DE MOUVEMENT");
         if (TurnManager.Instance.IsEnemyTurn())
         {
             if(transform.TryGetComponent(out Enemy enemy))
             {
-                print("ON LANCE LE MY TUNT");
                 enemy.SetMyTurn();
             }
         }
         SetMoving(false);
+        CheckTileType();
     }
+
+    private void CheckTileType()
+    {
+        var tileType = _myTilesController.GetTileType();
+        switch (tileType)
+        {
+            case TilesController.tileType.HealTile:
+                PlayAnim(shipAnimations.Heal);
+                ApplyHealth();
+                _textController.ShowHeal();
+                _myTilesController.SetTileType(TilesController.tileType.defaultTile);
+                break;
+            case TilesController.tileType.DamageTile:
+                PlayAnim(shipAnimations.Buff);
+                SetBonusDamage(true);
+                _myTilesController.SetTileType(TilesController.tileType.defaultTile);
+                break;
+        }
+    }
+
+    private void ApplyHealth()
+    {
+        runtimeStats.HP += 15;
+        if(runtimeStats.HP > _myStats.HP)
+        {
+            runtimeStats.HP = _myStats.HP;
+        }
+        UpdateSlider();
+    }
+    
+    
 
     private void OnValidate()
     {
@@ -257,9 +326,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         runtimeStats.HP -= damage;
         UpdateSlider();
         PlayAnim(shipAnimations.takeDamage);
-       // ShakeManager.instance.ShakeCamera(1.2f,0.3f);  
+        _textController.ShowDamage(damage);
         
-        if (runtimeStats.HP <= 0) { Die(); }
+        ShakeManager.instance.ShakeCamera(0.3f,0.15f);  
+        
     }
 
     public void Die()
@@ -325,6 +395,11 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     public void SetHasAttacked(bool attack)
     {
         _hasAttacked = attack;
+        if(_shipType == ShipSpawner.shipType.Rider)
+        {
+            runtimeStats.WalkDistance--;
+            SetHasMoved(false);
+        }
         CheckLock();
         if (!_isInLockDown && _myStats.CooldownAttack > 0)
         {
@@ -335,6 +410,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     public void SetHasMoved(bool move)
     {
         _hasMoved = move;
+        CheckLock();
     }
 
     public void CheckLock()
@@ -345,6 +421,11 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         }
         if (_shipType != ShipSpawner.shipType.SpaceFortress)
         {
+            if (_shipType == ShipSpawner.shipType.Tank && HasMoved() && IsInLockDown())
+            {
+                SetLockMode(true);
+                return;
+            }
             if (_hasAttacked)
             {
                 if (_shipType != ShipSpawner.shipType.Rider)
@@ -353,7 +434,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                     return;
                 }
             }
-            if (_hasMoved && _hasAttacked && _shipType != ShipSpawner.shipType.Rider)
+            if (_hasMoved && _hasAttacked)
             {
                 SetLockMode(true);
                 return;
@@ -364,7 +445,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             if (_hasMoved || _hasAttacked)
             {
-                print("JE ME LOCK GAGAGA");
                 SetLockMode(true);
                 return;
             }
@@ -374,6 +454,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void ResetShip()
     {
+        runtimeStats.WalkDistance = GetUnitStats().WalkDistance;
         _hasMoved = false;
         _hasAttacked = false;
         SetLockMode(false);
@@ -468,6 +549,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _sliderLife.value = Mathf.Lerp(originalValue, runtimeStats.HP, alpha);
             yield return null;
         }
+        if (runtimeStats.HP <= 0) { Die(); }
         yield return null;
     }
 
@@ -480,6 +562,23 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         return _myStats;
     }
-    
+    public void SetBonusDamage(bool state)
+    {
+        _hasBonusDamage = state;
+        
+        if (state)
+        {
+            runtimeStats.ATK +=5;
+        }
+        else
+        {
+            runtimeStats.ATK -=5;
+        }
+        
+    }
+    public bool HasBonusDamage()
+    {
+        return _hasBonusDamage;
+    }
     
 }

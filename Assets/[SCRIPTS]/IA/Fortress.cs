@@ -41,7 +41,7 @@ public class Fortress : Enemy
     private void CheckCondition()
     {
         _myTile = _shipController.GetTiles();
-        _closestEnemy = FindClosestEnemy();
+        _closestEnemy = FindClosestEnemy()[0];
         int distanceTarget = CalculateManhattanDistance(_closestEnemy.GetTiles(), _shipController.GetTiles());
         if (_AggroTime > 0)
         {
