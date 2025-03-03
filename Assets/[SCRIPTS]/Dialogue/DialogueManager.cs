@@ -84,15 +84,15 @@ public class DialogueManager : MonoBehaviour
         active = false;
         SetAllHealthBars(true);
        // TouchManager.Instance.SetInteractionEnabled(true);
-        //TurnManager.Instance.DialogueEnded();
+        TurnManager.Instance.DialogueEnded();
     }
     
     private void SetAllHealthBars(bool visible)
     {
         ShipController[] ships = FindObjectsOfType<ShipController>();
         foreach (ShipController ship in ships)
-        {
-          //  ship.SetHealthBarVisible(visible);
+        { 
+            ship.SetHealthBarVisible(visible);
         }
     }
 }

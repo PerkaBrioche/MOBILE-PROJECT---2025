@@ -111,9 +111,10 @@ public class CombatManager : MonoBehaviour
         {
             targetHPText.color = Color.clear;
             yield return new WaitForSeconds(blinkDuration);
-            targetHPText.color = originalColor;
+            targetHPText.color = Color.red;
             yield return new WaitForSeconds(blinkDuration);
         }
+        targetHPText.color = originalColor;
     }
 
     public void DisplayAttackerStats(ShipController attacker)
