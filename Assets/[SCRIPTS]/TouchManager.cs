@@ -163,8 +163,6 @@ public class TouchManager : MonoBehaviour
                         }
                         else if(tC.IsRangeTile())
                         {
-                            print("RANGE TILE");
-
                             if (_ActualshipController.CanMove())
                             {
                                 _ActualshipController.SetNewPosition(tC);
@@ -177,8 +175,6 @@ public class TouchManager : MonoBehaviour
         }
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
-            if(sc.GetType() == ShipSpawner.shipType.MothherShip){return;}
-       //    sc.GetInfos();
             if (_ActualshipController == null)
             {
                 if(sc.IsAnEnemy())
@@ -186,6 +182,7 @@ public class TouchManager : MonoBehaviour
                 }
                 else
                 {
+                    if(sc.GetType() == ShipSpawner.shipType.MothherShip){return;}
                     _isHighLighted = true;
                 }
                 _ActualshipController = sc;
@@ -209,6 +206,7 @@ public class TouchManager : MonoBehaviour
                 }
                 else
                 {
+                    if(sc.GetType() == ShipSpawner.shipType.MothherShip){return;}
                     if(_ActualshipController == sc)  // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
                     {
                        // _ActualshipController.SetLockMode(true);

@@ -12,4 +12,9 @@ public class textController : MonoBehaviour
         _myText.text = "-"+ damage;
         _myAnimator.SetTrigger("ShowDamage");
     }
+    
+    public void ShowHeal()
+    {
+        _myAnimator.SetTrigger("ShowHeal");
+    }
 }

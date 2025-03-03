@@ -95,7 +95,6 @@ public class CombatManager : MonoBehaviour
         if (damage < 1) damage = 1;
         if (_attackerShip.HasBonusDamage())
         {
-            damage += 5;
             _attackerShip.SetBonusDamage(false);
         }
         _targetShip.TakeDamage(damage);

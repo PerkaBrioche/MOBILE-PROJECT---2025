@@ -34,6 +34,9 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     [SerializeField] private SpriteRenderer _spriteRenderer;
      [Foldout("References")] 
     [SerializeField] private SpriteRenderer _tileAttackRenderer;
+    [Foldout("References")] 
+
+    [SerializeField] private SpriteRenderer _tileTypeRenderer;
 
     [Foldout("References")] [SerializeField]
     private bounce _bounce;
@@ -57,6 +60,9 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     [Foldout("OTHERS")] [SerializeField] private Sprite _blurTileSprite;
     [Foldout("OTHERS")] [SerializeField] private Sprite _attackTileSprite;
     [Foldout("OTHERS")] [SerializeField] private Sprite _enemyDetectedTileSprite;
+    [Foldout("OTHERS")] [SerializeField] private GameObject _healthParticule;
+    [Foldout("OTHERS")] [SerializeField] private GameObject _damageParticule;
+    [Foldout("OTHERS")] [SerializeField] private List<Sprite> _asteroidSprites;
     private Sprite _defaultSpriteTile;
 
     private bool _hasAsteroide;
@@ -122,6 +128,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     public void SetTileType(tileType type)
     {
         _tileType = type;
+        ApplyTileType();
     }
     
 
@@ -146,7 +153,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 _spriteRenderer.color = Color.red;
                 break;
             case tileType.asteroid:
-                _spriteRenderer.sprite = null;
+                _spriteRenderer.sprite = _asteroidSprites[Random.Range(0, _asteroidSprites.Count)];
                 break;
             case tileType.defaultTile:
                 _spriteRenderer.color = Color.white;
@@ -183,13 +190,23 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         switch (_tileType)
         {
             case tileType.HealTile:
+                _spriteRenderer.color = Color.green;
+                _healthParticule.SetActive(true);
                 break;
             case tileType.DamageTile:
+                _spriteRenderer.color = Color.red;
+                _damageParticule.SetActive(true);
                 break;
             case tileType.asteroid:
+                _spriteRenderer.sprite = null;
                 _hasAsteroide = true;   
                 _blockInteraction = true;
-                _spriteRenderer.sprite = null;
+                _spriteRenderer.sprite = _asteroidSprites[Random.Range(0, _asteroidSprites.Count)];
+                break;
+            case tileType.defaultTile:
+                _spriteRenderer.color = Color.white;
+                _healthParticule.SetActive(false);
+                _damageParticule.SetActive(false);
                 break;
         }
     }
