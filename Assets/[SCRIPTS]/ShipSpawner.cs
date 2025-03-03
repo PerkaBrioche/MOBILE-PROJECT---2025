@@ -46,10 +46,6 @@ public class ShipSpawner : MonoBehaviour
     [SerializeField] private UnitStats SpaceFortressStats;
     [Foldout("References")]
     [SerializeField] private UnitStats MotherShipStats;
-    private void Start()
-    {
-        SpawnShip();
-    }
     
     public void SpawnShip()
     {
@@ -96,6 +92,8 @@ public class ShipSpawner : MonoBehaviour
         
         _shipController.Initialize(isEnemy, _shipStats,TypeShip);
         _shipController.SetTiles(shipTile);
+        _shipController.Spawn();
+
     }
     
     

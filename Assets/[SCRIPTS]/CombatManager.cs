@@ -10,6 +10,7 @@ public class CombatManager : MonoBehaviour
     public static CombatManager Instance;
     public float dashSpeed = 10f;
     public float attackDelay = 0.5f;
+    
     public TextMeshProUGUI attackerHPText;
     public TextMeshProUGUI attackerAtkText;
     public TextMeshProUGUI targetHPText;
@@ -42,12 +43,7 @@ public class CombatManager : MonoBehaviour
     
     private IEnumerator DashAttack()
     {
-        int damage = _attackerShip.runtimeStats.ATK;
-        if (damage < 1) damage = 1;
-        if (_attackerShip.HasBonusDamage())
-        {
-            _attackerShip.SetBonusDamage(false);
-        }
+
         Vector3 originalPosition = _attackerShip.transform.position;
         Vector3 targetPosition = _targetShip.transform.position;
         float distance = Vector3.Distance(originalPosition, targetPosition);
@@ -61,6 +57,10 @@ public class CombatManager : MonoBehaviour
         }
         _attackerShip.transform.position = targetPosition;
         int damage = _attackerShip.runtimeStats.ATK;
+        if (_attackerShip.HasBonusDamage())
+        {
+            _attackerShip.SetBonusDamage(false);
+        }
         _targetShip.TakeDamage(damage);
         if (attackerHPText != null)
             attackerHPText.text = _attackerShip.runtimeStats.HP.ToString();
@@ -85,9 +85,9 @@ public class CombatManager : MonoBehaviour
         _attackerShip.transform.position = originalPosition;
         TouchManager tm2 = UnityEngine.Object.FindFirstObjectByType<TouchManager>();
         if (tm2 != null)
-            //tm2.SetInteractionEnabled(true);
-        if (_targetShip.runtimeStats.HP <= 0)
-            _targetShip.Die();
+        {
+            
+        }
         _isInCombat = false;
     }
     

@@ -123,13 +123,14 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _shipAnimator = GetComponent<Animator>();
     }
+
     public void GetPath()
     {
-        if (_myTilesController == null)
-            return;
-        }
+        if (_myTilesController == null) return;
         GetTilesPath();
-    }
+    } 
+    
+
     private void GetTilesPath()
     {
         int distance = runtimeStats.WalkDistance + runtimeStats.AttackRange;
@@ -241,13 +242,14 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         if (TurnManager.Instance.IsEnemyTurn())
         {
-            if(transform.TryGetComponent(out Enemy enemy))
+            if (transform.TryGetComponent(out Enemy enemy))
             {
                 print("ON LANCE LE MY TUNT");
                 enemy.SetMyTurn();
-        }
-        SetMoving(false);
-        CheckTileType();
+            }
+        } 
+            SetMoving(false); 
+            CheckTileType();
     }
 
     private void CheckTileType()
@@ -265,6 +267,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 PlayAnim(shipAnimations.Buff);
                 SetBonusDamage(true);
                 _myTilesController.SetTileType(TilesController.tileType.defaultTile);
+                break;
+            case TilesController.tileType.exit:
+                TurnManager.Instance.Victory();
                 break;
         }
     }
@@ -286,6 +291,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         if (_speed < 1)
             _speed = 1;
     }
+    
     public void TakeDamage(int damage)
     {
         runtimeStats.HP -= damage;
@@ -395,6 +401,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             SetLockMode(false);
         }
     }
+    
     public void ResetShip()
     {
         runtimeStats.WalkDistance = GetUnitStats().WalkDistance;
@@ -478,7 +485,22 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _sliderLife.value = Mathf.Lerp(originalValue, runtimeStats.HP, alpha);
             yield return null;
         }
-        if (runtimeStats.HP <= 0) { Die(); }
+
+        if (runtimeStats.HP <= 0)
+        {
+            Die();
+            if (_isMotherShip)
+            {
+                if (_isOriginCampEnemy)
+                {
+                    TurnManager.Instance.Victory();
+                }
+                else
+                {
+                    TurnManager.Instance.Defeat();
+                }
+            }
+        }
         yield return null;
     }
     public Sprite GetSprite()
@@ -551,5 +573,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         return _hasBonusDamage;
     }
-    
+
+    public void Spawn()
+    {
+        _bounce.BounceSpawn();
+        UpdateSlider();
+    }
 }

@@ -156,6 +156,14 @@ public class TurnManager : MonoBehaviour
     }
 
     public void LockButtonTurn()
+    {
+        _turnButton.interactable = false;
+    }
+
+    public void UnlockButtonTurn()
+    {
+        _turnButton.interactable = true;
+    }
     private IEnumerator WaitForCampUpdate()
     {
         yield return new WaitForSeconds(_campUpdateDelay);
@@ -168,23 +176,33 @@ public class TurnManager : MonoBehaviour
         var enemy = ShipManager.Instance.GetEnemyShipsOrinalCamp();
         if (enemy.Count == 0)
         {
-            if (phaseAnimator != null)
-                phaseAnimator.SetTrigger("Victory");
-            else
-                UpdateText("VICTORY", Color.green);
+            Victory();
             return true;
+
         }
         if (ally.Count == 0)
         {
-            if (phaseAnimator != null)
-                phaseAnimator.SetTrigger("Defeat");
-            else
-                UpdateText("DEFEAT", Color.red);
+            Defeat();
             return true;
         }
         return false;
     }
 
+    public void Victory()
+    {
+        if (phaseAnimator != null)
+            phaseAnimator.SetTrigger("Victory");
+        else
+            UpdateText("VICTORY", Color.green);
+    }
+
+    public void Defeat()
+    {
+        if (phaseAnimator != null)
+            phaseAnimator.SetTrigger("Defeat");
+        else
+            UpdateText("DEFEAT", Color.red);
+    }
     private void UpdateText(string text, Color color)
     {
         _turnText.text = text;

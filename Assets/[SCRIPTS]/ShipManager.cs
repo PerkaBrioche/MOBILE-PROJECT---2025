@@ -167,7 +167,14 @@ public class ShipManager : MonoBehaviour
         UpdateLists();
         return _listaAllyShips.Count;
     }
-
+    
+    public List<ShipController> GetAllships()
+    {
+        var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);
+        List<ShipController> ships = new List<ShipController>();    
+        ships.AddRange(AllShips);
+        return ships;
+    }
     public List<ShipController> GetAllyShipsOrinalCamp()
     {
         var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);
