@@ -13,6 +13,7 @@ public class CombatManager : MonoBehaviour
     public TextMeshProUGUI attackerHPText;
     public TextMeshProUGUI attackerAtkText;
     public TextMeshProUGUI targetHPText;
+    public TextMeshProUGUI targetDamageTaken;
     public TextMeshProUGUI targetAtkText;
     public Image attackerPilotImage;
     public Image targetPilotImage;
@@ -88,13 +89,15 @@ public class CombatManager : MonoBehaviour
         int predictedDamage = attacker.runtimeStats.ATK;
         int predictedHP = target.runtimeStats.HP - predictedDamage;
         if (attackerHPText != null)
-            attackerHPText.text = attacker.runtimeStats.HP.ToString();
+            attackerHPText.text = attacker.runtimeStats.HP.ToString() + " HP";
         if (attackerAtkText != null)
-            attackerAtkText.text = attacker.runtimeStats.ATK.ToString();
+            attackerAtkText.text = attacker.runtimeStats.ATK.ToString() + " ATK";
         if (targetHPText != null)
-            targetHPText.text = predictedHP.ToString();
+            targetHPText.text = target.runtimeStats.HP.ToString() + " HP";
         if (targetAtkText != null)
-            targetAtkText.text = target.runtimeStats.ATK.ToString();
+            targetAtkText.text = target.runtimeStats.ATK.ToString() + " ATK";
+        if(attackerPilotImage != null)
+            targetDamageTaken.text = "- " + attacker.runtimeStats.ATK.ToString();
         if (attackerPilotImage != null)
             attackerPilotImage.sprite = attacker.IsAnEnemy() ? attacker.GetUnitStats().PiloteEnnemi : attacker.GetUnitStats().PiloteAllie;
         if (targetPilotImage != null)
@@ -109,12 +112,13 @@ public class CombatManager : MonoBehaviour
         Color originalColor = targetHPText.color;
         for (int i = 0; i < blinkCount; i++)
         {
-            targetHPText.color = Color.clear;
+            targetDamageTaken.color = Color.clear;
             yield return new WaitForSeconds(blinkDuration);
-            targetHPText.color = Color.red;
+            targetDamageTaken.color = Color.red;
             yield return new WaitForSeconds(blinkDuration);
         }
-        targetHPText.color = originalColor;
+        targetDamageTaken.color = Color.red;
+
     }
 
     public void DisplayAttackerStats(ShipController attacker)
@@ -142,6 +146,8 @@ public class CombatManager : MonoBehaviour
             attackerPilotImage.sprite = null;
         if (targetPilotImage != null)
             targetPilotImage.sprite = null;
+        if (targetDamageTaken != null)
+            targetDamageTaken.text = "";
     }
 
     public bool IsInCombat()
