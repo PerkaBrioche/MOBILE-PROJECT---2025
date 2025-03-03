@@ -37,6 +37,7 @@ public class TouchManager : MonoBehaviour
 
     private bool _isHighLighted;
     private CombatManager _combatManager;
+    private ShipController _previewTarget = null;
     
     public static TouchManager Instance;
     
@@ -145,7 +146,7 @@ public class TouchManager : MonoBehaviour
         {
             Ib.Bounce();
         }
-        if (actualCollider.TryGetComponent(out TilesController tC)) // TILES
+        if (actualCollider.TryGetComponent(out TilesController tC))
         {
             if (tC.IsBlocked())
             {
@@ -184,6 +185,7 @@ public class TouchManager : MonoBehaviour
                 {
                     if(sc.GetType() == ShipSpawner.shipType.MothherShip){return;}
                     _isHighLighted = true;
+                    _combatManager.DisplayAttackerStats(sc);
                 }
                 _ActualshipController = sc;
                 sc.GetPath();
@@ -199,10 +201,23 @@ public class TouchManager : MonoBehaviour
                     }
                     if (sc.GetTiles().HasAnEnemy() && sc.GetTiles().IsAnAttackTile() && _ActualshipController.CanAttack() && !_ActualshipController.IsInLockDown())
                     {
-                        _ActualshipController.SetHasAttacked(true);
-                        _combatManager.StartCombat(_ActualshipController, sc);
+                        if(_previewTarget == null || _previewTarget != sc)
+                        {
+                            _previewTarget = sc;
+                            _combatManager.PreviewCombat(_ActualshipController, sc);
+                        }
+                        else
+                        {
+                            _ActualshipController.SetHasAttacked(true);
+                            _combatManager.StartCombat(_ActualshipController, sc);
+                            _previewTarget = null;
+                            Reset();
+                        }
                     }
-                    Reset();
+                    else
+                    {
+                        Reset();
+                    }
                 }
                 else
                 {
@@ -229,6 +244,8 @@ public class TouchManager : MonoBehaviour
         _ActualshipController = null;
         _ActualtilesController = null;
         _isHighLighted = false;
+        _previewTarget = null;
+        _combatManager.ClearPreview();
     }
     
     private Collider2D GetCollider()

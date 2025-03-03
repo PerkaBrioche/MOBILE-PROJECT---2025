@@ -16,6 +16,8 @@ MonoBehaviour:
   _unitEnemyIcon: {fileID: 2204708268438558152, guid: a01a2ea5a5c3eed45aee53e753254d81, type: 3}
   _unitName: Patroller
   _unitType: {fileID: 0}
+  _piloteAllie: {fileID: 2240825437796041896, guid: fcc4a90abf5152c4a8211c2bd5f8991a, type: 3}
+  _piloteEnnemi: {fileID: 5250772323093180608, guid: 91369a92547974c49a84c1a4e92614e4, type: 3}
   hp: 20
   atk: 15
   def: 0

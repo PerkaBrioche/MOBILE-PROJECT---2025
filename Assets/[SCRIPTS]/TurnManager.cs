@@ -43,7 +43,6 @@ public class TurnManager : MonoBehaviour
         {
             StartCoroutine(PhaseTransition("PlayerPhase", () =>
             {
-                _isPlayerTurn = true;
                 if (ResetTurnManager.Instance != null)
                     ResetTurnManager.Instance.RecordStartingPositions();
                 _turnButton.interactable = false;
