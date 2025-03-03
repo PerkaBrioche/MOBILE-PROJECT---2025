@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,6 +8,7 @@ public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance;
     public float dashSpeed = 10f;
+    public float dashDistancePercentage = 1f;
     public float attackDelay = 0.5f;
     public TextMeshProUGUI attackerHPText;
     public TextMeshProUGUI attackerAtkText;
@@ -16,11 +16,10 @@ public class CombatManager : MonoBehaviour
     public TextMeshProUGUI targetAtkText;
     public Image attackerPilotImage;
     public Image targetPilotImage;
-    
     private ShipController _attackerShip;
     private ShipController _targetShip;
     private bool _isInCombat = false;
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -28,32 +27,31 @@ public class CombatManager : MonoBehaviour
         else
             Destroy(this);
     }
-    
+
     public void StartCombat(ShipController attacker, ShipController target)
     {
         TouchManager tm = UnityEngine.Object.FindFirstObjectByType<TouchManager>();
-        if (tm != null)
-            //tm.SetInteractionEnabled(false);
         _attackerShip = attacker;
         _targetShip = target;
         _isInCombat = true;
         StartCoroutine(DashAttack());
     }
-    
+
     private IEnumerator DashAttack()
     {
         Vector3 originalPosition = _attackerShip.transform.position;
         Vector3 targetPosition = _targetShip.transform.position;
-        float distance = Vector3.Distance(originalPosition, targetPosition);
+        Vector3 dashTarget = Vector3.Lerp(originalPosition, targetPosition, dashDistancePercentage);
+        float distance = Vector3.Distance(originalPosition, dashTarget);
         float dashTime = distance / dashSpeed;
         float elapsed = 0f;
         while (elapsed < dashTime)
         {
             elapsed += Time.deltaTime;
-            _attackerShip.transform.position = Vector3.Lerp(originalPosition, targetPosition, elapsed / dashTime);
+            _attackerShip.transform.position = Vector3.Lerp(originalPosition, dashTarget, elapsed / dashTime);
             yield return null;
         }
-        _attackerShip.transform.position = targetPosition;
+        _attackerShip.transform.position = dashTarget;
         int damage = _attackerShip.runtimeStats.ATK;
         _targetShip.TakeDamage(damage);
         if (attackerHPText != null)
@@ -65,26 +63,24 @@ public class CombatManager : MonoBehaviour
         if (targetAtkText != null)
             targetAtkText.text = _targetShip.runtimeStats.ATK.ToString();
         if (attackerPilotImage != null)
-            attackerPilotImage.sprite = _attackerShip.GetSprite();
+            attackerPilotImage.sprite = _attackerShip.IsAnEnemy() ? _attackerShip.GetUnitStats().PiloteEnnemi : _attackerShip.GetUnitStats().PiloteAllie;
         if (targetPilotImage != null)
-            targetPilotImage.sprite = _targetShip.GetSprite();
+            targetPilotImage.sprite = _targetShip.IsAnEnemy() ? _targetShip.GetUnitStats().PiloteEnnemi : _targetShip.GetUnitStats().PiloteAllie;
         yield return new WaitForSeconds(attackDelay);
         elapsed = 0f;
         while (elapsed < dashTime)
         {
             elapsed += Time.deltaTime;
-            _attackerShip.transform.position = Vector3.Lerp(targetPosition, originalPosition, elapsed / dashTime);
+            _attackerShip.transform.position = Vector3.Lerp(dashTarget, originalPosition, elapsed / dashTime);
             yield return null;
         }
         _attackerShip.transform.position = originalPosition;
         TouchManager tm2 = UnityEngine.Object.FindFirstObjectByType<TouchManager>();
-        if (tm2 != null)
-            //tm2.SetInteractionEnabled(true);
         if (_targetShip.runtimeStats.HP <= 0)
             _targetShip.Die();
         _isInCombat = false;
     }
-    
+
     public bool IsInCombat()
     {
         return _isInCombat;

@@ -7827,6 +7827,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashSpeed: 15
+  dashDistancePercentage: 0.3
   attackDelay: 0.01
   attackerHPText: {fileID: 0}
   attackerAtkText: {fileID: 0}
