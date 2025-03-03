@@ -36,7 +36,6 @@ public class Enemy : MonoBehaviour
         }
         if (_shipController.IsLocked())
         {
-            print("IL EST LOCK C'EST COOKED POUR TOI");
             TurnManager.Instance.EnemyEndATurn();
             EndTurn();
             return;
@@ -53,7 +52,9 @@ public class Enemy : MonoBehaviour
         _tilesDetected = EnemyManager.Instance.GetTiles();
         bool canMoove = true;
         List<ShipController> enemyOnTile = new List<ShipController>();
+        List<TilesController> deplacementTile = new List<TilesController>();
         enemyOnTile.Clear();
+        
         foreach (var tile in _tilesDetected)
         {
             if (tile == null) {continue;}
@@ -61,6 +62,13 @@ public class Enemy : MonoBehaviour
             {
                 enemyOnTile.Add(tile.GetShipController());
                 canMoove = false;
+            }
+            else
+            {
+                if (tile.IsRangeTile())
+                {
+                    deplacementTile.Add(tile);
+                }
             }
         }
 
@@ -75,10 +83,44 @@ public class Enemy : MonoBehaviour
                 return;
             }
             
-            _shipController.SetHasMoved(true);
-            
-            ShipController closestEnemy = FindClosestEnemy()[0];
+            ShipController closestEnemy = null;
+            TilesController specialTile = null;
 
+            _shipController.SetHasMoved(true);
+            if(_shipController.runtimeStats.HP < _shipController.GetUnitStats().HP) // LOOKING FOR HEALTH
+            {
+                foreach (var tile in deplacementTile)
+                {
+                    
+                    if(tile.GetTileType() == TilesController.tileType.HealTile)
+                    {
+                        specialTile = tile;
+                    }
+                }
+                if(closestEnemy == null)
+                {
+                    foreach (var tile in deplacementTile)
+                    {
+                        if(tile.GetTileType() == TilesController.tileType.DamageTile)
+                        {
+                            specialTile = tile;
+                        }
+                    }                
+                }
+            } 
+            
+            if(specialTile == null)
+            {
+                closestEnemy = FindClosestEnemy()[0];
+            }
+            else
+            {
+                Move(specialTile);
+                EndTurn();
+                return;
+            }
+
+            
             if (targetile != null)
             {
                 Move(targetile);
@@ -137,7 +179,6 @@ public class Enemy : MonoBehaviour
             }
             StartCoroutine(WaitAnimationFight());
         }
-        print("END TURN");
         EndTurn();
     }
 
@@ -181,12 +222,10 @@ public class Enemy : MonoBehaviour
             {
                 var retreatDirection = GetOpossiteDirection(listEnemyClosest[i].GetTiles(), originTiles);
                 var newTile = retreatDirection(originTiles);
-                print("originTiles = " + originTiles + " listEnemyClosest[i].GetTiles() = " + listEnemyClosest[i].GetTiles() + " retreatDirection = " + retreatDirection);
 
-            //    print("TRY WITH THE NEXT ENEMY + " + listEnemyClosest[i].GetUnitStats().name + " TILE = " + newTile);
+            //    ("TRY WITH THE NEXT ENEMY + " + listEnemyClosest[i].GetUnitStats().name + " TILE = " + newTile);
                 if (!IsTileValid(newTile))
                 {
-                    print("BLOCKED AGAINST WALL");
                 }
                 else
                 {
@@ -200,7 +239,6 @@ public class Enemy : MonoBehaviour
         if (!IsTileValid(directionTile))// SI APRES TOUT CA TOUJOURS PAS BON
         {
             Move(originTiles);
-            print("BLOCKED AGAINST WALL FINAL");
             return;
         }
         for (int i = 0; i < distance; i++)
@@ -228,7 +266,6 @@ public class Enemy : MonoBehaviour
     {
         if (t != null)
         {
-            print(t + " TILE " + t.IsBlocked() + " " + t.HasAnEnemy() + " " + t.HasAnAlly());
             if (!t.IsBlocked() && !t.HasAnEnemy() && !t.HasAnAlly())
             {
                 return true;
@@ -237,7 +274,6 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            print("TILE NULL BRUH");
         }
         return false;
     }
@@ -336,10 +372,8 @@ public class Enemy : MonoBehaviour
             continue;
         
         int pathDist = FindPath(enemyTile, allyTile) != null ? FindPath(enemyTile, allyTile).Count : -1;
-        print( "PATH DISTANCE OF "+ ally.GetUnitStats().name + " = " + pathDist);
         if (pathDist < 0)
         {
-            print("PAS DE CHEMIN POSSIBLE");
             continue;
         }
      //   int distance = CalculateManhattanDistance(allyTile, enemyTile);
@@ -421,7 +455,7 @@ public class Enemy : MonoBehaviour
     //     List<ShipController> sortedShips = new List<ShipController>();
     //     foreach (var entry in shipDistances)
     //     {
-    //         print(entry.ship.GetUnitStats().name + " " + entry.distance);
+    //         (entry.ship.GetUnitStats().name + " " + entry.distance);
     //         sortedShips.Add(entry.ship);
     //     }
     //     return sortedShips;
@@ -438,7 +472,6 @@ public class Enemy : MonoBehaviour
         queue.Enqueue(start);
         parents[start] = null; 
 
-        print("START = " + start + " GOAL = " + goal);
         while (queue.Count > 0)
         {
             TilesController current = queue.Dequeue();
@@ -454,12 +487,10 @@ public class Enemy : MonoBehaviour
                 
                     if (neighbor == goal)
                     {
-                        print("GOAL FOUND = " + neighbor);
                         List<TilesController> path = new List<TilesController>();
                         TilesController pathTile = goal;
                         while (pathTile != null)
                         {
-                            print("PATH TILE = " + pathTile);
                             path.Add(pathTile);
                             pathTile = parents[pathTile];
                         }

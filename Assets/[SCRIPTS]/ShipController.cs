@@ -71,7 +71,9 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         locked,
         Unlocked,
         InDanger,
-        NoDanger
+        NoDanger,
+        Heal,
+        Buff,
     }
     
     public void PlayAnim(shipAnimations anim)
@@ -92,6 +94,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 break;
             case shipAnimations.NoDanger:
                 _shipAnimator.SetBool("InDanger", false);
+                break;
+            case shipAnimations.Heal:
+                _shipAnimator.SetTrigger("getHeal");
+                break;
+            case shipAnimations.Buff:
+                _shipAnimator.SetTrigger("getBufff");
                 break;
         }
     }
@@ -267,7 +275,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             if(transform.TryGetComponent(out Enemy enemy))
             {
-                print("ON LANCE LE MY TUNT");
                 enemy.SetMyTurn();
             }
         }
@@ -281,10 +288,13 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         switch (tileType)
         {
             case TilesController.tileType.HealTile:
+                PlayAnim(shipAnimations.Heal);
                 ApplyHealth();
+                _textController.ShowHeal();
                 _myTilesController.SetTileType(TilesController.tileType.defaultTile);
                 break;
             case TilesController.tileType.DamageTile:
+                PlayAnim(shipAnimations.Buff);
                 SetBonusDamage(true);
                 _myTilesController.SetTileType(TilesController.tileType.defaultTile);
                 break;

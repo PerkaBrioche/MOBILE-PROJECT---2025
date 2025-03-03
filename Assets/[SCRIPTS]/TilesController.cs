@@ -155,6 +155,9 @@ public class TilesController : MonoBehaviour, bounce.IBounce
             case tileType.asteroid:
                 _spriteRenderer.sprite = _asteroidSprites[Random.Range(0, _asteroidSprites.Count)];
                 break;
+            case tileType.defaultTile:
+                _spriteRenderer.color = Color.white;
+                break;
         }   
     }
 
@@ -204,7 +207,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 _spriteRenderer.color = Color.white;
                 _healthParticule.SetActive(false);
                 _damageParticule.SetActive(false);
-                _tileTypeRenderer.sprite = _asteroidSprites[Random.Range(0, _asteroidSprites.Count)];
                 break;
         }
     }
