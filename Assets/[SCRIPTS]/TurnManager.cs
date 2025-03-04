@@ -22,6 +22,11 @@ public class TurnManager : MonoBehaviour
     private float _campUpdateDelay = 0.5f;
     
     private bool _endGame = false;
+    
+    public GameManager.GameWinCondition gameWinCondition;
+    
+    [SerializeField] private bool _gameStarted = false;
+    
 
     public bool IsPlayerTurn() { return _isPlayerTurn; }
     public bool IsEnemyTurn() { return _isEnemyTurn; }
@@ -41,6 +46,7 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+        gameWinCondition = GameManager.Instance.gameWinCondition;
         if (DialogueManager.Instance != null && DialogueManager.Instance.HasDialogue())
         {
             DialogueManager.Instance.StartDialogue();
@@ -77,7 +83,7 @@ public class TurnManager : MonoBehaviour
             if (ResetTurnManager.Instance != null)
                 ResetTurnManager.Instance.RecordStartingPositions();
             _turnButton.interactable = false;
-            UpdateText("Player Turn", Color.green);
+            _gameStarted = true;
         }));
     }
 
@@ -159,6 +165,8 @@ public class TurnManager : MonoBehaviour
 
     private void Update()
     {
+        if (!_gameStarted) return;
+        CheckEndGame();
         if (_isEnemyTurn)
         {
             if (!_waitingForEnemy && _actualisedCamp)
@@ -176,6 +184,11 @@ public class TurnManager : MonoBehaviour
                     Debug.LogError("MISSING ENEMY COMPONENT");
             }
         }
+    }
+    
+    public ShipController GetEnemyShip()
+    {
+        return ShipManager.Instance.GetActualAllyShip(_enemyTurn);
     }
 
     public void LockButtonTurn()
@@ -195,17 +208,20 @@ public class TurnManager : MonoBehaviour
 
     private bool CheckEndGame()
     {
+        if (gameWinCondition != GameManager.GameWinCondition.destroyAll)
+        { return false;}
+        
         var ally = ShipManager.Instance.GetAllyShipsOrinalCamp();
         var enemy = ShipManager.Instance.GetEnemyShipsOrinalCamp();
         if (enemy.Count == 0)
         {
-            _endGame = true;
+            EndGame();
             Victory();
             return true;
         }
         if (ally.Count == 0)
         {
-            _endGame = true;
+            EndGame();
             Defeat();
             return true;
         }
@@ -230,6 +246,14 @@ public class TurnManager : MonoBehaviour
         LockButtonTurn();
         if (phaseAnimator != null)
             PlayAnimation("Defeat");
+    }
+
+    private void EndGame()
+    {
+        _isPlayerTurn = false;
+        _isEnemyTurn = false;
+        _endGame = true;
+        LockButtonTurn();
     }
     private void UpdateText(string text, Color color)
     {

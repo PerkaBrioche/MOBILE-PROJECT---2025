@@ -48,7 +48,6 @@ public class TouchManager : MonoBehaviour
         _touchPosition = _playerInput.actions["TouchPosition"];
         _touchPress = _playerInput.actions["SinglePress"];
         _combatManager = FindFirstObjectByType<CombatManager>();
-        
         if (Instance == null)
         {
             Instance = this;
@@ -66,70 +65,23 @@ public class TouchManager : MonoBehaviour
     private void OnEnable()
     {
         _touchPress.performed += OnTouched;
-        // _holdPress.started += OnHoldStarted;
-        // _holdPress.canceled += OnHoldCanceled;
     }
 
     private void OnDisable()
     {
         _touchPress.performed -= OnTouched;
-        // _holdPress.started -= OnHoldStarted;
-        // _holdPress.canceled -= OnHoldCanceled;
     }
 
     public ShipController GetActualShipController()
     {
         return _ActualshipController;
     }
-    
-
-    private void Update()
-    {
-        // if (_IsHolding)
-        // {
-        //     print("IS HOLDING");
-        //     if (_isDragging && currentDraggable != null)
-        //     {
-        //         Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
-        //         _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPos);
-        //         _actualTouchedPosition.z = 0f;
-        //         currentDraggable.OnDrag(_actualTouchedPosition);
-        //     }
-        //     else if (_isScrolling && canScroll)
-        //     {
-        //         Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
-        //         Vector3 currentTouchWorldPos = Camera.main.ScreenToWorldPoint(touchedPos);
-        //         currentTouchWorldPos.z = 0f;
-        //         float deltaY = currentTouchWorldPos.y - _scrollStartTouchPos.y;
-        //         float newCameraY = Mathf.Clamp(_scrollStartCameraY - deltaY * 0.75f, scrollMinY, scrollMaxY);
-        //         Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, newCameraY, Camera.main.transform.position.z);
-        //     }
-        // }
-        // else
-        // {
-        //     _actualholdTime = 0;
-        // }
-    }
-
-    // private void PressReleased(InputAction.CallbackContext context)
-    // {
-    //     if (!_IsHolding) { return; }
-    //     _IsHolding = false;
-    // }
-    //
-    // private void OnHolding(InputAction.CallbackContext context)
-    // {
-    // }
-    //
-    // private void GetTouchPositon(InputAction.CallbackContext context)
-    // {
-    // }
 
     private void OnTouched(InputAction.CallbackContext context)
     {
         if (!TurnManager.Instance.IsPlayerTurn() || !_gameManager.CanTouch())
         {
-           // Debug.LogError("PROBLEM TOUCH");
+            
             return;
         }
         _gameManager.TouchScreen(_touchPress);
@@ -176,16 +128,17 @@ public class TouchManager : MonoBehaviour
         }
         if (actualCollider.TryGetComponent(out ShipController sc))
         {
-            if (_ActualshipController == null)
+            if (_ActualshipController == null) // NO SHIP SELECTED
             {
-                if(sc.IsAnEnemy())
+                if(sc.IsAnEnemy()) // IF THE SHIP IS AN ENEMY
                 {
+                    _combatManager.DisplayAttackerStats(sc);
                 }
                 else
                 {
+                    _combatManager.DisplayAllyStats(sc);
                     if(sc.GetType() == ShipSpawner.shipType.MothherShip){return;}
                     _isHighLighted = true;
-                    _combatManager.DisplayAttackerStats(sc);
                 }
                 _ActualshipController = sc;
                 sc.GetPath();
@@ -221,17 +174,23 @@ public class TouchManager : MonoBehaviour
                 }
                 else
                 {
-                    if(sc.GetType() == ShipSpawner.shipType.MothherShip){return;}
-                    if(_ActualshipController == sc)  // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
+                    if (sc.GetType() == ShipSpawner.shipType.MothherShip)
                     {
-                       // _ActualshipController.SetLockMode(true);
-                        Reset();
+                        _combatManager.DisplayAllyStats(sc);
                     }
                     else
                     {
-                        Reset(true);
-                        _ActualshipController = sc;
-                        _ActualshipController.GetPath();
+                        if(_ActualshipController == sc)  // SI LE VAISSEAU SELECTIONNER EST LE MEME QUE LE PRECEDENT
+                        {
+                            Reset();
+                        }
+                        else
+                        {
+                            Reset(true);
+                            _ActualshipController = sc;
+                            _ActualshipController.GetPath();
+                            _combatManager.DisplayAllyStats(_ActualshipController);
+                        }
                     }
                 }
             }
@@ -257,47 +216,7 @@ public class TouchManager : MonoBehaviour
         }
         return null;
     }
-
-    // private void OnHoldStarted(InputAction.CallbackContext context)
-    // {
-    //     _IsHolding = true;
-    //     Vector2 touchedPos = _touchPosition.ReadValue<Vector2>();
-    //     _actualTouchedPosition = Camera.main.ScreenToWorldPoint(touchedPos);
-    //     _actualTouchedPosition.z = 0f;
-    //     Collider2D hitCollider = Physics2D.OverlapPoint(_actualTouchedPosition);
-    //     if (hitCollider != null && hitCollider.TryGetComponent<IDraggable>(out var draggable))
-    //     {
-    //         currentDraggedObject = hitCollider.gameObject;
-    //         currentDraggable = draggable;
-    //         _isDragging = true;
-    //         _isScrolling = false;
-    //         currentDraggable.OnBeginDrag();
-    //     }
-    //     else
-    //     {
-    //         _isDragging = false;
-    //         if (canScroll)
-    //         {
-    //             _isScrolling = true;
-    //             _scrollStartTouchPos = _actualTouchedPosition;
-    //             _scrollStartCameraY = Camera.main.transform.position.y;
-    //         }
-    //     }
-    // }
-    //
-    // private void OnHoldCanceled(InputAction.CallbackContext context)
-    // {
-    //     _IsHolding = false;
-    //     if (_isDragging && currentDraggable != null)
-    //     {
-    //         currentDraggable.OnEndDrag();
-    //     }
-    //     _isDragging = false;
-    //     _isScrolling = false;
-    //     currentDraggable = null;
-    //     currentDraggedObject = null;
-    // }
-
+    
      public void SetInteractionEnabled(bool enabled)
      {
          _playerInput.enabled = enabled;

@@ -44,6 +44,16 @@ public class GameManager : MonoBehaviour
         _canTouch = true;
     }
     
+    public enum GameWinCondition
+    {
+        destroyAll,
+        motherShipKill,
+        exit,
+    }
+    
+    [Header("VICTORY CONDITIONS")]
+    
+    public GameWinCondition gameWinCondition;
 
 
 }

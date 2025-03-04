@@ -169,7 +169,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         runtimeStats.UnitName = _myStats.UnitName;
         runtimeStats.HP = _myStats.HP;
         runtimeStats.ATK = _myStats.ATK;
-        runtimeStats.DEF = Mathf.RoundToInt(_myStats.DEF);
         runtimeStats.WalkDistance = _myStats.WalkDistance;
         runtimeStats.AttackRange = _myStats.AttackRange;
         SetOriginCamp(IsEnemy);
@@ -209,13 +208,25 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
     public void SetLifePrewiew()
     {
+        ShipController attacker = null;
         if (TouchManager.Instance.GetActualShipController() == null)
         {
             print("NO SHIP SELECTED");
+            if (TurnManager.Instance.IsEnemyTurn())
+            {
+                attacker = TurnManager.Instance.GetEnemyShip();
+            }
+        }
+        else
+        {
+            attacker = TouchManager.Instance.GetActualShipController();
+        }
+        if (attacker == null)
+        {
+            print("NO SHIP SELECTED AFTER TRIED");
             return;
         }
-        print(  "runtimeStats.HP = "+ runtimeStats.HP + " l'autre ATK = " + TouchManager.Instance.GetActualShipController().runtimeStats.ATK);
-        _sliderLifePrewiew.value = (runtimeStats.HP - TouchManager.Instance.GetActualShipController().runtimeStats.ATK);
+        _sliderLifePrewiew.value = (runtimeStats.HP - attacker.runtimeStats.ATK);
     }
     public void SetNewPosition(TilesController neswtiles)
     {
@@ -520,6 +531,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private bool _startingHasMoved;
     private bool _startingHasAttacked;
     private int _startingHP;
+    private int _startingAtk;
     private int _startingLockAttack;
     private bool _startingInLockDown;
     private bool _wasAliveAtTurnStart;
@@ -531,6 +543,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _startingHasMoved = _hasMoved;
         _startingHasAttacked = _hasAttacked;
         _startingHP = runtimeStats.HP;
+        _startingAtk = runtimeStats.ATK;
         _startingLockAttack = _currentLockAttack;
         _startingInLockDown = _isInLockDown;
     }
@@ -545,10 +558,12 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         }
         if (IsAnEnemy())
         {
-            runtimeStats.HP = _startingHP;
-            if (_sliderLife != null)
-                _sliderLife.value = _startingHP;
+
         }
+        
+        runtimeStats.HP = _startingHP;
+        runtimeStats.ATK = _startingAtk;
+        UpdateSlider();
         _hasMoved = _startingHasMoved;
         _hasAttacked = _startingHasAttacked;
         SetLockMode(false);
