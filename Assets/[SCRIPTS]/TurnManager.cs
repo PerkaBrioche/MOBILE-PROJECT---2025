@@ -12,6 +12,7 @@ public class TurnManager : MonoBehaviour
     public static TurnManager Instance;
     [SerializeField] private TextMeshProUGUI _turnText;
     [SerializeField] private Button _turnButton;
+    [SerializeField] private Button _REturnButton;
     [SerializeField] private Animator phaseAnimator;
     private int _enemyTurn;
     private bool _waitingForEnemy = false;
@@ -38,6 +39,7 @@ public class TurnManager : MonoBehaviour
         else
             Destroy(this);
     }
+    
 
     public bool IsEndGame()
     {
@@ -64,6 +66,16 @@ public class TurnManager : MonoBehaviour
         }
         
         TouchManager = FindFirstObjectByType<TouchManager>();
+    }
+    
+    public void LockRETURNButton()
+    {
+        _REturnButton.interactable = false;
+    }
+    
+    public void UnlockRETURNButton()
+    {
+        _REturnButton.interactable = true;
     }
 
     private IEnumerator WaitForDialogueEnd()
@@ -166,6 +178,14 @@ public class TurnManager : MonoBehaviour
     private void Update()
     {
         if (!_gameStarted) return;
+        if (_isPlayerTurn)
+        {
+            UnlockRETURNButton();
+        }
+        else
+        {
+            LockRETURNButton();
+        }
         CheckEndGame();
         if (_isEnemyTurn)
         {
