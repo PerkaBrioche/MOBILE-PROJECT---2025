@@ -9455,8 +9455,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f322d7c59365a341a6fdfc5a3ef04bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashSpeed: 10
-  attackDelay: 0.5
+  dashSpeed: 15
+  dashDistancePercentage: 0.3
+  attackDelay: 0.01
   attackerHPText: {fileID: 0}
   attackerAtkText: {fileID: 0}
   targetHPText: {fileID: 0}
