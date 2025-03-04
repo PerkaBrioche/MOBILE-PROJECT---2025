@@ -20,6 +20,8 @@ public class TurnManager : MonoBehaviour
     private TouchManager TouchManager;
     
     private float _campUpdateDelay = 0.5f;
+    
+    private bool _endGame = false;
 
     public bool IsPlayerTurn() { return _isPlayerTurn; }
     public bool IsEnemyTurn() { return _isEnemyTurn; }
@@ -30,6 +32,11 @@ public class TurnManager : MonoBehaviour
             Instance = this;
         else
             Destroy(this);
+    }
+
+    public bool IsEndGame()
+    {
+        return _endGame;
     }
 
     private void Start()
@@ -81,9 +88,26 @@ public class TurnManager : MonoBehaviour
         if (ResetTurnManager.Instance != null)
             ResetTurnManager.Instance.RecordStartingPositions();
         if (phaseAnimator != null)
-            phaseAnimator.SetTrigger("PlayerPhase");
-        else
-            UpdateText("Player Turn", Color.green);
+        {
+            PlayAnimation("PlayerPhase", true);
+        }
+    }
+    
+    private void PlayAnimation(string trigger, bool addShake = false)
+    {
+        if (phaseAnimator != null)
+            phaseAnimator.SetTrigger(trigger);
+
+        if (addShake)
+        {
+            StartCoroutine(ShakePhase());
+        }
+    }
+    
+    private IEnumerator ShakePhase()
+    {
+        yield return new WaitForSeconds(0.3f);
+        ShakeManager.instance.ShakeCamera(0.15f, 0.15f);
     }
 
     public void EndPlayerTurn()
@@ -102,7 +126,7 @@ public class TurnManager : MonoBehaviour
         StartCoroutine(WaitForCampUpdate());
         ShipManager.Instance.ChangeShipsCamp();
         if (phaseAnimator != null)
-            phaseAnimator.SetTrigger("EnemyPhase");
+            PlayAnimation("EnemyPhase", true);
         else
             UpdateText("Enemy Turn", Color.red);
         _enemyTurn = 0;
@@ -175,32 +199,37 @@ public class TurnManager : MonoBehaviour
         var enemy = ShipManager.Instance.GetEnemyShipsOrinalCamp();
         if (enemy.Count == 0)
         {
+            _endGame = true;
             Victory();
             return true;
-
         }
         if (ally.Count == 0)
         {
+            _endGame = true;
             Defeat();
             return true;
         }
         return false;
     }
 
+    private void LockEverything()
+    {
+        _isPlayerTurn = false;
+        _isEnemyTurn = false; 
+        LockButtonTurn();
+    }
     public void Victory()
     {
+        LockButtonTurn();
         if (phaseAnimator != null)
-            phaseAnimator.SetTrigger("Victory");
-        else
-            UpdateText("VICTORY", Color.green);
+            PlayAnimation("Win");
     }
 
     public void Defeat()
     {
+        LockButtonTurn();
         if (phaseAnimator != null)
-            phaseAnimator.SetTrigger("Defeat");
-        else
-            UpdateText("DEFEAT", Color.red);
+            PlayAnimation("Defeat");
     }
     private void UpdateText(string text, Color color)
     {
