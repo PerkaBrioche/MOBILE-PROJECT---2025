@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DangleBehavior
   m_EditorClassIdentifier: 
   tagID: dangle
-  baseAmplitude: 2.3
-  baseFrequency: 3.37
-  baseWaveSize: 0.179
+  baseAmplitude: 1.26
+  baseFrequency: 3.29
+  baseWaveSize: 0.112
   anchorBottom: 0

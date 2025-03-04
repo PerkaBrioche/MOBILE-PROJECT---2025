@@ -26,9 +26,12 @@ public class ShipManager : MonoBehaviour
     private void Update()
     {
         if (_isCooldown) { return; }
-        if(!TurnManager.Instance.IsPlayerTurn()) { return;}
+
+        if (!TurnManager.Instance.IsPlayerTurn() ||  TurnManager.Instance.IsEndGame())
+        {
+            return;
+        }
         
-   //     return; // LAISSE MOI TRANQUILLE AVEC MES RETURNS FR
         if (IsShipInAction())
         {
             TurnManager.Instance.LockButtonTurn();
@@ -167,7 +170,14 @@ public class ShipManager : MonoBehaviour
         UpdateLists();
         return _listaAllyShips.Count;
     }
-
+    
+    public List<ShipController> GetAllships()
+    {
+        var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);
+        List<ShipController> ships = new List<ShipController>();    
+        ships.AddRange(AllShips);
+        return ships;
+    }
     public List<ShipController> GetAllyShipsOrinalCamp()
     {
         var AllShips = FindObjectsByType<ShipController>(FindObjectsSortMode.None);

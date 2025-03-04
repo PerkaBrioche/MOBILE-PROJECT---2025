@@ -12,12 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
   m_Name: Test DIalogue
   m_EditorClassIdentifier: 
-  leftSprite: {fileID: 6643452661266350797, guid: b94b38422655a2d449a02e3b62bcfebc, type: 3}
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
   rightSprite: {fileID: -4413219324028710878, guid: 0035d7f9f78d2ef40adb5cbe22915424, type: 3}
   lines:
   - leftSpeaker: 1
-    speakerName: Moustafa
-    text: Bonjour je suis gros
+    speakerName: GLORP
+    text: "Bonjour je m'appelle Gloppr je suis ton sup\xE9rieur fdp de merde"
+  - leftSpeaker: 1
+    speakerName: GLORP
+    text: YIPIIII SQUIEEZUIE JTRM
   - leftSpeaker: 0
     speakerName: Donna
     text: BONJOUR JE SUIS DONATELL0
+  - leftSpeaker: 1
+    speakerName: GOO GOOG GAGA
+    text: YIPIIII SQUIEEZUIE JTRM

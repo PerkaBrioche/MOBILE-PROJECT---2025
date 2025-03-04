@@ -16,6 +16,8 @@ MonoBehaviour:
   _unitEnemyIcon: {fileID: 5867887857198940217, guid: 3fdbe84e44c95ad4c861007dcef5cacb, type: 3}
   _unitName: MotherShip
   _unitType: {fileID: 0}
+  _piloteAllie: {fileID: 1235752080043875, guid: e2d330f435320c247b51a3d7242b1df1, type: 3}
+  _piloteEnnemi: {fileID: 5250772323093180608, guid: 91369a92547974c49a84c1a4e92614e4, type: 3}
   hp: 65
   atk: 0
   def: 0

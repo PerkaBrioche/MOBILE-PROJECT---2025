@@ -16,6 +16,8 @@ MonoBehaviour:
   _unitEnemyIcon: {fileID: -5799953009594196102, guid: 36a31a0644a86634a809bd9f449183c5, type: 3}
   _unitName: Tank
   _unitType: {fileID: 0}
+  _piloteAllie: {fileID: 6637213156290018700, guid: 316858b3424ac6f47a8ea31cffd02889, type: 3}
+  _piloteEnnemi: {fileID: 2613517752692821454, guid: e45828930afa1904e84a0f1fbfff2999, type: 3}
   hp: 40
   atk: 26
   def: 0

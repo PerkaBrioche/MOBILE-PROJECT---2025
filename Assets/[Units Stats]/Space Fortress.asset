@@ -16,6 +16,8 @@ MonoBehaviour:
   _unitEnemyIcon: {fileID: 620594133843963748, guid: e8e8a9d789626eb4a96257935392c0b8, type: 3}
   _unitName: Space Fortress
   _unitType: {fileID: 0}
+  _piloteAllie: {fileID: -6278900591590238800, guid: 80bebc373d0ba4e46b925fc8d5034d0c, type: 3}
+  _piloteEnnemi: {fileID: 2950337534472557291, guid: e8cecd59dd8b7ad4e9ddbb6c56602a7e, type: 3}
   hp: 26
   atk: 25
   def: 0

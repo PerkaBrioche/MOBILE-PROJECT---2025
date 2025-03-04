@@ -1,52 +1,119 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
-    
     private bool _isPlayerTurn = false;
     private bool _isEnemyTurn = false;
     public static TurnManager Instance;
-    
     [SerializeField] private TextMeshProUGUI _turnText;
     [SerializeField] private Button _turnButton;
-
+    [SerializeField] private Animator phaseAnimator;
     private int _enemyTurn;
     private bool _waitingForEnemy = false;
-
     private bool _actualisedCamp = false;
     
     private TouchManager TouchManager;
     
+    private float _campUpdateDelay = 0.5f;
+    
+    private bool _endGame = false;
+    
+    public GameManager.GameWinCondition gameWinCondition;
+    
+    [SerializeField] private bool _gameStarted = false;
+    
+
+    public bool IsPlayerTurn() { return _isPlayerTurn; }
+    public bool IsEnemyTurn() { return _isEnemyTurn; }
 
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
+        else
+            Destroy(this);
+    }
+
+    public bool IsEndGame()
+    {
+        return _endGame;
+    }
+
+    private void Start()
+    {
+        gameWinCondition = GameManager.Instance.gameWinCondition;
+        if (DialogueManager.Instance != null && DialogueManager.Instance.HasDialogue())
+        {
+            DialogueManager.Instance.StartDialogue();
+            StartCoroutine(WaitForDialogueEnd());
         }
         else
         {
-            Destroy(this);
+            StartCoroutine(PhaseTransition("PlayerPhase", () =>
+            {
+                if (ResetTurnManager.Instance != null)
+                    ResetTurnManager.Instance.RecordStartingPositions();
+                _turnButton.interactable = false;
+                UpdateText("Player Turn", Color.green);
+            }));
         }
         
         TouchManager = FindFirstObjectByType<TouchManager>();
     }
-    
-    private void Start()
+
+    private IEnumerator WaitForDialogueEnd()
     {
+        while (DialogueManager.Instance.dialoguePanel.activeSelf)
+            yield return null;
+        DialogueEnded();
         StartPlayerTurn();
         UnlockButtonTurn();
     }
-    
+
+    public void DialogueEnded()
+    {
+        StartCoroutine(PhaseTransition("PlayerPhase", () =>
+        {
+            _isPlayerTurn = true;
+            if (ResetTurnManager.Instance != null)
+                ResetTurnManager.Instance.RecordStartingPositions();
+            _turnButton.interactable = false;
+            _gameStarted = true;
+        }));
+    }
+
     public void StartPlayerTurn()
     {
         UnlockButtonTurn();
         _isPlayerTurn = true;
-        UpdateText("Player Turn", Color.green);
+        if (ResetTurnManager.Instance != null)
+            ResetTurnManager.Instance.RecordStartingPositions();
+        if (phaseAnimator != null)
+        {
+            PlayAnimation("PlayerPhase", true);
+        }
+    }
+    
+    private void PlayAnimation(string trigger, bool addShake = false)
+    {
+        if (phaseAnimator != null)
+            phaseAnimator.SetTrigger(trigger);
+
+        if (addShake)
+        {
+            StartCoroutine(ShakePhase());
+        }
+    }
+    
+    private IEnumerator ShakePhase()
+    {
+        yield return new WaitForSeconds(0.3f);
+        ShakeManager.instance.ShakeCamera(0.15f, 0.15f);
     }
 
     public void EndPlayerTurn()
@@ -54,22 +121,24 @@ public class TurnManager : MonoBehaviour
         _isPlayerTurn = false;
         LockButtonTurn();
         TouchManager.Reset();
+        _turnButton.interactable = false;
         if (!CheckEndGame())
-        {
             StartEnemyTurn();
-        }
     }
-    
+
     public void StartEnemyTurn()
     {
         _actualisedCamp = false;
-        StartCoroutine(waitForSwapCamp());
+        StartCoroutine(WaitForCampUpdate());
         ShipManager.Instance.ChangeShipsCamp();
-        UpdateText("Enemy Turn", Color.red);
+        if (phaseAnimator != null)
+            PlayAnimation("EnemyPhase", true);
+        else
+            UpdateText("Enemy Turn", Color.red);
         _enemyTurn = 0;
         _isEnemyTurn = true;
     }
-    
+
     public void EndEnemyTurn()
     {
         TouchManager.Reset();
@@ -81,16 +150,11 @@ public class TurnManager : MonoBehaviour
             StartPlayerTurn();
         }
     }
-    
-    private void UpdateText(string text, Color color)
-    {
-        _turnText.text = text;
-        _turnText.color = color;
-    }
 
-    public void UnlockButtonTurn()
+    public void CheckUnlockButton()
     {
-        _turnButton.interactable = true;
+        if (_isPlayerTurn)
+            _turnButton.interactable = true;
     }
 
     public void EnemyEndATurn()
@@ -101,6 +165,8 @@ public class TurnManager : MonoBehaviour
 
     private void Update()
     {
+        if (!_gameStarted) return;
+        CheckEndGame();
         if (_isEnemyTurn)
         {
             if (!_waitingForEnemy && _actualisedCamp)
@@ -112,17 +178,17 @@ public class TurnManager : MonoBehaviour
                     return;
                 }
                 _waitingForEnemy = true;
-                if(ShipManager.Instance.GetActualAllyShip(_enemyTurn).TryGetComponent(out Enemy enemy))
-                {
+                if (ShipManager.Instance.GetActualAllyShip(_enemyTurn).TryGetComponent(out Enemy enemy))
                     enemy.SetMyTurn();
-                }
                 else
-                {
                     Debug.LogError("MISSING ENEMY COMPONENT");
-                }
             }
-
         }
+    }
+    
+    public ShipController GetEnemyShip()
+    {
+        return ShipManager.Instance.GetActualAllyShip(_enemyTurn);
     }
 
     public void LockButtonTurn()
@@ -130,57 +196,79 @@ public class TurnManager : MonoBehaviour
         _turnButton.interactable = false;
     }
 
-
-    public bool IsPlayerTurn()
+    public void UnlockButtonTurn()
     {
-        return _isPlayerTurn;
+        _turnButton.interactable = true;
     }
-    
-    public bool IsEnemyTurn()
+    private IEnumerator WaitForCampUpdate()
     {
-        return _isEnemyTurn;
-    }
-
-    private IEnumerator waitForSwapCamp()
-    {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_campUpdateDelay);
         _actualisedCamp = true;
     }
 
     private bool CheckEndGame()
     {
+        if (gameWinCondition != GameManager.GameWinCondition.destroyAll)
+        { return false;}
+        
         var ally = ShipManager.Instance.GetAllyShipsOrinalCamp();
         var enemy = ShipManager.Instance.GetEnemyShipsOrinalCamp();
-        
-        if (enemy.Count > 0)
+        if (enemy.Count == 0)
         {
-        }
-        else
-        {
-            WinGame();
+            EndGame();
+            Victory();
             return true;
         }
-        
-        if(ally.Count > 0)
+        if (ally.Count == 0)
         {
-        }
-        else
-        {
-            LoseGame();
+            EndGame();
+            Defeat();
             return true;
         }
-        
         return false;
-        
     }
 
-    private void WinGame()
+    private void LockEverything()
     {
-        UpdateText("VICTORY", Color.green);
+        _isPlayerTurn = false;
+        _isEnemyTurn = false; 
+        LockButtonTurn();
     }
-    
-    public void LoseGame()
+    public void Victory()
     {
-        UpdateText("DEFEAT", Color.red);
+        LockButtonTurn();
+        if (phaseAnimator != null)
+            PlayAnimation("Win");
+    }
+
+    public void Defeat()
+    {
+        LockButtonTurn();
+        if (phaseAnimator != null)
+            PlayAnimation("Defeat");
+    }
+
+    private void EndGame()
+    {
+        _isPlayerTurn = false;
+        _isEnemyTurn = false;
+        _endGame = true;
+        LockButtonTurn();
+    }
+    private void UpdateText(string text, Color color)
+    {
+        _turnText.text = text;
+        _turnText.color = color;
+    }
+
+    public IEnumerator PhaseTransition(string triggerName, Action onComplete)
+    {
+        if (phaseAnimator != null)
+        {
+            phaseAnimator.SetTrigger(triggerName);
+            AnimatorStateInfo state = phaseAnimator.GetCurrentAnimatorStateInfo(0);
+            yield return new WaitForSeconds(state.length);
+        }
+        onComplete?.Invoke();
     }
 }

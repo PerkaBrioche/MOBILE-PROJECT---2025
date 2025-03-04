@@ -1,161 +1,212 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CombatManager : MonoBehaviour
 {
-
-    private ShipController _attackerShip;
-    private ShipController _targetShip;
     public static CombatManager Instance;
+    public float dashSpeed = 10f;
+    public float dashDistancePercentage = 1f;
+    public float attackDelay = 0.5f;
+    
+    public TextMeshProUGUI AllyHpText;
+    public TextMeshProUGUI AllyDamagageText;
+    public TextMeshProUGUI EnemyHpText;
+    public TextMeshProUGUI targetDamageTaken;
+    public TextMeshProUGUI EnemyDamageText;
+    public Image AllyPilotImage;
+    public Image EnemyPilotImage;
+    private ShipController _attackerShip;
+    private ShipController _allyShips;
     private bool _isInCombat = false;
+    
+    private bool AllySelectionned = false;
+    private bool EnemySelectionned = false;
+    
+    private bool prewiewing = false;
+    private bool canPrewiew = true;
 
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(this);
-        }
     }
 
+    private void Start()
+    {
+        ClearPreview();
+    }
 
     public void StartCombat(ShipController attacker, ShipController target)
     {
+        TouchManager tm = UnityEngine.Object.FindFirstObjectByType<TouchManager>();
         _attackerShip = attacker;
-        _targetShip = target;
-        Fight();
+        _allyShips = target;
+        _isInCombat = true;
+        StartCoroutine(DashAttack());
     }
 
-    // private IEnumerator CombatSequence()
-    // {
-    //     _isInCombat = true;
-    //     yield return StartCoroutine(AnimateBordersIn());
-    //     GameObject attackerVisual = Instantiate(_shipContainer.gameObject, leftStartPoint.position, Quaternion.identity);
-    //     GameObject targetVisual = Instantiate(_shipContainer.gameObject, rightStartPoint.position, Quaternion.identity);
-    //
-    //     attackerVisual.GetComponent<SpriteRenderer>().sprite = _attackerShip.GetSprite();
-    //     targetVisual.GetComponent<SpriteRenderer>().sprite = _targetShip.GetSprite();
-    //     
-    //     if (attackerVisual.TryGetComponent<ShipController>(out ShipController sc1))
-    //         sc1.enabled = false;
-    //     if (targetVisual.TryGetComponent<ShipController>(out ShipController sc2))
-    //         sc2.enabled = false;
-    //     yield return StartCoroutine(ApproachAndBattle(attackerVisual, targetVisual));
-    //     yield return StartCoroutine(AnimateBordersOut());
-    //     TouchManager tm = FindObjectOfType<TouchManager>();
-    //     if (tm != null) tm.SetInteractionEnabled(true);
-    // }
-
-    // private IEnumerator ApproachAndBattle(GameObject attackerVisual, GameObject targetVisual)
-    // {
-    //     bool leftReached = false;
-    //     bool rightReached = false;
-    //     while (!leftReached || !rightReached)
-    //     {
-    //         if (!leftReached)
-    //         {
-    //             attackerVisual.transform.position = Vector3.MoveTowards(attackerVisual.transform.position, leftCombatPoint.position, moveSpeed * Time.deltaTime);
-    //             if (Vector3.Distance(attackerVisual.transform.position, leftCombatPoint.position) < 0.01f)
-    //                 leftReached = true;
-    //         }
-    //         if (!rightReached)
-    //         {
-    //             targetVisual.transform.position = Vector3.MoveTowards(targetVisual.transform.position, rightCombatPoint.position, moveSpeed * Time.deltaTime);
-    //             if (Vector3.Distance(targetVisual.transform.position, rightCombatPoint.position) < 0.01f)
-    //                 rightReached = true;
-    //         }
-    //         yield return null;
-    //     }
-    //     yield return new WaitForSeconds(0.5f);
-    //     yield return StartCoroutine(Battle(attackerVisual, targetVisual));
-    // }
-
-    // private IEnumerator Battle(GameObject attackerVisual, GameObject targetVisual)
-    // {
-    //     // Animator anim = attackerVisual.GetComponent<Animator>();
-    //     // if (anim != null) 
-    //     //     anim.SetTrigger("Attack");
-    //     yield return new WaitForSeconds(1f);
-    //    
-    //     yield return new WaitForSeconds(0.5f);
-    //     Destroy(attackerVisual);
-    //     Destroy(targetVisual);
-    //
-    // }
-
-    private void Fight()
+    private IEnumerator DashAttack()
     {
+        Vector3 originalPosition = _attackerShip.transform.position;
+        Vector3 targetPosition = _allyShips.transform.position;
+        Vector3 dashTarget = Vector3.Lerp(originalPosition, targetPosition, dashDistancePercentage);
+        float distance = Vector3.Distance(originalPosition, dashTarget);
+        float dashTime = distance / dashSpeed;
+        float elapsed = 0f;
+        while (elapsed < dashTime)
+        {
+            elapsed += Time.deltaTime;
+            _attackerShip.transform.position = Vector3.Lerp(originalPosition, dashTarget, elapsed / dashTime);
+            yield return null;
+        }
+        _attackerShip.transform.position = dashTarget;
         int damage = _attackerShip.runtimeStats.ATK;
-        if (damage < 1) damage = 1;
         if (_attackerShip.HasBonusDamage())
         {
             _attackerShip.SetBonusDamage(false);
         }
-        _targetShip.TakeDamage(damage);
+        _allyShips.TakeDamage(damage);
+        
+        yield return new WaitForSeconds(attackDelay);
+        elapsed = 0f;
+        while (elapsed < dashTime)
+        {
+            elapsed += Time.deltaTime;
+            _attackerShip.transform.position = Vector3.Lerp(dashTarget, originalPosition, elapsed / dashTime);
+            yield return null;
+        }
+        _attackerShip.transform.position = originalPosition;
+        TouchManager tm2 = UnityEngine.Object.FindFirstObjectByType<TouchManager>();
+        if (tm2 != null)
+        {
+            
+        }
+        _isInCombat = false;
+        ClearPreview();
     }
 
-    // private IEnumerator AnimateBordersIn()
-    // {
-    //     float elapsed = 0f;
-    //     Vector2 topStart = topBorder.sizeDelta;
-    //     Vector2 bottomStart = bottomBorder.sizeDelta;
-    //     Vector2 topTarget = new Vector2(topStart.x, targetBorderHeight);
-    //     Vector2 bottomTarget = new Vector2(bottomStart.x, targetBorderHeight);
-    //     while (elapsed < borderAnimationDuration)
-    //     {
-    //         elapsed += Time.deltaTime;
-    //         float t = elapsed / borderAnimationDuration;
-    //         topBorder.sizeDelta = Vector2.Lerp(topStart, topTarget, t);
-    //         bottomBorder.sizeDelta = Vector2.Lerp(bottomStart, bottomTarget, t);
-    //         _bgFight.color = new Color(0.2f, 0.2f, 0.2f,  t/1.5f);
-    //         yield return null;
-    //     }
-    //     topBorder.sizeDelta = topTarget;
-    //     bottomBorder.sizeDelta = bottomTarget;
-    // }
-
-    // private IEnumerator AnimateBordersOut()
-    // {
-    //     float elapsed = 0f;
-    //     Vector2 topStart = topBorder.sizeDelta;
-    //     Vector2 bottomStart = bottomBorder.sizeDelta;
-    //     Vector2 topTarget = new Vector2(topStart.x, 0f);
-    //     Vector2 bottomTarget = new Vector2(bottomStart.x, 0f);
-    //     while (elapsed < borderAnimationDuration)
-    //     {
-    //         elapsed += Time.deltaTime;
-    //         float t = elapsed / borderAnimationDuration;
-    //         topBorder.sizeDelta = Vector2.Lerp(topStart, topTarget, t);
-    //         bottomBorder.sizeDelta = Vector2.Lerp(bottomStart, bottomTarget, t);
-    //         _bgFight.color = new Color(0.2f, 0.2f, 0.2f, 1 -  t/1.5f);
-    //         yield return null;
-    //     }
-    //     _bgFight.color = new Color(0.2f, 0.2f, 0.2f, 0);
-    //
-    //     topBorder.sizeDelta = topTarget;
-    //     bottomBorder.sizeDelta = bottomTarget;
-    //     _isInCombat = false;
-    // }
-
-    private void Reset()
+    public void PreviewCombat(ShipController ally, ShipController enemy)
     {
-        _attackerShip = null;
-        _targetShip = null;
+        _attackerShip = enemy;
+        _allyShips = ally;
+        int predictedDamage = _allyShips.runtimeStats.ATK;
+        int predictedHP = _attackerShip.runtimeStats.HP - predictedDamage;
+        
+        if (EnemyHpText != null)
+            EnemyHpText.text = predictedHP.ToString() + " HP";
+        if (EnemyDamageText != null)
+            EnemyDamageText.text = predictedDamage.ToString() + " ATK";
+        if (EnemyPilotImage != null)
+            EnemyPilotImage.sprite = _attackerShip.GetUnitStats().PiloteEnnemi;
+        if (AllyHpText != null)
+            AllyHpText.text = _allyShips.runtimeStats.HP.ToString() + " HP";
+        if (AllyDamagageText != null)
+            AllyDamagageText.text = _allyShips.runtimeStats.ATK.ToString() + " ATK";
+        if (AllyPilotImage != null)
+            AllyPilotImage.sprite = _allyShips.GetUnitStats().PiloteAllie;
+        ChangeImageOpacity(false, AllyPilotImage, EnemyPilotImage);
+        prewiewing = true;
+    }
+
+    private void Update()
+    {
+        if (prewiewing)
+        {
+            if (canPrewiew)
+            {
+                canPrewiew = false;
+                StartCoroutine(BlinkTargetHP());
+            }
+        }
+    }
+
+    private IEnumerator BlinkTargetHP()
+    {
+        float blinkDuration = 0.4f;
+        EnemyHpText.color = Color.red;
+        yield return new WaitForSeconds(blinkDuration);
+        canPrewiew = true;
+    }
+
+
+
+    public void ClearPreview()
+    {
+        prewiewing = false;
+        canPrewiew = true;
+        ResetColor();
+        print("clear preview");
+        EnemyHpText.text = "";
+        EnemyDamageText.text = "";
+        AllyHpText.text = "";
+        AllyDamagageText.text = "";
+        targetDamageTaken.text = "";
+        EnemyPilotImage.sprite = null;
+        AllyPilotImage.sprite = null;
+        ChangeImageOpacity(true, AllyPilotImage, EnemyPilotImage);
+    }
+
+    private void ResetColor()
+    {
+        EnemyHpText.color = Color.green;
+        AllyHpText.color = Color.green;
+        AllyDamagageText.color = Color.white;
+        EnemyDamageText.color = Color.white;
+    }
+
+    private void ChangeImageOpacity(bool diseapear, Image AllyPilotImage = null, Image EnemyPilotImage = null)
+    {
+        if (diseapear)
+        {
+            if (AllyPilotImage != null)
+            {
+                AllyPilotImage.color = new Color(AllyPilotImage.color.r, AllyPilotImage.color.g, AllyPilotImage.color.b, 0);
+            }
+            if (EnemyPilotImage != null)
+            { 
+                EnemyPilotImage.color = new Color(EnemyPilotImage.color.r, EnemyPilotImage.color.g, EnemyPilotImage.color.b, 0);
+            }
+        }
+        else
+        {
+            if (AllyPilotImage  != null)
+            {
+                AllyPilotImage.color = new Color(AllyPilotImage.color.r, AllyPilotImage.color.g, AllyPilotImage.color.b, 1);
+            }
+            if (EnemyPilotImage != null)
+            {
+                EnemyPilotImage.color = new Color(EnemyPilotImage.color.r, EnemyPilotImage.color.g, EnemyPilotImage.color.b, 1);
+            }
+        }
     }
     
+    public void DisplayAttackerStats(ShipController attacker)
+    {
+        print("Display Attacker Stats");
+        ChangeImageOpacity(false, null, EnemyPilotImage);
+        _attackerShip = attacker;
+        EnemyHpText.text = attacker.runtimeStats.HP.ToString() + " HP";
+        EnemyDamageText.text = attacker.runtimeStats.ATK.ToString() + " ATK";
+        EnemyPilotImage.sprite = attacker.GetUnitStats().PiloteEnnemi;
+    }
+    
+    public void DisplayAllyStats(ShipController ally)
+    {
+        ChangeImageOpacity(false, AllyPilotImage, null);
+        _allyShips = ally;
+        print("DISPLAY ALLY STATS");
+        AllyHpText.text = ally.runtimeStats.HP.ToString() + " HP";
+        AllyDamagageText.text = ally.runtimeStats.ATK.ToString() + " ATK";
+        AllyPilotImage.sprite = ally.GetUnitStats().PiloteAllie;
+    }
+
     public bool IsInCombat()
     {
         return _isInCombat;
-    }
-    
-    public void SetInCombat(bool value)
-    {
-        _isInCombat = value;
     }
 }
