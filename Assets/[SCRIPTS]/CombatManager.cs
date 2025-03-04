@@ -177,10 +177,18 @@ public class CombatManager : MonoBehaviour
             if (AllyPilotImage  != null)
             {
                 AllyPilotImage.color = new Color(AllyPilotImage.color.r, AllyPilotImage.color.g, AllyPilotImage.color.b, 1);
+                if(AllyPilotImage.TryGetComponent(out Animation anim))
+                {
+                    anim.Play();
+                }
             }
             if (EnemyPilotImage != null)
             {
                 EnemyPilotImage.color = new Color(EnemyPilotImage.color.r, EnemyPilotImage.color.g, EnemyPilotImage.color.b, 1);
+                if(EnemyPilotImage.TryGetComponent(out Animation anim))
+                {
+                    anim.Play();
+                }
             }
         }
     }

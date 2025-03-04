@@ -12,6 +12,7 @@ public class TurnManager : MonoBehaviour
     public static TurnManager Instance;
     [SerializeField] private TextMeshProUGUI _turnText;
     [SerializeField] private Button _turnButton;
+    [SerializeField] private Button _REturnButton;
     [SerializeField] private Animator phaseAnimator;
     private int _enemyTurn;
     private bool _waitingForEnemy = false;
@@ -38,6 +39,7 @@ public class TurnManager : MonoBehaviour
         else
             Destroy(this);
     }
+    
 
     public bool IsEndGame()
     {
@@ -65,6 +67,16 @@ public class TurnManager : MonoBehaviour
         
         TouchManager = FindFirstObjectByType<TouchManager>();
     }
+    
+    public void LockRETURNButton()
+    {
+        _REturnButton.interactable = false;
+    }
+    
+    public void UnlockRETURNButton()
+    {
+        _REturnButton.interactable = true;
+    }
 
     private IEnumerator WaitForDialogueEnd()
     {
@@ -89,6 +101,7 @@ public class TurnManager : MonoBehaviour
 
     public void StartPlayerTurn()
     {
+        if(_endGame){return;}
         UnlockButtonTurn();
         _isPlayerTurn = true;
         if (ResetTurnManager.Instance != null)
@@ -118,6 +131,7 @@ public class TurnManager : MonoBehaviour
 
     public void EndPlayerTurn()
     {
+        if(_endGame){return;}
         _isPlayerTurn = false;
         LockButtonTurn();
         TouchManager.Reset();
@@ -128,6 +142,7 @@ public class TurnManager : MonoBehaviour
 
     public void StartEnemyTurn()
     {
+        if(_endGame){return;}
         _actualisedCamp = false;
         StartCoroutine(WaitForCampUpdate());
         ShipManager.Instance.ChangeShipsCamp();
@@ -141,6 +156,7 @@ public class TurnManager : MonoBehaviour
 
     public void EndEnemyTurn()
     {
+        if(_endGame){return;}
         TouchManager.Reset();
         _isEnemyTurn = false;
         ShipManager.Instance.ResetAllShips();
@@ -165,7 +181,18 @@ public class TurnManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_gameStarted) return;
+        if (!_gameStarted || _endGame)
+        {
+            return;
+        }
+        if (_isPlayerTurn)
+        {
+            UnlockRETURNButton();
+        }
+        else
+        {
+            LockRETURNButton();
+        }
         CheckEndGame();
         if (_isEnemyTurn)
         {
@@ -254,6 +281,7 @@ public class TurnManager : MonoBehaviour
         _isEnemyTurn = false;
         _endGame = true;
         LockButtonTurn();
+        LockRETURNButton();
     }
     private void UpdateText(string text, Color color)
     {
