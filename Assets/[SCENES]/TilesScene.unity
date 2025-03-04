@@ -13094,13 +13094,14 @@ MonoBehaviour:
   _turnText: {fileID: 2054955308}
   _turnButton: {fileID: 427364538}
   phaseAnimator: {fileID: 613968771}
+  turnCountText: {fileID: 2054955308}
   resultPanel: {fileID: 259555661}
   resultStar1: {fileID: 832896292}
   resultStar2: {fileID: 1997688186}
   resultStar3: {fileID: 885019889}
   turnThresholdForThreeStars: 8
   turnThresholdForTwoStars: 50
-  currentLevelIndex: 0
+  currentLevelIndex: 1
 --- !u!1 &1997688184
 GameObject:
   m_ObjectHideFlags: 0
