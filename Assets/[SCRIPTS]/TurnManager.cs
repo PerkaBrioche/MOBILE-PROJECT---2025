@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
@@ -207,6 +208,7 @@ public class TurnManager : MonoBehaviour
         {
             _endGame = true;
             Victory();
+            SceneManager.LoadScene(0);
             return true;
         }
         if (ally.Count == 0)
