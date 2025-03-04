@@ -18,6 +18,7 @@ public class LevelData
 
 public class MenuManager : MonoBehaviour
 {
+    public GameObject menuPanel;
     public AudioMixer audioMixer;
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
@@ -96,6 +97,18 @@ public class MenuManager : MonoBehaviour
                 level.star2.gameObject.SetActive(bestStars >= 2);
             if (level.star3 != null)
                 level.star3.gameObject.SetActive(bestStars >= 3);
+        }
+    }
+
+    public void OpenOptions()
+    {
+        if (menuPanel.activeInHierarchy)
+        {
+            menuPanel.SetActive(false);
+        }
+        else
+        {
+            menuPanel.SetActive(true);
         }
     }
     

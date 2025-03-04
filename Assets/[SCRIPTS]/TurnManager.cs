@@ -16,6 +16,7 @@ public class TurnManager : MonoBehaviour
     private int _enemyTurn;
     private bool _waitingForEnemy = false;
     private bool _actualisedCamp = false;
+    private bool _endGame;
     
     private TouchManager TouchManager;
     
@@ -32,6 +33,7 @@ public class TurnManager : MonoBehaviour
             Instance = this;
         else
             Destroy(this);
+        _endGame = false;
     }
 
     public bool IsEndGame()
