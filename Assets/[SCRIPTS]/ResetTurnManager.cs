@@ -5,6 +5,15 @@ public class ResetTurnManager : MonoBehaviour
 {
     public static ResetTurnManager Instance;
     private List<ShipController> recordedShips = new List<ShipController>();
+    private List<SpecialTileState> recordedSpecialTiles = new List<SpecialTileState>();
+
+    [System.Serializable]
+    public class SpecialTileState
+    {
+        public TilesController tile;
+        public Vector3 position;
+        public TilesController.tileType tileType;
+    }
 
     private void Awake()
     {
@@ -25,6 +34,19 @@ public class ResetTurnManager : MonoBehaviour
                 ship.SaveStartingState();
                 if (!recordedShips.Contains(ship))
                     recordedShips.Add(ship);
+            }
+        }
+        recordedSpecialTiles.Clear();
+        TilesController[] allTiles = Resources.FindObjectsOfTypeAll<TilesController>();
+        foreach (TilesController tile in allTiles)
+        {
+            if (tile.GetTileType() == TilesController.tileType.HealTile || tile.GetTileType() == TilesController.tileType.DamageTile)
+            {
+                SpecialTileState sts = new SpecialTileState();
+                sts.tile = tile;
+                sts.position = tile.transform.position;
+                sts.tileType = tile.GetTileType();
+                recordedSpecialTiles.Add(sts);
             }
         }
     }
@@ -48,6 +70,21 @@ public class ResetTurnManager : MonoBehaviour
                     if (ship.gameObject.activeInHierarchy)
                         ship.ResetTurnState();
                 }
+            }
+        }
+        TilesController[] allTiles = Resources.FindObjectsOfTypeAll<TilesController>();
+        foreach (TilesController tile in allTiles)
+        {
+            tile.ResetTiles();
+        }
+        foreach (SpecialTileState sts in recordedSpecialTiles)
+        {
+            if (sts.tile != null)
+            {
+                sts.tile.gameObject.SetActive(true);
+                sts.tile.transform.position = sts.position;
+                sts.tile.SetTileType(sts.tileType);
+                sts.tile.ResetTiles();
             }
         }
     }
