@@ -17,7 +17,7 @@ MonoBehaviour:
   _unitName: Ranger
   _unitType: {fileID: 0}
   _piloteAllie: {fileID: 1499644303206215180, guid: 8db934cb8e17ae947aad0c3a0f7d601d, type: 3}
-  _piloteEnnemi: {fileID: 938737019650935045, guid: d45e0933e089e4741a197b4258509983, type: 3}
+  _piloteEnnemi: {fileID: 6588598809436781549, guid: 2596879db9b14aa44a040eac4bece593, type: 3}
   hp: 18
   atk: 12
   def: 0

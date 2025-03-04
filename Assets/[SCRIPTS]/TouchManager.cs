@@ -177,6 +177,7 @@ public class TouchManager : MonoBehaviour
                 {
                     if (sc.GetType() == ShipSpawner.shipType.MothherShip)
                     {
+                        Reset();
                         _combatManager.DisplayAllyStats(sc);
                     }
                     else
@@ -190,6 +191,7 @@ public class TouchManager : MonoBehaviour
                             Reset(true);
                             _ActualshipController = sc;
                             _ActualshipController.GetPath();
+                            _isHighLighted = true;
                             _combatManager.DisplayAllyStats(_ActualshipController);
                         }
                     }

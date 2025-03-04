@@ -16,8 +16,8 @@ MonoBehaviour:
   _unitEnemyIcon: {fileID: -2440781651108524487, guid: 628de6ea106450e46b8d3157424ead28, type: 3}
   _unitName: Rider
   _unitType: {fileID: 0}
-  _piloteAllie: {fileID: 6637213156290018700, guid: 316858b3424ac6f47a8ea31cffd02889, type: 3}
-  _piloteEnnemi: {fileID: -4674320589944222683, guid: 8bcababd43911ba4a9e3466f526fecf3, type: 3}
+  _piloteAllie: {fileID: -6416015843015295162, guid: 1444a045f7d777046b16dd9dcc3a48b1, type: 3}
+  _piloteEnnemi: {fileID: 938737019650935045, guid: d45e0933e089e4741a197b4258509983, type: 3}
   hp: 25
   atk: 17
   def: 0

@@ -280,7 +280,10 @@ public class ShipController : MonoBehaviour, bounce.IBounce
                 _myTilesController.SetTileType(TilesController.tileType.defaultTile);
                 break;
             case TilesController.tileType.exit:
-                TurnManager.Instance.Victory();
+                if (!_isOriginCampEnemy)
+                {
+                    TurnManager.Instance.Victory();
+                }
                 break;
         }
     }

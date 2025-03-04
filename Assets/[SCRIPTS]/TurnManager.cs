@@ -281,7 +281,7 @@ public class TurnManager : MonoBehaviour
     
     public void Victory()
     {
-        
+        EndGame();
         LockButtonTurn();
         ShipManager.Instance.BounceDispawn();
         if (phaseAnimator != null)

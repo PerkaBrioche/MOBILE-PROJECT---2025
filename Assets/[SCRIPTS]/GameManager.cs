@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     private bool _canTouch = true;
     
-    [SerializeField]  private float cooldownTouch = 0.4f;
+    private float cooldownTouch = 0.4f;
     private void Awake()
     {
         if (Instance == null)
