@@ -101,6 +101,7 @@ public class TurnManager : MonoBehaviour
 
     public void StartPlayerTurn()
     {
+        if(_endGame){return;}
         UnlockButtonTurn();
         _isPlayerTurn = true;
         if (ResetTurnManager.Instance != null)
@@ -130,6 +131,7 @@ public class TurnManager : MonoBehaviour
 
     public void EndPlayerTurn()
     {
+        if(_endGame){return;}
         _isPlayerTurn = false;
         LockButtonTurn();
         TouchManager.Reset();
@@ -140,6 +142,7 @@ public class TurnManager : MonoBehaviour
 
     public void StartEnemyTurn()
     {
+        if(_endGame){return;}
         _actualisedCamp = false;
         StartCoroutine(WaitForCampUpdate());
         ShipManager.Instance.ChangeShipsCamp();
@@ -153,6 +156,7 @@ public class TurnManager : MonoBehaviour
 
     public void EndEnemyTurn()
     {
+        if(_endGame){return;}
         TouchManager.Reset();
         _isEnemyTurn = false;
         ShipManager.Instance.ResetAllShips();
@@ -177,7 +181,10 @@ public class TurnManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_gameStarted) return;
+        if (!_gameStarted || _endGame)
+        {
+            return;
+        }
         if (_isPlayerTurn)
         {
             UnlockRETURNButton();
@@ -274,6 +281,7 @@ public class TurnManager : MonoBehaviour
         _isEnemyTurn = false;
         _endGame = true;
         LockButtonTurn();
+        LockRETURNButton();
     }
     private void UpdateText(string text, Color color)
     {
