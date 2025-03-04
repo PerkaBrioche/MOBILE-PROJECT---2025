@@ -20,6 +20,8 @@ public class TurnManager : MonoBehaviour
     private TouchManager TouchManager;
     
     private float _campUpdateDelay = 0.5f;
+    private int _turnCount = 0;
+    public int TurnCount { get { return _turnCount; } }
 
     public bool IsPlayerTurn() { return _isPlayerTurn; }
     public bool IsEnemyTurn() { return _isEnemyTurn; }
@@ -43,6 +45,7 @@ public class TurnManager : MonoBehaviour
         {
             StartCoroutine(PhaseTransition("PlayerPhase", () =>
             {
+                _turnCount++;
                 if (ResetTurnManager.Instance != null)
                     ResetTurnManager.Instance.RecordStartingPositions();
                 _turnButton.interactable = false;
@@ -66,6 +69,7 @@ public class TurnManager : MonoBehaviour
     {
         StartCoroutine(PhaseTransition("PlayerPhase", () =>
         {
+            _turnCount++;
             _isPlayerTurn = true;
             if (ResetTurnManager.Instance != null)
                 ResetTurnManager.Instance.RecordStartingPositions();
@@ -76,6 +80,7 @@ public class TurnManager : MonoBehaviour
 
     public void StartPlayerTurn()
     {
+        _turnCount++;
         UnlockButtonTurn();
         _isPlayerTurn = true;
         if (ResetTurnManager.Instance != null)
@@ -98,6 +103,7 @@ public class TurnManager : MonoBehaviour
 
     public void StartEnemyTurn()
     {
+        _turnCount++;
         _actualisedCamp = false;
         StartCoroutine(WaitForCampUpdate());
         ShipManager.Instance.ChangeShipsCamp();
@@ -177,7 +183,6 @@ public class TurnManager : MonoBehaviour
         {
             Victory();
             return true;
-
         }
         if (ally.Count == 0)
         {

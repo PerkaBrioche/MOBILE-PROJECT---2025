@@ -661,6 +661,10 @@ PrefabInstance:
       value: Level 1 (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6905123373338815553, guid: 4b6d80d525e165241945f39cc8d5bc85, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6905123373338815553, guid: 4b6d80d525e165241945f39cc8d5bc85, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 736833608}
@@ -712,6 +716,14 @@ MonoBehaviour:
   masterVolumeSlider: {fileID: 1124238699}
   musicVolumeSlider: {fileID: 1478132755}
   sfxVolumeSlider: {fileID: 1601522682}
+  levels:
+  - levelButton: {fileID: 1539100316}
+    sceneIndex: 0
+    turnThresholdForThreeStars: 5
+    turnThresholdForTwoStars: 7
+    star1: {fileID: 0}
+    star2: {fileID: 0}
+    star3: {fileID: 0}
 --- !u!4 &736833609
 Transform:
   m_ObjectHideFlags: 0
@@ -2367,6 +2379,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 202851655205179100, guid: 4b6d80d525e165241945f39cc8d5bc85, type: 3}
   m_PrefabInstance: {fileID: 568403196443930831}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1539100316 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6905123373338815553, guid: 4b6d80d525e165241945f39cc8d5bc85, type: 3}
+  m_PrefabInstance: {fileID: 568403196443930831}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1601522681
 GameObject:
   m_ObjectHideFlags: 0
@@ -2561,6 +2584,10 @@ PrefabInstance:
     - target: {fileID: 737707126634544662, guid: 4b6d80d525e165241945f39cc8d5bc85, type: 3}
       propertyPath: m_Name
       value: Level 1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6905123373338815553, guid: 4b6d80d525e165241945f39cc8d5bc85, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6905123373338815553, guid: 4b6d80d525e165241945f39cc8d5bc85, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -3234,9 +3261,17 @@ PrefabInstance:
       value: Level 1
       objectReference: {fileID: 0}
     - target: {fileID: 6905123373338815553, guid: 4b6d80d525e165241945f39cc8d5bc85, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6905123373338815553, guid: 4b6d80d525e165241945f39cc8d5bc85, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 736833608}
+    - target: {fileID: 6905123373338815553, guid: 4b6d80d525e165241945f39cc8d5bc85, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
