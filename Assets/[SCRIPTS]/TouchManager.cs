@@ -48,6 +48,7 @@ public class TouchManager : MonoBehaviour
         _touchPosition = _playerInput.actions["TouchPosition"];
         _touchPress = _playerInput.actions["SinglePress"];
         _combatManager = FindFirstObjectByType<CombatManager>();
+        _gridController = FindFirstObjectByType<GridController>();
         if (Instance == null)
         {
             Instance = this;
