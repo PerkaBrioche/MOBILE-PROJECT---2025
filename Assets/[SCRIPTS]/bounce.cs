@@ -5,9 +5,11 @@ using UnityEngine;
 public class bounce : MonoBehaviour
 {
     
+    [SerializeField] private bool BounceOnEnable = false;
     [SerializeField]  private float _bounceForce = 1f;
     [SerializeField] private float _bounceDuration = 0.05f;
     [SerializeField] private float _bounceDecreaseSpeed = 3f;
+    
     
     
     
@@ -23,6 +25,14 @@ public class bounce : MonoBehaviour
     {
         originalScale = transform.localScale;
     }
+    
+    private void OnEnable()
+    {
+        if (BounceOnEnable)
+        {
+            StartBounce();
+        }
+    }
 
 
     public void StartBouncePARAM(float bounceForce, float bounceDuration, bool holded)
@@ -35,6 +45,26 @@ public class bounce : MonoBehaviour
     public void StartBounce()
     {
         StartCoroutine(bounceEnumerator(_bounceForce, _bounceDuration, false));
+    }
+    
+    public void BounceDispawn()
+    {
+        StartCoroutine(BounceDispawnRoutine());
+    }
+    
+    private IEnumerator BounceDispawnRoutine()
+    {
+        float alpha = 0f;
+        Vector3 targetScale = new Vector3(0, 0, 0);
+        Vector3 scalBefore = new Vector3(transform.localScale.x, transform.localScale.y);
+        while (alpha < 1)
+        {
+            alpha += Time.deltaTime;
+            Vector3 newScaleObject = Vector3.Lerp(scalBefore, targetScale, alpha);
+            transform.localScale = newScaleObject;
+            yield return null;
+        }
+        gameObject.SetActive(false);
     }
 
     public void BounceSpawn()

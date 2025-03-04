@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3819767841704402762, guid: e4b1fcd849eae83489d4c2062be4fd8d, type: 3}
+  m_Sprite: {fileID: -6561638262626599477, guid: cc574e715152293498cbedd712903be9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -156,6 +156,7 @@ MonoBehaviour:
   _enemyDetectedTileSprite: {fileID: -5718123564679910689, guid: 3ced1fd1e1bcdfd41907b52fc5f28b67, type: 3}
   _healSpecialTileSprite: {fileID: -8735249444720277, guid: b2609e775178a19418bb4ac060622123, type: 3}
   _damageSpecialTileSprite: {fileID: -1233804234085844942, guid: 21788b305c22e0b4f97ece4316e4bffe, type: 3}
+  _wormHoleSprite: {fileID: -5298761639805663854, guid: ec19ce1ce1d3b2e4d90ac31cf156ad1e, type: 3}
   _healthParticule: {fileID: 7128000879849997762}
   _damageParticule: {fileID: 8668087981019224455}
   _asteroidSprites:
@@ -174,6 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8da17b0cb895da1469dc08e5f3b5ca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BounceOnEnable: 0
   _bounceForce: 1.45
   _bounceDuration: 0.2
   _bounceDecreaseSpeed: 1.6

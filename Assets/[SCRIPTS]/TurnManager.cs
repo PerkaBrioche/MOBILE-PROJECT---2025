@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,12 +9,20 @@ using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
+    private GameManager.GameWinCondition gameWinCondition;
+    private int TurnMinimumTwoStars;
+    private int TurnMinimumThreeStars;
+    
     private bool _isPlayerTurn = false;
     private bool _isEnemyTurn = false;
     public static TurnManager Instance;
+    [Foldout("REFERENCES")]
     [SerializeField] private TextMeshProUGUI _turnText;
+    [Foldout("REFERENCES")]
     [SerializeField] private Button _turnButton;
+    [Foldout("REFERENCES")]
     [SerializeField] private Button _REturnButton;
+    [Foldout("REFERENCES")]
     [SerializeField] private Animator phaseAnimator;
     private int _enemyTurn;
     private bool _waitingForEnemy = false;
@@ -21,18 +30,26 @@ public class TurnManager : MonoBehaviour
     private bool _endGame;
     private TouchManager TouchManager;
     private float _campUpdateDelay = 0.5f;
-    public GameManager.GameWinCondition gameWinCondition;
-    
+    private bool _gameStarted = false;
     private int _turnCount = 0;
     public int TurnCount { get { return _turnCount; } }
+    
+    [Foldout("REFERENCES")]
     [SerializeField] private TextMeshProUGUI turnCountText;
+    [Foldout("REFERENCES")]
     [SerializeField] private GameObject resultPanel;
+    [Foldout("REFERENCES")]
     [SerializeField] private Image resultStar1;
+    [Foldout("REFERENCES")]
     [SerializeField] private Image resultStar2;
+    [Foldout("REFERENCES")]
     [SerializeField] private Image resultStar3;
-    [SerializeField] private int turnThresholdForThreeStars;
-    [SerializeField] private int turnThresholdForTwoStars;
-    [SerializeField] private int currentLevelIndex;
+
+    [Foldout("REFERENCES")] [SerializeField]
+    private Sprite _unlockedStars;
+    [Foldout("REFERENCES")] [SerializeField] private Sprite _lockedStars;
+    //[Foldout("REFERENCES")]
+   // [SerializeField] private int currentLevelIndex;
 
     public bool IsPlayerTurn() { return _isPlayerTurn; }
     public bool IsEnemyTurn() { return _isEnemyTurn; }
@@ -55,6 +72,8 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         gameWinCondition = GameManager.Instance.gameWinCondition;
+        TurnMinimumTwoStars = GameManager.Instance.TurnMinimumTwoStars;
+        TurnMinimumThreeStars = GameManager.Instance.TurnMinimumThreeStars;
         if (DialogueManager.Instance != null && DialogueManager.Instance.HasDialogue())
         {
             DialogueManager.Instance.StartDialogue();
@@ -64,8 +83,8 @@ public class TurnManager : MonoBehaviour
         {
             StartCoroutine(PhaseTransition("PlayerPhase", () =>
             {
-                _turnCount++;
-                UpdateTurnCountDisplay();
+                // _turnCount++;
+                // UpdateTurnCountDisplay();
                 if (ResetTurnManager.Instance != null)
                     ResetTurnManager.Instance.RecordStartingPositions();
                 _turnButton.interactable = false;
@@ -98,8 +117,8 @@ public class TurnManager : MonoBehaviour
     {
         StartCoroutine(PhaseTransition("PlayerPhase", () =>
         {
-            _turnCount++;
-            UpdateTurnCountDisplay();
+            // _turnCount++;
+            // UpdateTurnCountDisplay();
             _isPlayerTurn = true;
             if (ResetTurnManager.Instance != null)
                 ResetTurnManager.Instance.RecordStartingPositions();
@@ -111,8 +130,7 @@ public class TurnManager : MonoBehaviour
     public void StartPlayerTurn()
     {
         if(_endGame){return;}
-        _turnCount++;
-        UpdateTurnCountDisplay();
+
         UnlockButtonTurn();
         _isPlayerTurn = true;
         if (ResetTurnManager.Instance != null)
@@ -130,14 +148,16 @@ public class TurnManager : MonoBehaviour
         LockButtonTurn();
         TouchManager.Reset();
         _turnButton.interactable = false;
+        _turnCount++;
+        UpdateTurnCountDisplay();
         if (!CheckEndGame())
             StartEnemyTurn();
     }
 
     public void StartEnemyTurn()
     {
-        _turnCount++;
-        UpdateTurnCountDisplay();
+        // _turnCount++;
+        // UpdateTurnCountDisplay();
         if(_endGame){return;}
         _actualisedCamp = false;
         StartCoroutine(WaitForCampUpdate());
@@ -261,7 +281,9 @@ public class TurnManager : MonoBehaviour
     
     public void Victory()
     {
+        
         LockButtonTurn();
+        ShipManager.Instance.BounceDispawn();
         if (phaseAnimator != null)
             phaseAnimator.SetTrigger("Win");
         StartCoroutine(ShowVictoryPanel());
@@ -298,37 +320,77 @@ public class TurnManager : MonoBehaviour
         }
         onComplete?.Invoke();
     }
+    
+    
+    
 
     private IEnumerator ShowVictoryPanel()
     {
+        yield return new WaitForSeconds(2f); 
+
         if (resultPanel != null)
-            resultPanel.SetActive(true);
+        { resultPanel.SetActive(true);
+        }
+        yield return new WaitForSeconds(0.5f); 
+
         int stars = 1;
-        if (_turnCount <= turnThresholdForThreeStars)
-            stars = 3;
-        else if (_turnCount <= turnThresholdForTwoStars)
+        resultStar1.sprite = _unlockedStars;
+        resultStar1.transform.GetComponent<bounce>().StartBounce();
+        yield return new WaitForSeconds(1f); 
+        
+        if (_turnCount <= TurnMinimumTwoStars)
+        {
             stars = 2;
-        else
-            stars = 1;
-        if (resultStar1 != null)
-            resultStar1.gameObject.SetActive(stars >= 1);
-        if (resultStar2 != null)
-            resultStar2.gameObject.SetActive(stars >= 2);
-        if (resultStar3 != null)
-            resultStar3.gameObject.SetActive(stars >= 3);
-        int currentBest = PlayerPrefs.GetInt("LevelStars_" + currentLevelIndex, 0);
+            resultStar2.sprite = _unlockedStars;
+            resultStar2.transform.GetComponent<bounce>().StartBounce();
+        }
+
+        yield return new WaitForSeconds(1f); 
+        
+        if (_turnCount <= TurnMinimumThreeStars)
+        {
+            stars = 3;
+            resultStar3.sprite = _unlockedStars;
+            resultStar3.transform.GetComponent<bounce>().StartBounce();
+            
+            yield return new WaitForSeconds(1f); 
+            resultStar1.transform.GetComponent<bounce>().StartBounce();
+            yield return new WaitForSeconds(0.2f); 
+            resultStar2.transform.GetComponent<bounce>().StartBounce();
+            yield return new WaitForSeconds(0.2f); 
+            resultStar3.transform.GetComponent<bounce>().StartBounce();
+        }
+        
+
+        int currentBest = PlayerPrefs.GetInt("LevelStars_" + SceneManager.GetActiveScene().buildIndex , 0);
         if (stars > currentBest)
         {
-            PlayerPrefs.SetInt("LevelStars_" + currentLevelIndex, stars);
+            PlayerPrefs.SetInt("LevelStars_" + SceneManager.GetActiveScene().buildIndex, stars);
             PlayerPrefs.Save();
         }
-        yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene(0);
+        
+        // yield return new WaitForSeconds(3f);
+        // SceneManager.LoadScene(0);
     }
     
     private void UpdateTurnCountDisplay()
     {
         if (turnCountText != null)
             turnCountText.text = "Turn: " + _turnCount;
+    }
+    
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+    
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    
+    public void NextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

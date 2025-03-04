@@ -51,9 +51,10 @@ public class GameManager : MonoBehaviour
         exit,
     }
     
-    [Header("VICTORY CONDITIONS")]
+    [Header("LEVEL PARAMETERS")]
     
     public GameWinCondition gameWinCondition;
-
+    [Range(0,50)] [SerializeField] public int TurnMinimumTwoStars;
+    [Range(0,50)] [SerializeField] public int TurnMinimumThreeStars;
 
 }

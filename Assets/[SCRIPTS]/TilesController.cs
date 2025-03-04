@@ -62,6 +62,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
     [Foldout("OTHERS")] [SerializeField] private Sprite _enemyDetectedTileSprite;
     [Foldout("OTHERS")] [SerializeField] private Sprite _healSpecialTileSprite;
     [Foldout("OTHERS")] [SerializeField] private Sprite _damageSpecialTileSprite;
+    [Foldout("OTHERS")] [SerializeField] private Sprite _wormHoleSprite;
     [Foldout("OTHERS")] [SerializeField] private GameObject _healthParticule;
     [Foldout("OTHERS")] [SerializeField] private GameObject _damageParticule;
     [Foldout("OTHERS")] [SerializeField] private List<Sprite> _asteroidSprites;
@@ -152,7 +153,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 _spriteRenderer.color = Color.white;
                 break;
             case tileType.exit:
-                _spriteRenderer.color = Color.black;
+                _spriteRenderer.sprite = _wormHoleSprite;
                 break;
         }   
     }
@@ -206,7 +207,7 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                 _damageParticule.SetActive(false);
                 break;
             case tileType.exit:
-                _spriteRenderer.color = Color.black;
+                _spriteRenderer.sprite = _wormHoleSprite;
                 break;  
         }
     }

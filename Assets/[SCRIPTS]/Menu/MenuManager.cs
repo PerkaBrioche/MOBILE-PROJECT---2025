@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
@@ -24,6 +25,8 @@ public class MenuManager : MonoBehaviour
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
     public List<LevelData> levels;
+    
+    [SerializeField] private Animator _animator;
 
     public void SetMasterVolume(float volume)
     {
@@ -67,6 +70,13 @@ public class MenuManager : MonoBehaviour
 
     public void LoadLevel(int sceneIndex)
     {
+        _animator.SetTrigger("Out");
+        StartCoroutine( waitForTransition(sceneIndex));
+    }
+    
+    private IEnumerator waitForTransition(int sceneIndex)
+    {
+        yield return new WaitForSeconds(1.2f);
         SceneManager.LoadScene(sceneIndex);
     }
 

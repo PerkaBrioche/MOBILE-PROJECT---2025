@@ -158,7 +158,18 @@ public class ShipManager : MonoBehaviour
             ships.ChangeCamp();
         }
     }
-    
+
+    public void BounceDispawn()
+    {
+        var ships = GetAllships();
+        foreach (var ship in ships)
+        {
+            if(ship.TryGetComponent(out bounce b))
+            {
+                b.BounceDispawn();
+            }
+        }
+    }
     public List<ShipController> GetActualAllyShips()
     {
         UpdateLists();
