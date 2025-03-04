@@ -61,14 +61,8 @@ public class MenuManager : MonoBehaviour
             Button btn = level.levelButton;
             int scene = level.sceneIndex;
             btn.onClick.AddListener(delegate { LoadLevel(scene); });
-            int bestStars = PlayerPrefs.GetInt("LevelStars_" + scene, 0);
-            if (level.star1 != null)
-                level.star1.gameObject.SetActive(bestStars >= 1);
-            if (level.star2 != null)
-                level.star2.gameObject.SetActive(bestStars >= 2);
-            if (level.star3 != null)
-                level.star3.gameObject.SetActive(bestStars >= 3);
         }
+        UpdateLevelStars();
     }
 
     public void LoadLevel(int sceneIndex)
@@ -100,17 +94,13 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void OpenOptions()
+    public void ResetAllStars()
     {
-        if (menuPanel.activeInHierarchy)
+        foreach (LevelData level in levels)
         {
-            menuPanel.SetActive(false);
+            PlayerPrefs.SetInt("LevelStars_" + level.sceneIndex, 0);
         }
-        else
-        {
-            menuPanel.SetActive(true);
-        }
+        PlayerPrefs.Save();
+        UpdateLevelStars();
     }
-    
-//    ⠀⣠⣤⣶⣶⣦⣄⡀  ⠀⢀⣤⣴⣶⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 }
