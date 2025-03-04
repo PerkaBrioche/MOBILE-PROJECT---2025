@@ -26,9 +26,12 @@ public class ShipManager : MonoBehaviour
     private void Update()
     {
         if (_isCooldown) { return; }
-        if(!TurnManager.Instance.IsPlayerTurn()) { return;}
+
+        if (!TurnManager.Instance.IsPlayerTurn() ||  TurnManager.Instance.IsEndGame())
+        {
+            return;
+        }
         
-   //     return; // LAISSE MOI TRANQUILLE AVEC MES RETURNS FR
         if (IsShipInAction())
         {
             TurnManager.Instance.LockButtonTurn();

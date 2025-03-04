@@ -97,18 +97,18 @@ public class Enemy : MonoBehaviour
                         specialTile = tile;
                     }
                 }
-                if(closestEnemy == null)
-                {
-                    foreach (var tile in deplacementTile)
-                    {
-                        if(tile.GetTileType() == TilesController.tileType.DamageTile)
-                        {
-                            specialTile = tile;
-                        }
-                    }                
-                }
             } 
             
+            if(specialTile == null) // LOOKING FOR DAMAGE
+            {
+                foreach (var tile in deplacementTile)
+                {
+                    if(tile.GetTileType() == TilesController.tileType.DamageTile)
+                    {
+                        specialTile = tile;
+                    }
+                }                
+            }
             if(specialTile == null)
             {
                 closestEnemy = FindClosestEnemy()[0];
