@@ -53,7 +53,7 @@ public class ResetTurnManager : MonoBehaviour
 
     public void ResetTurn()
     {
-        if (!TurnManager.Instance.IsPlayerTurn())
+        if (!TurnManager.Instance.IsPlayerTurn() || TurnManager.Instance.IsEndGame())
             return;
         foreach (ShipController ship in recordedShips)
         {
