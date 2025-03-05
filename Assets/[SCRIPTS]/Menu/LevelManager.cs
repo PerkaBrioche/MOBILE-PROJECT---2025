@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
@@ -17,46 +16,11 @@ public class LevelData
     public Image star3;
 }
 
-public class MenuManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
-    public GameObject menuPanel;
-    public AudioMixer audioMixer;
-    public Slider masterVolumeSlider;
-    public Slider musicVolumeSlider;
-    public Slider sfxVolumeSlider;
     public List<LevelData> levels;
-    
     [SerializeField] private Animator _animator;
 
-    public void SetMasterVolume(float volume)
-    {
-        volume = Mathf.Clamp(volume, 0.0001f, 1f);
-        audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20);
-    }
-
-    public void SetMusicVolume(float volume)
-    {
-        volume = Mathf.Clamp(volume, 0.0001f, 1f);
-        audioMixer.SetFloat("MusicVolume", Mathf.Log10(volume) * 20);
-    }
-    
-    public void SetSFXVolume(float volume)
-    {   
-        volume = Mathf.Clamp(volume, 0.0001f, 1f);
-        audioMixer.SetFloat("SFXVolume", Mathf.Log10(volume) * 20);
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-        Debug.Log("Quit Game");
-    }
-
-    public void CloseMenu()
-    {
-        gameObject.SetActive(false);
-    }
-    
     private void Start()
     {
         foreach (LevelData level in levels)
@@ -71,10 +35,10 @@ public class MenuManager : MonoBehaviour
     public void LoadLevel(int sceneIndex)
     {
         _animator.SetTrigger("Out");
-        StartCoroutine(waitForTransition(sceneIndex));
+        StartCoroutine(WaitForTransition(sceneIndex));
     }
-    
-    private IEnumerator waitForTransition(int sceneIndex)
+
+    private IEnumerator WaitForTransition(int sceneIndex)
     {
         yield return new WaitForSeconds(1.2f);
         SceneManager.LoadScene(sceneIndex);
@@ -102,15 +66,5 @@ public class MenuManager : MonoBehaviour
             if (level.star3 != null)
                 level.star3.gameObject.SetActive(bestStars >= 3);
         }
-    }
-
-    public void ResetAllStars()
-    {
-        foreach (LevelData level in levels)
-        {
-            PlayerPrefs.SetInt("LevelStars_" + level.sceneIndex, 0);
-        }
-        PlayerPrefs.Save();
-        UpdateLevelStars();
     }
 }

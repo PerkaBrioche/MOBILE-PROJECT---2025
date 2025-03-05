@@ -405,7 +405,7 @@ public class TurnManager : MonoBehaviour
     
     public void ReturnToMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
     
     public void RestartLevel()
