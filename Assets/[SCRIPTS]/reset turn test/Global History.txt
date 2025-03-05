@@ -1,0 +1,66 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class GlobalActionHistory
+{
+    public struct ShipAction
+    {
+        public ShipController ship;
+        public Vector3 position;
+        public ShipController.RuntimeStats runtimeStats;
+        public TilesController tile;
+        public bool isLocked;
+        public bool hasMoved;
+        public bool hasAttacked;
+        public int currentLockAttack;
+    }
+
+    private static Stack<ShipAction> actionStack = new Stack<ShipAction>();
+    private static Dictionary<ShipController, ShipAction> lastActions = new Dictionary<ShipController, ShipAction>();
+
+    public static void PushAction(ShipController ship, ShipAction action)
+    {
+        action.ship = ship;
+        if (lastActions.TryGetValue(ship, out ShipAction last))
+        {
+            if (AreStatesEqual(last, action))
+                return;
+        }
+        actionStack.Push(action);
+        lastActions[ship] = action;
+    }
+
+    public static bool UndoLastAction()
+    {
+        if (actionStack.Count == 0)
+            return false;
+        ShipAction lastAction = actionStack.Pop();
+        lastActions.Remove(lastAction.ship);
+        if (lastAction.ship != null)
+        {
+            lastAction.ship.RestoreState(lastAction);
+            return true;
+        }
+        return false;
+    }
+
+    public static void ClearHistory()
+    {
+        actionStack.Clear();
+        lastActions.Clear();
+    }
+
+    private static bool AreStatesEqual(ShipAction a, ShipAction b)
+    {
+        return a.position == b.position
+            && a.runtimeStats.HP == b.runtimeStats.HP
+            && a.runtimeStats.ATK == b.runtimeStats.ATK
+            && a.runtimeStats.WalkDistance == b.runtimeStats.WalkDistance
+            && a.runtimeStats.AttackRange == b.runtimeStats.AttackRange
+            && a.tile == b.tile
+            && a.isLocked == b.isLocked
+            && a.hasMoved == b.hasMoved
+            && a.hasAttacked == b.hasAttacked
+            && a.currentLockAttack == b.currentLockAttack;
+    }
+}

@@ -5,9 +5,11 @@ using UnityEngine;
 public class bounce : MonoBehaviour
 {
     
+    [SerializeField] private bool BounceOnEnable = false;
     [SerializeField]  private float _bounceForce = 1f;
     [SerializeField] private float _bounceDuration = 0.05f;
     [SerializeField] private float _bounceDecreaseSpeed = 3f;
+    
     
     
     
@@ -19,9 +21,17 @@ public class bounce : MonoBehaviour
     }
     
     
-    private void Start()
+    private void Awake()
     {
         originalScale = transform.localScale;
+    }
+    
+    private void OnEnable()
+    {
+        if (BounceOnEnable)
+        {
+            StartBounce();
+        }
     }
 
 
@@ -29,7 +39,6 @@ public class bounce : MonoBehaviour
     {
         if(bounceForce == 0) {bounceForce = _bounceForce;}
         if(bounceDuration == 0) {bounceDuration = _bounceDuration;}
-        
         StartCoroutine(bounceEnumerator(bounceForce, bounceDuration, holded));
     }
     
@@ -37,6 +46,46 @@ public class bounce : MonoBehaviour
     {
         StartCoroutine(bounceEnumerator(_bounceForce, _bounceDuration, false));
     }
+    
+    public void BounceDispawn()
+    {
+        StartCoroutine(BounceDispawnRoutine());
+    }
+    
+    private IEnumerator BounceDispawnRoutine()
+    {
+        float alpha = 0f;
+        Vector3 targetScale = new Vector3(0, 0, 0);
+        Vector3 scalBefore = new Vector3(transform.localScale.x, transform.localScale.y);
+        while (alpha < 1)
+        {
+            alpha += Time.deltaTime;
+            Vector3 newScaleObject = Vector3.Lerp(scalBefore, targetScale, alpha);
+            transform.localScale = newScaleObject;
+            yield return null;
+        }
+        gameObject.SetActive(false);
+    }
+
+    public void BounceSpawn()
+    {
+        StartCoroutine(BounceSpawnRoutine());
+    }
+    private IEnumerator BounceSpawnRoutine()
+    {
+        float alpha = 0f;
+        Vector3 targetScale = new Vector3(originalScale.x , originalScale.y );
+        Vector3 scaleSpaw = new Vector3(0, 0, 0);
+        while (alpha <= 1)
+        {
+            alpha += Time.deltaTime;
+            Vector3 newScaleObject = Vector3.Lerp(scaleSpaw, targetScale, alpha);
+            transform.localScale = newScaleObject;
+            yield return null;
+        }
+    }  
+    
+    
     
 
     private IEnumerator bounceEnumerator(float bounceForce, float bounceDuration, bool stay)
@@ -61,13 +110,18 @@ public class bounce : MonoBehaviour
     }  
     
         
-    public void ResetTransform()
+    public void ResetTransform(bool noBounce = false)
     {
+        if (noBounce)
+        {
+            transform.localScale = originalScale;
+            return;
+        }
         StartCoroutine(ResetScale());
     }
     private IEnumerator ResetScale()
-    {
-        float alpha = 1;
+    { 
+        float alpha = 1f;
         Vector3 targetScale = transform.localScale;
         while (alpha > 0)
         {
@@ -76,5 +130,7 @@ public class bounce : MonoBehaviour
             transform.localScale = newScaleObject;
             yield return null;
         }
+        
+        
     }
 }

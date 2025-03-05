@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: Test DIalogue
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
+  rightSprite: {fileID: -4413219324028710878, guid: 0035d7f9f78d2ef40adb5cbe22915424, type: 3}
+  lines:
+  - leftSpeaker: 1
+    speakerName: GLORP
+    text: "Bonjour je m'appelle Gloppr je suis ton sup\xE9rieur fdp de merde"
+  - leftSpeaker: 1
+    speakerName: GLORP
+    text: YIPIIII SQUIEEZUIE JTRM
+  - leftSpeaker: 0
+    speakerName: Donna
+    text: BONJOUR JE SUIS DONATELL0
+  - leftSpeaker: 1
+    speakerName: GOO GOOG GAGA
+    text: YIPIIII SQUIEEZUIE JTRM

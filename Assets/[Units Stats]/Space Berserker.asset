@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
   m_Name: Space Berserker
   m_EditorClassIdentifier: 
-  _unitAllyIcon: {fileID: 1010450789034852114, guid: 0283bc5b7e7a6bb49944dde04ca6816b, type: 3}
-  _unitEnemyIcon: {fileID: 2204708268438558152, guid: d66346acd41662e4a95ab74f42e4dee6, type: 3}
+  _unitAllyIcon: {fileID: -1859483539367982969, guid: 7c9801c74c7a8f949bd532cb9558098e, type: 3}
+  _unitEnemyIcon: {fileID: -3897670269028065187, guid: cd549329ca80d854d8f889f51db84316, type: 3}
   _unitName: Space Berserker
+  _unitType: {fileID: 0}
+  _piloteAllie: {fileID: 8748084979186150103, guid: 3a6b27401dc51784e933da820051c9cb, type: 3}
+  _piloteEnnemi: {fileID: -4674320589944222683, guid: 8bcababd43911ba4a9e3466f526fecf3, type: 3}
   hp: 15
   atk: 35
   def: 0
   atkRange: 1
   _walkDistance: 2
   _attackRange: 1
-  canMooveAndShoot: 1
   _cooldownAttack: 0

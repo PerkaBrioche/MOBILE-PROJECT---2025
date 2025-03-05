@@ -1,0 +1,59 @@
+using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class GameManager : MonoBehaviour
+{
+    public static GameManager Instance;
+
+    private bool _canTouch = true;
+    
+    private float cooldownTouch = 0.4f;
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+    
+    public void SetCanTouch(bool canTouch)
+    {
+        _canTouch = canTouch;
+    }   
+    public bool CanTouch()
+    {
+        return _canTouch;
+    }
+
+    public void TouchScreen(InputAction action)
+    {
+        if (!_canTouch) return;
+        _canTouch = false;
+        StartCoroutine(CoolDownTouch());
+    }
+
+    private IEnumerator CoolDownTouch()
+    {
+        yield return new WaitForSeconds(cooldownTouch);
+        _canTouch = true;
+    }
+    
+    public enum GameWinCondition
+    {
+        destroyAll,
+        motherShipKill,
+        exit,
+    }
+    
+    [Header("LEVEL PARAMETERS")]
+    
+    public GameWinCondition gameWinCondition;
+    [Range(0,50)] [SerializeField] public int TurnMinimumTwoStars;
+    [Range(0,50)] [SerializeField] public int TurnMinimumThreeStars;
+}
