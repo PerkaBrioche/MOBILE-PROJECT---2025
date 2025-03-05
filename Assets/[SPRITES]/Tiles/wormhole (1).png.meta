@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      wormhole (1)_0: -1227594434920785976
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

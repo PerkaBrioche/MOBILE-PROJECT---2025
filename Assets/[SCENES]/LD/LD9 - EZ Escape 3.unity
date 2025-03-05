@@ -2086,7 +2086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a689d8b62d2e0e74580bf64691b7f465, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameWinCondition: 0
+  gameWinCondition: 2
   TurnMinimumTwoStars: 20
   TurnMinimumThreeStars: 13
 --- !u!4 &471836762
