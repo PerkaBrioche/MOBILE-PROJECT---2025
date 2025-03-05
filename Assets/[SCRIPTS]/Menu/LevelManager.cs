@@ -17,7 +17,6 @@ public class LevelData
 {   
     public Button levelButton;
     public int sceneIndex;
-    public string levelTitle;
     public LevelObjective objective;
     public int turnThresholdForTwoStars;
     public int turnThresholdForThreeStars;
@@ -77,7 +76,7 @@ public class LevelManager : MonoBehaviour
 
     public void ShowLevelInfo(LevelData level)
     {
-        levelTitleText.text = level.levelTitle;
+        levelTitleText.text = "Level " + (level.sceneIndex-1);
 
         string objectiveText = "";
         switch (level.objective)
@@ -143,8 +142,6 @@ public class LevelManager : MonoBehaviour
         int block = 0;
         foreach (LevelData level in levels)
         {
-            if(block >= 4){break;}
-            block++;
             int bestStars = PlayerPrefs.GetInt("LevelStars_" + level.sceneIndex, 0);
 
             if (bestStars >= 1)
@@ -179,8 +176,6 @@ public class LevelManager : MonoBehaviour
                     level.star3.sprite = emptyStarSprite;
                     print("EMPTY ONE STAR SPRITE");
                 }
-                print(level.levelTitle + " is " + bestStars + " stars");
-
         }
     }
 }
