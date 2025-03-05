@@ -199,6 +199,7 @@ public class Enemy : MonoBehaviour
     #region MOVEMENT
     public void MoveInDirection(Func<TilesController, TilesController> direction, TilesController originTiles = null)
     {
+
         var listEnemyClosest = FindClosestEnemy();
         foreach (var pos in listEnemyClosest)
         {
@@ -216,7 +217,7 @@ public class Enemy : MonoBehaviour
         finalTile = originTiles;
         
         TilesController directionTile = direction(originTiles);
-        if (!IsTileValid(directionTile)) // BLOCKED AGAINST WALL
+        if (!IsTileValid(directionTile) || listEnemyClosest != null) // BLOCKED AGAINST WALL
         {
             for (int i = 1; i < listEnemyClosest.Count; i++)
             {
@@ -379,7 +380,13 @@ public class Enemy : MonoBehaviour
      //   int distance = CalculateManhattanDistance(allyTile, enemyTile);
         shipDistances.Add((ally, pathDist));
     }
+
+        print("MIAOU MIAOU + " + shipDistances.Count);
     
+    if(shipDistances.Count <= 0)
+        {
+            return null;
+        }
     shipDistances.Sort((a, b) =>
     {
         int cmp = a.distance.CompareTo(b.distance);

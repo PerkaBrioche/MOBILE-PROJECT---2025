@@ -274,8 +274,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameWinCondition: 0
-  TurnMinimumTwoStars: 20
-  TurnMinimumThreeStars: 13
+  TurnMinimumTwoStars: 14
+  TurnMinimumThreeStars: 10
 --- !u!4 &77309943
 Transform:
   m_ObjectHideFlags: 0
@@ -919,7 +919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0cdd7c4cdb13b94ea516df1ebcfa931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueData: {fileID: 11400000, guid: 2d6b24a908afa0243baeceff9ace2604, type: 2}
+  dialogueData: {fileID: 11400000, guid: 53328324c6eb43e46b847c0a9f0a5b94, type: 2}
   dialoguePanel: {fileID: 7863563}
   leftImage: {fileID: 366471974}
   rightImage: {fileID: 1576767009}
@@ -12460,6 +12460,7 @@ MonoBehaviour:
   phaseAnimator: {fileID: 622093173}
   turnCountText: {fileID: 0}
   resultPanel: {fileID: 802205538}
+  _nextTurnButton: {fileID: 0}
   resultStar1: {fileID: 992410968}
   resultStar2: {fileID: 1338590825}
   resultStar3: {fileID: 1228968952}

@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: dial 3
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
+  rightSprite: {fileID: -8134585107818311587, guid: 4a6de93999f623f41955a689a87449bb, type: 3}
+  lines:
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "Wow ! We're already at your third mission ! How time flies\u2026\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "Wait\u2026I\u2019m getting a signal from the enemy !\r\n"
+  - leftSpeaker: 0
+    speakerName: Zitouna
+    text: "We\u2019ll pass this message only once so listen carefully! Get OUT of
+      our territory, or we will destroy your mothership with our forces!\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "Urgh\u2026.Metalheads. I Hate them! Listen, we gotta destroy their mothership
+      before they destroy ours!\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Fortunately for us, we can win this ! You can find the enemy mothership
+      at the top left of your map.
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: " But while you try to attack their mothership, don\u2019t forget to protect
+      ours too !\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'We equipped you with a new unit to do this task: The rider ! After attacking,
+      he can move again but only for one tile.
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: You should be able to make a difference in this fight now. Goodluck !
