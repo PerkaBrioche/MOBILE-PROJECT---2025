@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: dial 5
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
+  rightSprite: {fileID: -8368076617649165228, guid: 60160fb4a2492d348a33cecd565dbadc, type: 3}
+  lines:
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Welcome back ! We had intel that an enemy mothership was hiding somewhere
+      nearby.
+
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'So for this mission, we decided to make you try a new unit, The Berserker
+      !
+
+      
+
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Its power is beyond what you can imagine, the berserker can beat almost
+      every unit in a fight !
+
+      
+
+      
+
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "But be careful, while his power is unprecedented, it\u2019s also very
+      weak in terms of HP.\r\n\n"
+  - leftSpeaker: 0
+    speakerName: Otto
+    text: "Who ya callin\u2019 weak you sparkle lover, discoball eater, furry, glitter
+      clown buffoo-\r\n\r\n\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Anywaaaaaaaays,think about what you could do with this unit ! I believe
+      in you cadet!
+
+      
+
+      
+
+
+'

@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: dial 2
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
+  rightSprite: {fileID: -5688537641475193305, guid: f333fb07b3e24d44b8c66bab1c8f1aaf, type: 3}
+  lines:
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Welcome to your second mission, recruit !
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "\rThis time, your goal is not to destroy every enemy unit, but to escort
+      one of your ships to the wormhole at the top left of the map !\r\n\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: ' Be careful though, the enemy has deployed a new unit to get in your way
+      !
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "This is the fortress, it deals heavy damage but has a huge weak point\u2026
+      It can\u2019t attack and move at the same time.\r\n"
+  - leftSpeaker: 0
+    speakerName: Ficelle
+    text: 'You won''t get past me !
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'The mission is of the utmost importance to spread the Groove across the
+      Galaxy. Good luck !
+
+'
