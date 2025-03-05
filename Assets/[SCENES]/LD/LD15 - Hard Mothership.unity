@@ -6707,8 +6707,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameWinCondition: 1
-  TurnMinimumTwoStars: 20
-  TurnMinimumThreeStars: 13
+  TurnMinimumTwoStars: 17
+  TurnMinimumThreeStars: 14
 --- !u!4 &1043372447
 Transform:
   m_ObjectHideFlags: 0
