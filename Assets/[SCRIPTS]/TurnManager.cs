@@ -39,6 +39,8 @@ public class TurnManager : MonoBehaviour
     [Foldout("REFERENCES")]
     [SerializeField] private GameObject resultPanel;
     [Foldout("REFERENCES")]
+    [SerializeField] private Button _nextTurnButton;
+    [Foldout("REFERENCES")]
     [SerializeField] private Image resultStar1;
     [Foldout("REFERENCES")]
     [SerializeField] private Image resultStar2;
@@ -49,7 +51,7 @@ public class TurnManager : MonoBehaviour
     private Sprite _unlockedStars;
     [Foldout("REFERENCES")] [SerializeField] private Sprite _lockedStars;
     //[Foldout("REFERENCES")]
-   // [SerializeField] private int currentLevelIndex;
+    // [SerializeField] private int currentLevelIndex;
 
     public bool IsPlayerTurn() { return _isPlayerTurn; }
     public bool IsEnemyTurn() { return _isEnemyTurn; }
@@ -252,8 +254,8 @@ public class TurnManager : MonoBehaviour
 
     private bool CheckEndGame()
     {
-        if (gameWinCondition != GameManager.GameWinCondition.destroyAll)
-        { return false;}
+        /*if (gameWinCondition != GameManager.GameWinCondition.destroyAll)
+        { return false;}*/
         
         var ally = ShipManager.Instance.GetAllyShipsOrinalCamp();
         var enemy = ShipManager.Instance.GetEnemyShipsOrinalCamp();
@@ -291,9 +293,11 @@ public class TurnManager : MonoBehaviour
 
     public void Defeat()
     {
+        EndGame();
         LockButtonTurn();
         if (phaseAnimator != null)
             phaseAnimator.SetTrigger("Defeat");
+        StartCoroutine(ShowDefeatPanel());
     }
 
     private void EndGame()
@@ -371,6 +375,26 @@ public class TurnManager : MonoBehaviour
         
         // yield return new WaitForSeconds(3f);
         // SceneManager.LoadScene(0);
+    }
+    
+    private IEnumerator ShowDefeatPanel()
+    {
+        yield return new WaitForSeconds(2f);
+        if (resultPanel != null)
+        {
+            resultPanel.SetActive(true);
+            if(_nextTurnButton != null)
+            {
+                _nextTurnButton.gameObject.SetActive(false);
+            }
+        }
+        yield return new WaitForSeconds(0.5f);
+        if(resultStar1 != null)
+            resultStar1.sprite = _lockedStars;
+        if(resultStar2 != null)
+            resultStar2.sprite = _lockedStars;
+        if(resultStar3 != null)
+            resultStar3.sprite = _lockedStars;
     }
     
     private void UpdateTurnCountDisplay()

@@ -71,7 +71,7 @@ public class MenuManager : MonoBehaviour
     public void LoadLevel(int sceneIndex)
     {
         _animator.SetTrigger("Out");
-        StartCoroutine( waitForTransition(sceneIndex));
+        StartCoroutine(waitForTransition(sceneIndex));
     }
     
     private IEnumerator waitForTransition(int sceneIndex)

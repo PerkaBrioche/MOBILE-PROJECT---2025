@@ -56,5 +56,4 @@ public class GameManager : MonoBehaviour
     public GameWinCondition gameWinCondition;
     [Range(0,50)] [SerializeField] public int TurnMinimumTwoStars;
     [Range(0,50)] [SerializeField] public int TurnMinimumThreeStars;
-
 }
