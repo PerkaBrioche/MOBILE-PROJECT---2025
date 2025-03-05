@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: dial 15
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
+  rightSprite: {fileID: -8134585107818311587, guid: 4a6de93999f623f41955a689a87449bb, type: 3}
+  lines:
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "It\u2019s the last Mothership of the Metalheads ! After this, they\u2019ll
+      be a thing of the past !\r\n\n\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Are you ready for your final mission, recruit ?
+
+      
+
+
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "After this, we will make you a General for sure, you\u2019ll become a
+      legend of the Groove !\r\n\r\n\r\n\n\n"
+  - leftSpeaker: 0
+    speakerName: Zitouna
+    text: "Why can\u2019t you let us live in peace ?! Do you guys despise Metal that
+      much ?\r\n\r\n\r\n\r\n\n\n"
+  - leftSpeaker: 0
+    speakerName: Zitouna
+    text: "It doesn\u2019t matter anymore, it\u2019s personal now ! We\u2019ll destroy
+      you all !\r\n\n\r\n\n\n"
+  - leftSpeaker: 0
+    speakerName: Zitouna
+    text: "C\u2019mon recruit ! For one last time, May the Groove be with you !\r\n\r\n\n\r\n\n\n"

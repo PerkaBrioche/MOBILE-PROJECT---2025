@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: dial 14
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
+  rightSprite: {fileID: -7142318715183286695, guid: 6039d01c21035d24699c8f69faa32c0d, type: 3}
+  lines:
+  - leftSpeaker: 0
+    speakerName: Vega
+    text: "I received your call Glorp sorry for being late, I\u2019m stepping in!
+      Seems like you\u2019re almost done with the Metalheads anyways. You can be
+      proud of yourself, recruit !"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "Don't be so full of yourself ! You guys haven\u2019t won yet, just wait
+      for what\u2019s coming to you\u2026\r\n"
+  - leftSpeaker: 0
+    speakerName: Vega
+    text: "C\u2019mon now ! Make them eat those words, Cadet! May the Groove be with
+      you !\r\n\n\n"

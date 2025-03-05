@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: dial 4
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
+  rightSprite: {fileID: -4282029780308843215, guid: 09b7f9ce0a71efe4687cc2c2cc9238c5, type: 3}
+  lines:
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "Wow, recruit ! You\u2019re really getting the grip of this!\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Continue like that and we may promote you to a better position haha.
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'In this mission, the enemy decided to use a special ship: The Tank !
+
+      
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'This unit is REALLY powerful, but they have to wait 3 turns between each
+      attack.
+
+      
+
+      
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Be reassured, I gave you 2 fortresses to keep up with their power.
+
+      
+
+      
+
+      
+
+'
+  - leftSpeaker: 0
+    speakerName: Timo
+    text: "You can count on me Cadet ! \nRemember, we can only attack or move, but
+      not both !\n\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Be sure to show them the power of Groovy tunes, and by that, I mean DESTROY
+      THEM !
+
+      
+
+'

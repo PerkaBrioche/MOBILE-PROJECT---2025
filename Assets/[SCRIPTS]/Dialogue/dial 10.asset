@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: dial 10
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
+  rightSprite: {fileID: -1297950940918364980, guid: a9030efe0aadae1488f33c4bb93dd568, type: 3}
+  lines:
+  - leftSpeaker: 0
+    speakerName: Nessie
+    text: 'We outnumber you ! Surrender or die !
+
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Surrender ? Who do you take us for ? Recruit, you need to teach them a
+      lesson !
+
+
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "You may be outnumbered, but you\u2019re definitely smarter than them !
+      You can win this !\r\n"

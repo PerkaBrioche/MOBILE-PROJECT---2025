@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: dial 11
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
+  rightSprite: {fileID: 3236299473316281678, guid: ce0874ea3dfe94e41a72126bc29d2e60, type: 3}
+  lines:
+  - leftSpeaker: 0
+    speakerName: Admiral Obi
+    text: 'We detected another mothership near this area !
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Good ! It will be a great opportunity to show you our new asset: Heal
+      tiles !
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'You probably understood from the name already, they heal 15 HP to the
+      unit that crosses it !
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Now show these Metalheads what type of music is the best ! May the Groove
+      be with you !
+
+'

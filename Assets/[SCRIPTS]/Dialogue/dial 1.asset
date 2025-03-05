@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468aaa3b736d0a42b411735cae4bc45, type: 3}
+  m_Name: dial 1
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1504987830753744633, guid: daa37712923c6dc499c351cfb31b1a85, type: 3}
+  rightSprite: {fileID: -7950741353036276250, guid: 8d98561c4d0d78b45b68aedbd39e8ee0, type: 3}
+  lines:
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "Welcome, new recruit ! The name\u2019s Glorp."
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Welcome to the Groovy Army ! Our mission is to spread the Groove all across
+      our Galaxy !
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "Since it\u2019s your first day here, I\u2019ll help you out. On the game
+      board, you have 2 units that you can control.\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "The first one, on your right, is a Patroller. It\u2019s the most simple
+      ship in our army.\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'The one on the left is a Ranger ! It has more attack range than most units,
+      so use it to your advantage to win!
+
+'
+  - leftSpeaker: 0
+    speakerName: Caroline
+    text: That's me ! Good luck Recruit, we're counting on you !
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "If you want more precise info for a unit\u2019s stats, tap them to see
+      the details on top of your screen !"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Look at the bottom of your screen, the first button lets you restart your
+      turn if you ever happen to make a mistake.
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "The second button ends your turn, so when you finish to use all your units,
+      press it ! (Careful! Tap it only if you\u2019re sure you want to end your turn!
+      )\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "Alright cadet, now that you have the basics, I think now\u2019s a good
+      time to tell you that we\u2019re currently under attack!\r\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "\rBut hey, you should be able to manage them, after all they\u2019ve only
+      sent 2 patrollers.\r\nMay the Groove be with you, my friend !\r\n\r\n"
