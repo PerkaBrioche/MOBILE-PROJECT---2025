@@ -39,6 +39,8 @@ public class TurnManager : MonoBehaviour
     [Foldout("REFERENCES")]
     [SerializeField] private GameObject resultPanel;
     [Foldout("REFERENCES")]
+    [SerializeField] private Button _nextTurnButton;
+    [Foldout("REFERENCES")]
     [SerializeField] private Image resultStar1;
     [Foldout("REFERENCES")]
     [SerializeField] private Image resultStar2;
@@ -381,6 +383,10 @@ public class TurnManager : MonoBehaviour
         if (resultPanel != null)
         {
             resultPanel.SetActive(true);
+            if(_nextTurnButton != null)
+            {
+                _nextTurnButton.gameObject.SetActive(false);
+            }
         }
         yield return new WaitForSeconds(0.5f);
         if(resultStar1 != null)
@@ -389,11 +395,6 @@ public class TurnManager : MonoBehaviour
             resultStar2.sprite = _lockedStars;
         if(resultStar3 != null)
             resultStar3.sprite = _lockedStars;
-        Transform nextLevelButton = resultPanel.transform.Find("NextLevelButton");
-        if(nextLevelButton != null)
-        {
-            nextLevelButton.gameObject.SetActive(false);
-        }
     }
     
     private void UpdateTurnCountDisplay()
