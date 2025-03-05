@@ -8,7 +8,7 @@ public class PlayGamesController : MonoBehaviour
     [SerializeField] private GameObject obj;
     [SerializeField] private GameObject obj2;
     [SerializeField] private TextMeshProUGUI text;
-    [SerializeField] private TextMeshProUGUI debugText; // Champ pour afficher les messages de d�bogage
+    [SerializeField] private TextMeshProUGUI debugText; // Champ pour afficher les messages de debogage
 
     void Start()
     {
@@ -91,7 +91,7 @@ public class PlayGamesController : MonoBehaviour
 
     //exemple d'utilisation
 
-    //UnlockAchievement("CgkIj9xxxxxxEAIQAQ"); // Remplace par l�ID de l�achievement
+    //UnlockAchievement("CgkIj9xxxxxxEAIQAQ"); // Remplace par l ID de l�achievement
 
     //exemple pour voir les succes sur un bouton
 

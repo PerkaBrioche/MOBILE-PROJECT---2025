@@ -330,53 +330,53 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator ShowVictoryPanel()
     {
-        yield return new WaitForSeconds(2f); 
-
+        yield return new WaitForSeconds(2f);
         if (resultPanel != null)
-        { resultPanel.SetActive(true);
+        {
+            resultPanel.SetActive(true);
         }
-        yield return new WaitForSeconds(0.5f); 
-
+        yield return new WaitForSeconds(0.5f);
+    
         int stars = 1;
-        resultStar1.sprite = _unlockedStars;
-        resultStar1.transform.GetComponent<bounce>().StartBounce();
-        yield return new WaitForSeconds(1f); 
-        
         if (_turnCount <= TurnMinimumTwoStars)
         {
             stars = 2;
-            resultStar2.sprite = _unlockedStars;
-            resultStar2.transform.GetComponent<bounce>().StartBounce();
         }
-
-        yield return new WaitForSeconds(1f); 
-        
         if (_turnCount <= TurnMinimumThreeStars)
         {
             stars = 3;
-            resultStar3.sprite = _unlockedStars;
-            resultStar3.transform.GetComponent<bounce>().StartBounce();
             
-            yield return new WaitForSeconds(1f); 
-            resultStar1.transform.GetComponent<bounce>().StartBounce();
-            yield return new WaitForSeconds(0.2f); 
-            resultStar2.transform.GetComponent<bounce>().StartBounce();
-            yield return new WaitForSeconds(0.2f); 
-            resultStar3.transform.GetComponent<bounce>().StartBounce();
         }
-        
-
-        int currentBest = PlayerPrefs.GetInt("LevelStars_" + SceneManager.GetActiveScene().buildIndex , 0);
+        int currentBest = PlayerPrefs.GetInt("LevelStars_" + SceneManager.GetActiveScene().buildIndex, 0);
         if (stars > currentBest)
         {
             PlayerPrefs.SetInt("LevelStars_" + SceneManager.GetActiveScene().buildIndex, stars);
             PlayerPrefs.Save();
         }
-        
-        // yield return new WaitForSeconds(3f);
-        // SceneManager.LoadScene(0);
-    }
     
+        resultStar1.sprite = _unlockedStars;
+        resultStar1.transform.GetComponent<bounce>().StartBounce();
+        yield return new WaitForSeconds(1f);
+    
+        if (stars >= 2)
+        {
+            resultStar2.sprite = _unlockedStars;
+            resultStar2.transform.GetComponent<bounce>().StartBounce();
+        }
+        yield return new WaitForSeconds(1f);
+    
+        if (stars >= 3)
+        {
+            resultStar3.sprite = _unlockedStars;
+            resultStar3.transform.GetComponent<bounce>().StartBounce();
+            yield return new WaitForSeconds(1f);
+            resultStar1.transform.GetComponent<bounce>().StartBounce();
+            yield return new WaitForSeconds(0.2f);
+            resultStar2.transform.GetComponent<bounce>().StartBounce();
+            yield return new WaitForSeconds(0.2f);
+            resultStar3.transform.GetComponent<bounce>().StartBounce();
+        }
+    }
     private IEnumerator ShowDefeatPanel()
     {
         yield return new WaitForSeconds(2f);

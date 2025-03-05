@@ -1060,6 +1060,7 @@ MonoBehaviour:
   phaseAnimator: {fileID: 635117316}
   turnCountText: {fileID: 0}
   resultPanel: {fileID: 1816818039}
+  _nextTurnButton: {fileID: 2066335113}
   resultStar1: {fileID: 2087968900}
   resultStar2: {fileID: 1201047160}
   resultStar3: {fileID: 977839419}

@@ -20,7 +20,8 @@ public class ButtonManager : MonoBehaviour
 
     public buttonController.ButtonState GetButtonState(int index)
     {
-        return _buttonList[index].GetButtonState();
+        return buttonController.ButtonState.Locked;
+        //  return _buttonList[index].GetButtonState();
     }
     
     
