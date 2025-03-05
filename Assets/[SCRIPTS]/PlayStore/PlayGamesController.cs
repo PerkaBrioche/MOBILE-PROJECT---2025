@@ -8,7 +8,7 @@ public class PlayGamesController : MonoBehaviour
     [SerializeField] private GameObject obj;
     [SerializeField] private GameObject obj2;
     [SerializeField] private TextMeshProUGUI text;
-    [SerializeField] private TextMeshProUGUI debugText; // Champ pour afficher les messages de débogage
+    [SerializeField] private TextMeshProUGUI debugText; // Champ pour afficher les messages de dï¿½bogage
 
     void Start()
     {
@@ -22,19 +22,19 @@ public class PlayGamesController : MonoBehaviour
         if (status == SignInStatus.Success)
         {
             text.text = PlayGamesPlatform.Instance.GetUserId();
-            debugText.text = "Connexion réussie : " + PlayGamesPlatform.Instance.GetUserId();
+            debugText.text = "Connexion reussie : " + PlayGamesPlatform.Instance.GetUserId();
         }
         else
         {
-            text.text = "Non connecté";
-            debugText.text = "Échec de la connexion : " + status.ToString();
+            text.text = "Non connectï¿½";
+            debugText.text = "echec de la connexion : " + status.ToString();
             switch (status)
             {
                 case SignInStatus.InternalError:
                     debugText.text += "\nErreur interne lors de la connexion.";
                     break;
                 case SignInStatus.Canceled:
-                    debugText.text += "\nConnexion annulée par l'utilisateur.";
+                    debugText.text += "\nConnexion annulee par l'utilisateur.";
                     break;
                 default:
                     debugText.text += "\nStatut de connexion inconnu.";
@@ -71,7 +71,7 @@ public class PlayGamesController : MonoBehaviour
         {
             if (success)
             {
-                debugText.text = "Achievement débloqué !";
+                debugText.text = "Achievement debloque !";
                 GameObject objet = Instantiate(obj2);
                 objet.transform.position = new Vector3(0, 0, 0);
             }
@@ -79,7 +79,7 @@ public class PlayGamesController : MonoBehaviour
             {
                 GameObject objet = Instantiate(obj);
                 objet.transform.position = new Vector3(1, 0, 0);
-                debugText.text = "Échec du déblocage";
+                debugText.text = "echec du deblocage";
             }
         });
     }
@@ -91,7 +91,7 @@ public class PlayGamesController : MonoBehaviour
 
     //exemple d'utilisation
 
-    //UnlockAchievement("CgkIj9xxxxxxEAIQAQ"); // Remplace par l’ID de l’achievement
+    //UnlockAchievement("CgkIj9xxxxxxEAIQAQ"); // Remplace par lï¿½ID de lï¿½achievement
 
     //exemple pour voir les succes sur un bouton
 
