@@ -8,51 +8,16 @@ public class PlayGamesController : MonoBehaviour
     [SerializeField] private GameObject obj;
     [SerializeField] private GameObject obj2;
     [SerializeField] private TextMeshProUGUI text;
-    [SerializeField] private TextMeshProUGUI debugText; // Champ pour afficher les messages de debogage
 
-    void Start()
-    {
-        PlayGamesPlatform.Activate();
-        PlayGamesPlatform.Instance.Authenticate(x => debugText.text = x.ToString());
-        //PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthentication);
-    }
-
-    internal void ProcessAuthentication(SignInStatus status)
-    {
-        if (status == SignInStatus.Success)
-        {
-            text.text = PlayGamesPlatform.Instance.GetUserId();
-            debugText.text = "Connexion reussie : " + PlayGamesPlatform.Instance.GetUserId();
-        }
-        else
-        {
-            text.text = "Non connect�";
-            debugText.text = "echec de la connexion : " + status.ToString();
-            switch (status)
-            {
-                case SignInStatus.InternalError:
-                    debugText.text += "\nErreur interne lors de la connexion.";
-                    break;
-                case SignInStatus.Canceled:
-                    debugText.text += "\nConnexion annulee par l'utilisateur.";
-                    break;
-                default:
-                    debugText.text += "\nStatut de connexion inconnu.";
-                    break;
-            }
-        }
-    }
-
-    #region Instance
     private static PlayGamesController _instance;
-
     public static PlayGamesController Instance { get => _instance; }
 
-    public void Awake()
+    private void Awake()
     {
         if (!_instance)
         {
             _instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -60,40 +25,19 @@ public class PlayGamesController : MonoBehaviour
         }
     }
 
-    #endregion
+    private void Start()
+    {
+        PlayGamesPlatform.Activate();
+        PlayGamesPlatform.Instance.Authenticate(status => { });
+    }
 
-    // Debloquer un achievement
     public void UnlockAchievement(string achievementID)
     {
-        GameObject objet = Instantiate(obj);
-        objet.transform.position = new Vector3(-8, 0, 0);
         PlayGamesPlatform.Instance.ReportProgress(achievementID, 100.0f, success =>
         {
-            if (success)
-            {
-                debugText.text = "Achievement debloque !";
-                GameObject objet = Instantiate(obj2);
-                objet.transform.position = new Vector3(0, 0, 0);
-            }
-            else 
-            {
-                GameObject objet = Instantiate(obj);
-                objet.transform.position = new Vector3(1, 0, 0);
-                debugText.text = "echec du deblocage";
-            }
+            //feedback si besoin
         });
     }
-
-    private void Connect()
-    {
-        PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthentication);
-    }
-
-    //exemple d'utilisation
-
-    //UnlockAchievement("CgkIj9xxxxxxEAIQAQ"); // Remplace par l ID de l�achievement
-
-    //exemple pour voir les succes sur un bouton
 
     public void ShowAchievements()
     {

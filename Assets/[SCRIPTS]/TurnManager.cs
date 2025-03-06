@@ -356,7 +356,6 @@ public class TurnManager : MonoBehaviour
         if (_turnCount <= TurnMinimumThreeStars)
         {
             stars = 3;
-            
         }
         int currentBest = PlayerPrefs.GetInt("LevelStars_" + SceneManager.GetActiveScene().buildIndex, 0);
         if (stars > currentBest)
@@ -365,20 +364,21 @@ public class TurnManager : MonoBehaviour
             PlayerPrefs.Save();
         }
         SoundManager.Instance.PlaySound(SoundManager.SoundList.Stars);
+            
+        AchievementManager.CheckAchievements();
 
         resultStar1.sprite = _unlockedStars;
         resultStar1.transform.GetComponent<bounce>().StartBounce();
         yield return new WaitForSeconds(0.4f);
-    
+
         if (stars >= 2)
         {
             SoundManager.Instance.PlaySound(SoundManager.SoundList.Stars);
-
             resultStar2.sprite = _unlockedStars;
             resultStar2.transform.GetComponent<bounce>().StartBounce();
         }
         yield return new WaitForSeconds(0.4f);
-    
+
         if (stars >= 3)
         {
             SoundManager.Instance.PlaySound(SoundManager.SoundList.Stars);
@@ -392,6 +392,7 @@ public class TurnManager : MonoBehaviour
             resultStar3.transform.GetComponent<bounce>().StartBounce();
         }
     }
+
     private IEnumerator ShowDefeatPanel()
     {
         yield return new WaitForSeconds(2f);

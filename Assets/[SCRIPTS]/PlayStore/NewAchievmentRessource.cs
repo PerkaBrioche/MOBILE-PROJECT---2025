@@ -22,9 +22,14 @@
 ///
 
 
-public static class GPGSIds
+public static class NewAchievmentRessource
 {
-        public const string achievement_beattheboooos = "CgkI-8jn6L0aEAIQAQ"; // <GPGSID>
+        public const string achievement_not_bad_for_a_newbie = "CgkI-8jn6L0aEAIQAQ"; // <GPGSID>
+        public const string achievement_getting_better = "CgkI-8jn6L0aEAIQAg"; // <GPGSID>
+        public const string achievement_a_rising_star = "CgkI-8jn6L0aEAIQBg"; // <GPGSID>
+        public const string achievement_gotta_start_somewhere = "CgkI-8jn6L0aEAIQBA"; // <GPGSID>
+        public const string achievement_got_a_promotion = "CgkI-8jn6L0aEAIQAw"; // <GPGSID>
+        public const string achievement_true_groover = "CgkI-8jn6L0aEAIQBQ"; // <GPGSID>
 
 }
 
