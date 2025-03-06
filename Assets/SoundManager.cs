@@ -33,9 +33,13 @@ public class SoundManager : MonoBehaviour
     
     public void Start()
     {
-        
+        if(masterVolumeSlider != null)
         masterVolumeSlider.value = PlayerPrefs.GetFloat("Master", 1);
+        
+        if(musicVolumeSlider != null)
         musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", 1);
+        
+        if(sfxVolumeSlider != null)
         sfxVolumeSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1);
         
         audioMixer.SetFloat("Master", GetDB( masterVolumeSlider.value));

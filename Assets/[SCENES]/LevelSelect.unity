@@ -3742,7 +3742,7 @@ MonoBehaviour:
     star3: {fileID: 72723386}
     ButtonController: {fileID: 1877978659}
   - levelButton: {fileID: 971537497}
-    sceneIndex: 9
+    sceneIndex: 8
     objective: 2
     turnThresholdForTwoStars: 8
     turnThresholdForThreeStars: 6
@@ -3751,7 +3751,7 @@ MonoBehaviour:
     star3: {fileID: 677041665}
     ButtonController: {fileID: 1884757949}
   - levelButton: {fileID: 825778964}
-    sceneIndex: 10
+    sceneIndex: 9
     objective: 0
     turnThresholdForTwoStars: 9
     turnThresholdForThreeStars: 6
@@ -3760,7 +3760,7 @@ MonoBehaviour:
     star3: {fileID: 1295051841}
     ButtonController: {fileID: 1209686315}
   - levelButton: {fileID: 1800809344}
-    sceneIndex: 11
+    sceneIndex: 10
     objective: 1
     turnThresholdForTwoStars: 16
     turnThresholdForThreeStars: 14
@@ -3769,7 +3769,7 @@ MonoBehaviour:
     star3: {fileID: 2039685946}
     ButtonController: {fileID: 1800809345}
   - levelButton: {fileID: 845615334}
-    sceneIndex: 3
+    sceneIndex: 11
     objective: 0
     turnThresholdForTwoStars: 15
     turnThresholdForThreeStars: 11
