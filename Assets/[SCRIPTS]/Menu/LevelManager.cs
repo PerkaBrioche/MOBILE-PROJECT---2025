@@ -23,6 +23,7 @@ public class LevelData
     public Image star1;
     public Image star2;
     public Image star3;
+    public buttonController ButtonController;
 }
 
 public class LevelManager : MonoBehaviour
@@ -77,7 +78,6 @@ public class LevelManager : MonoBehaviour
     public void ShowLevelInfo(LevelData level)
     {
         levelTitleText.text = "Level " + (level.sceneIndex-1);
-
         string objectiveText = "";
         switch (level.objective)
         {
@@ -139,43 +139,58 @@ public class LevelManager : MonoBehaviour
 
     public void UpdateLevelStars()
     {
-        int block = 0;
+        bool playable = true;
         foreach (LevelData level in levels)
         {
             int bestStars = PlayerPrefs.GetInt("LevelStars_" + level.sceneIndex, 0);
 
+    
+            if (!playable)
+            {
+                level.ButtonController.LockButton();
+                continue;
+            }
             if (bestStars >= 1)
             {
                 level.star1.sprite = fullStarSprite;
-                print("ONE FULL STAR SPRITE");
+                level.ButtonController.UnlockButton();
             }
             else
             {
+                playable = false;
                 level.star1.sprite = emptyStarSprite;
-                print("EMPTY ONE STAR SPRITE");
+                if (PlayerPrefs.GetInt("LevelStars_" + (level.sceneIndex - 1), 0) > 0) // NIVEAU PRECCEDENT EST UNLOCKL
+                {
+                    level.ButtonController.UnlockButton();
+                }
+                else
+                {
+                    level.ButtonController.LockButton();
+                }
             }
 
+            if (level.sceneIndex == 2) // PREMIER LEVEL
+            {
+                level.ButtonController.UnlockButton();
+            }
             if (bestStars >= 2)
             {
                 level.star2.sprite = fullStarSprite; 
-                print(" two FULL STAR SPRITE");
             }
             else
             {
                 level.star2.sprite = emptyStarSprite;
-                print("EMPTY ONE STAR SPRITE");
             }
 
             if (bestStars >= 3)
             {
                 level.star3.sprite = fullStarSprite;
-                print("THREE FULL STAR SPRITE");
+                level.ButtonController.SetPerfect();
             }
             else
-                {
-                    level.star3.sprite = emptyStarSprite;
-                    print("EMPTY ONE STAR SPRITE");
-                }
+            {
+                level.star3.sprite = emptyStarSprite;
+            }
         }
     }
 }

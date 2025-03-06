@@ -40,13 +40,11 @@ public class Ranger : Enemy
         int distanceTarget = CalculateManhattanDistance(_closestEnemy.GetTiles(),_myTile);
         if (distanceTarget <= 0)
         {
-            print("TOO CLOSE");
             MoveInDirection(GetOpossiteDirection(_closestEnemy.GetTiles(), _myTile), _myTile);
             EndTurn();
         }
         else
         {
-            print("PLAY AUTOMATICALLY");
             PlayPathAutomatically( FindBestTile(_closestEnemy.GetTiles()));
         }
     }

@@ -19,10 +19,8 @@ public class ShakeManager : MonoBehaviour
     }
     public void ShakeCamera(float intensity, float duration)
     {
-        print("SHGAKKE");
         if (_camera == null)
         {
-            Debug.LogError("Camera not found");
         }
         StartCoroutine(Shake(intensity, duration));
     }

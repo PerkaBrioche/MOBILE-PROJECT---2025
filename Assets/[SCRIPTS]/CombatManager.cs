@@ -140,7 +140,6 @@ public class CombatManager : MonoBehaviour
         prewiewing = false;
         canPrewiew = true;
         ResetColor();
-        print("clear preview");
         EnemyHpText.text = "";
         EnemyDamageText.text = "";
         AllyHpText.text = "";

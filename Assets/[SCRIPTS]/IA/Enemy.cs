@@ -380,8 +380,6 @@ public class Enemy : MonoBehaviour
      //   int distance = CalculateManhattanDistance(allyTile, enemyTile);
         shipDistances.Add((ally, pathDist));
     }
-
-        print("MIAOU MIAOU + " + shipDistances.Count);
     
     if(shipDistances.Count <= 0)
         {

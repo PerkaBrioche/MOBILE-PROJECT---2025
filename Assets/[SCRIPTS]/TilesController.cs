@@ -98,7 +98,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
         }
         else
         {
-            print("NO SPAWNER COMPONENT");
         }
     }
 
@@ -362,7 +361,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                    {
                        if (!lockdown)
                        {
-                           print("ALLY DIAGONAL");
                            var sideTiles = CheckTiles(sideFuncs, tile, seconds, false);
                            if (TurnManager.Instance.IsEnemyTurn() && sideTiles != null)
                            {
@@ -391,7 +389,6 @@ public class TilesController : MonoBehaviour, bounce.IBounce
                    }
                    else
                    {
-                       print("ENEMY MAIS PAS DE RANGE LEFT");
                        tile.HighLightTiles(seconds, true);
                    }
                    break;

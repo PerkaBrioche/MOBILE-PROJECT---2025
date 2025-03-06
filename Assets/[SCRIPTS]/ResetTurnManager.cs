@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -25,15 +26,23 @@ public class ResetTurnManager : MonoBehaviour
 
     public void RecordStartingPositions()
     {
+        StartCoroutine(WaitForSave());
+
+    }
+    
+    private IEnumerator WaitForSave()
+    {
+        yield return new WaitForSeconds(0.5f);
         recordedShips.Clear();
-        ShipController[] ships = Resources.FindObjectsOfTypeAll<ShipController>();
-        foreach (ShipController ship in ships)
+        foreach (ShipController ship in ShipManager.Instance.GetAllships())
         {
             if (ship.gameObject.activeInHierarchy)
             {
                 ship.SaveStartingState();
                 if (!recordedShips.Contains(ship))
+                {
                     recordedShips.Add(ship);
+                }
             }
         }
         recordedSpecialTiles.Clear();
@@ -57,7 +66,6 @@ public class ResetTurnManager : MonoBehaviour
         {
             return;
         }
-        print("Resetting turn");
         foreach (ShipController ship in recordedShips)
         {
             if (ship.WasAliveAtTurnStart)

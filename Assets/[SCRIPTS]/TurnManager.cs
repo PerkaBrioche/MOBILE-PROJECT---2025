@@ -32,6 +32,8 @@ public class TurnManager : MonoBehaviour
     private float _campUpdateDelay = 0.5f;
     private bool _gameStarted = false;
     private int _turnCount = 0;
+
+    [SerializeField] private GameObject _panelOption;
     public int TurnCount { get { return _turnCount; } }
     
     [Foldout("REFERENCES")]
@@ -50,6 +52,8 @@ public class TurnManager : MonoBehaviour
     [Foldout("REFERENCES")] [SerializeField]
     private Sprite _unlockedStars;
     [Foldout("REFERENCES")] [SerializeField] private Sprite _lockedStars;
+    
+    private bool optionPanelActive = false;
     //[Foldout("REFERENCES")]
     // [SerializeField] private int currentLevelIndex;
 
@@ -85,10 +89,6 @@ public class TurnManager : MonoBehaviour
         {
             StartCoroutine(PhaseTransition("PlayerPhase", () =>
             {
-                // _turnCount++;
-                // UpdateTurnCountDisplay();
-                if (ResetTurnManager.Instance != null)
-                    ResetTurnManager.Instance.RecordStartingPositions();
                 _turnButton.interactable = false;
                 UpdateText("Player Turn", Color.green);
             }));
@@ -119,14 +119,19 @@ public class TurnManager : MonoBehaviour
     {
         StartCoroutine(PhaseTransition("PlayerPhase", () =>
         {
-            // _turnCount++;
-            // UpdateTurnCountDisplay();
+
             _isPlayerTurn = true;
-            if (ResetTurnManager.Instance != null)
-                ResetTurnManager.Instance.RecordStartingPositions();
             _turnButton.interactable = false;
             _gameStarted = true;
         }));
+    }
+    
+    public void HideAllHealthBars(bool hide)
+    {
+        foreach (var ship in ShipManager.Instance.GetAllships())
+        {
+            ship.SetHealthBarVisible(hide);
+        }
     }
 
     public void StartPlayerTurn()
@@ -134,13 +139,9 @@ public class TurnManager : MonoBehaviour
         if(_endGame){return;}
 
         UnlockButtonTurn();
+        ResetTurnManager.Instance.RecordStartingPositions();
         _isPlayerTurn = true;
-        if (ResetTurnManager.Instance != null)
-            ResetTurnManager.Instance.RecordStartingPositions();
-        if (phaseAnimator != null)
-            phaseAnimator.SetTrigger("PlayerPhase");
-        else
-            UpdateText("Player Turn", Color.green);
+        phaseAnimator.SetTrigger("PlayerPhase");
     }
 
     public void EndPlayerTurn()
@@ -158,8 +159,6 @@ public class TurnManager : MonoBehaviour
 
     public void StartEnemyTurn()
     {
-        // _turnCount++;
-        // UpdateTurnCountDisplay();
         if(_endGame){return;}
         _actualisedCamp = false;
         StartCoroutine(WaitForCampUpdate());
@@ -195,6 +194,13 @@ public class TurnManager : MonoBehaviour
     {
         _enemyTurn++;
         _waitingForEnemy = false;
+    }
+    
+    public void ChangeOptionPanelState()
+    {
+        optionPanelActive = !optionPanelActive;
+        HideAllHealthBars(!optionPanelActive);
+        _panelOption.SetActive(optionPanelActive);
     }
 
     private void Update()
@@ -254,21 +260,24 @@ public class TurnManager : MonoBehaviour
 
     private bool CheckEndGame()
     {
-        /*if (gameWinCondition != GameManager.GameWinCondition.destroyAll)
-        { return false;}*/
-        
         var ally = ShipManager.Instance.GetAllyShipsOrinalCamp();
+
+        if (ally.Count == 0)
+        {
+            EndGame();
+            Defeat();
+            return true;
+        }
+        if (gameWinCondition != GameManager.GameWinCondition.destroyAll)
+        {
+            return false;
+        }
+        
         var enemy = ShipManager.Instance.GetEnemyShipsOrinalCamp();
         if (enemy.Count == 0)
         {
             EndGame();
             Victory();
-            return true;
-        }
-        if (ally.Count == 0)
-        {
-            EndGame();
-            Defeat();
             return true;
         }
         return false;
@@ -283,6 +292,7 @@ public class TurnManager : MonoBehaviour
     
     public void Victory()
     {
+        SoundManager.Instance.PlaySound(SoundManager.SoundList.Win);
         EndGame();
         LockButtonTurn();
         ShipManager.Instance.BounceDispawn();
@@ -293,6 +303,7 @@ public class TurnManager : MonoBehaviour
 
     public void Defeat()
     {
+        SoundManager.Instance.PlaySound(SoundManager.SoundList.Lose);
         EndGame();
         LockButtonTurn();
         if (phaseAnimator != null)
@@ -335,8 +346,8 @@ public class TurnManager : MonoBehaviour
         {
             resultPanel.SetActive(true);
         }
-        yield return new WaitForSeconds(0.5f);
-    
+        yield return new WaitForSeconds(0.4f);
+
         int stars = 1;
         if (_turnCount <= TurnMinimumTwoStars)
         {
@@ -353,27 +364,31 @@ public class TurnManager : MonoBehaviour
             PlayerPrefs.SetInt("LevelStars_" + SceneManager.GetActiveScene().buildIndex, stars);
             PlayerPrefs.Save();
         }
-    
+        SoundManager.Instance.PlaySound(SoundManager.SoundList.Stars);
+
         resultStar1.sprite = _unlockedStars;
         resultStar1.transform.GetComponent<bounce>().StartBounce();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.4f);
     
         if (stars >= 2)
         {
+            SoundManager.Instance.PlaySound(SoundManager.SoundList.Stars);
+
             resultStar2.sprite = _unlockedStars;
             resultStar2.transform.GetComponent<bounce>().StartBounce();
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.4f);
     
         if (stars >= 3)
         {
+            SoundManager.Instance.PlaySound(SoundManager.SoundList.Stars);
             resultStar3.sprite = _unlockedStars;
             resultStar3.transform.GetComponent<bounce>().StartBounce();
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             resultStar1.transform.GetComponent<bounce>().StartBounce();
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             resultStar2.transform.GetComponent<bounce>().StartBounce();
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             resultStar3.transform.GetComponent<bounce>().StartBounce();
         }
     }

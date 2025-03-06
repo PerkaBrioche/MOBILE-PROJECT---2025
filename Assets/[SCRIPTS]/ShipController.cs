@@ -211,7 +211,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         ShipController attacker = null;
         if (TouchManager.Instance.GetActualShipController() == null)
         {
-            print("NO SHIP SELECTED");
             if (TurnManager.Instance.IsEnemyTurn())
             {
                 attacker = TurnManager.Instance.GetEnemyShip();
@@ -223,7 +222,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         }
         if (attacker == null)
         {
-            print("NO SHIP SELECTED AFTER TRIED");
             return;
         }
         _sliderLifePrewiew.value = (runtimeStats.HP - attacker.runtimeStats.ATK);
@@ -255,7 +253,6 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             if (transform.TryGetComponent(out Enemy enemy))
             {
-                print("ON LANCE LE MY TUNT");
                 enemy.SetMyTurn();
             }
         } 
@@ -306,9 +303,18 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _speed = 1;
     }
     
+    public void SetHealthBarVisible(bool visible)
+    {
+        if (_sliderLife != null)
+            _sliderLife.gameObject.SetActive(visible);
+    }
+    
     public void TakeDamage(int damage)
     {
+        SoundManager.Instance.PlaySound(SoundManager.SoundList.ShipAttack);
         runtimeStats.HP -= damage;
+        print("TAKE DAMAGE OF : "+ GetUnitStats().name + " runtime HP LEFT = " + runtimeStats.HP );
+
         UpdateSlider();
         PlayAnim(shipAnimations.takeDamage);
         _textController.ShowDamage(damage);
@@ -318,6 +324,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     }
     public void Die()
     {
+        SoundManager.Instance.PlaySound(SoundManager.SoundList.ShipDeath);
         _myTilesController.ChangeCollider(true);
         _myTilesController.SetHasAnAlly(false);
         _myTilesController.SetHasAnEnemy(false);
@@ -525,11 +532,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     {
         return _myStats;
     }
-    public void SetHealthBarVisible(bool visible)
-    {
-        if (_sliderLife != null)
-            _sliderLife.gameObject.SetActive(visible);
-    }
+    
     private TilesController _startingTile;
     private bool _startingHasMoved;
     private bool _startingHasAttacked;
@@ -538,6 +541,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     private int _startingLockAttack;
     private bool _startingInLockDown;
     private bool _wasAliveAtTurnStart;
+    
     public bool WasAliveAtTurnStart { get { return _wasAliveAtTurnStart; } }
     public void SaveStartingState()
     {
@@ -545,6 +549,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         _startingTile = _myTilesController;
         _startingHasMoved = _hasMoved;
         _startingHasAttacked = _hasAttacked;
+        print("SAVING OF : "+ GetUnitStats().name + " runtime HP = " + runtimeStats.HP);
         _startingHP = runtimeStats.HP;
         _startingAtk = runtimeStats.ATK;
         _startingLockAttack = _currentLockAttack;
@@ -564,6 +569,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
 
         }
         
+        print("RESET OF : "+ GetUnitStats().name + " runtime HP = " + runtimeStats.HP + " to " + _startingHP);
+
         runtimeStats.HP = _startingHP;
         runtimeStats.ATK = _startingAtk;
         UpdateSlider();
