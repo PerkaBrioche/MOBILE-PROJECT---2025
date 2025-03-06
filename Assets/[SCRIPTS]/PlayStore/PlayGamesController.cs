@@ -33,9 +33,17 @@ public class PlayGamesController : MonoBehaviour
 
     public void UnlockAchievement(string achievementID)
     {
+        
         PlayGamesPlatform.Instance.ReportProgress(achievementID, 100.0f, success =>
         {
-            //feedback si besoin
+            if (success)
+            {
+                //Debug.Log("Achievement debloque : " + achievementID);
+            }
+            else
+            {
+                //Debug.LogWarning("Impossible de debloquer l'achievement : " + achievementID);
+            }
         });
     }
 

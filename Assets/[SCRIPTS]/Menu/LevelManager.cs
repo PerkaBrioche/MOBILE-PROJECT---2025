@@ -108,6 +108,16 @@ public class LevelManager : MonoBehaviour
             levelInfoBackground.SetActive(true);
     }
 
+
+    public void ResetStars()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetFloat("MusicVolume",0.5f);
+        PlayerPrefs.SetFloat("SFXVolume", 1);
+        PlayerPrefs.SetFloat("Master", 1f);
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
     public void HideLevelInfo()
     {
         levelInfoPanel.SetActive(false);

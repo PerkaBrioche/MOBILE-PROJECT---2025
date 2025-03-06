@@ -141,6 +141,7 @@ public class TurnManager : MonoBehaviour
         UnlockButtonTurn();
         ResetTurnManager.Instance.RecordStartingPositions();
         _isPlayerTurn = true;
+        SoundManager.Instance.PlaySound(SoundManager.SoundList.PlayerPhase);
         phaseAnimator.SetTrigger("PlayerPhase");
     }
 
@@ -165,8 +166,7 @@ public class TurnManager : MonoBehaviour
         ShipManager.Instance.ChangeShipsCamp();
         if (phaseAnimator != null)
             phaseAnimator.SetTrigger("EnemyPhase");
-        else
-            UpdateText("Enemy Turn", Color.red);
+        SoundManager.Instance.PlaySound(SoundManager.SoundList.EnemyPhase);
         _enemyTurn = 0;
         _isEnemyTurn = true;
     }
@@ -363,7 +363,7 @@ public class TurnManager : MonoBehaviour
             PlayerPrefs.SetInt("LevelStars_" + SceneManager.GetActiveScene().buildIndex, stars);
             PlayerPrefs.Save();
         }
-        SoundManager.Instance.PlaySound(SoundManager.SoundList.Stars);
+        SoundManager.Instance.PlaySound(SoundManager.SoundList.Star1);
             
         AchievementManager.CheckAchievements();
 
@@ -373,7 +373,7 @@ public class TurnManager : MonoBehaviour
 
         if (stars >= 2)
         {
-            SoundManager.Instance.PlaySound(SoundManager.SoundList.Stars);
+            SoundManager.Instance.PlaySound(SoundManager.SoundList.Star2);
             resultStar2.sprite = _unlockedStars;
             resultStar2.transform.GetComponent<bounce>().StartBounce();
         }
@@ -381,7 +381,7 @@ public class TurnManager : MonoBehaviour
 
         if (stars >= 3)
         {
-            SoundManager.Instance.PlaySound(SoundManager.SoundList.Stars);
+            SoundManager.Instance.PlaySound(SoundManager.SoundList.Star3);
             resultStar3.sprite = _unlockedStars;
             resultStar3.transform.GetComponent<bounce>().StartBounce();
             yield return new WaitForSeconds(0.5f);

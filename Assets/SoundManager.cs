@@ -48,8 +48,6 @@ public class SoundManager : MonoBehaviour
         float dB = GetDB(masterVolumeSlider.value);
         audioMixer.SetFloat("Master", dB);
         PlayerPrefs.SetFloat("Master", masterVolumeSlider.value);
-        
-        print("Master Volume: " + masterVolumeSlider.value);
     }
     public void SetMusicVolume()
     {
@@ -78,7 +76,11 @@ public class SoundManager : MonoBehaviour
         ButtonClick,
         Win,
         Lose,
-        Stars,
+        Star1,
+        Star2,
+        Star3,
+        PlayerPhase,
+        EnemyPhase,
     }
     
     public void PlayButtonSound()
@@ -91,22 +93,34 @@ public class SoundManager : MonoBehaviour
         switch (sound)
         {
             case SoundList.ShipAttack:
-                _audioSource.PlayOneShot(_audioClips[Random.Range(0, 3)]);
+                _audioSource.PlayOneShot(_audioClips[Random.Range(0, 2)]);
                 break;
             case SoundList.ShipDeath:
-                _audioSource.PlayOneShot(_audioClips[3]);
+                _audioSource.PlayOneShot(_audioClips[2]);
                 break;
             case SoundList.ButtonClick:
-                _audioSource.PlayOneShot(_audioClips[4]);
+                _audioSource.PlayOneShot(_audioClips[3]);
                 break;
             case SoundList.Win:
-                _audioSource.PlayOneShot(_audioClips[5]);
+                _audioSource.PlayOneShot(_audioClips[4]);
                 break;
             case SoundList.Lose:
+                _audioSource.PlayOneShot(_audioClips[5]);
+                break;
+            case SoundList.Star1:
                 _audioSource.PlayOneShot(_audioClips[6]);
                 break;
-            case SoundList.Stars:
+            case SoundList.Star2:
                 _audioSource.PlayOneShot(_audioClips[7]);
+                break;
+            case SoundList.Star3:
+                _audioSource.PlayOneShot(_audioClips[8]);
+                break;
+            case SoundList.PlayerPhase:
+                _audioSource.PlayOneShot(_audioClips[9]);
+                break;
+            case SoundList.EnemyPhase:
+                _audioSource.PlayOneShot(_audioClips[10]);
                 break;
             
         }

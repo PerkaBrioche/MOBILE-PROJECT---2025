@@ -323,7 +323,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: BUT_QUIT&
+    path: BUT_CREDIT
   m_FloatCurves:
   - serializedVersion: 2
     curve:
@@ -615,7 +615,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: BUT_QUIT&
+    path: BUT_CREDIT
     classID: 1
     script: {fileID: 0}
     flags: 0
@@ -691,7 +691,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 2883061506
+      path: 403363691
       attribute: 3
       script: {fileID: 0}
       typeID: 4
@@ -763,7 +763,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 2883061506
+      path: 403363691
       attribute: 2086281974
       script: {fileID: 0}
       typeID: 1
@@ -2010,7 +2010,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: BUT_QUIT&
+    path: BUT_CREDIT
     classID: 1
     script: {fileID: 0}
     flags: 0
@@ -2049,7 +2049,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.x
-    path: BUT_QUIT&
+    path: BUT_CREDIT
     classID: 224
     script: {fileID: 0}
     flags: 0
@@ -2088,7 +2088,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.y
-    path: BUT_QUIT&
+    path: BUT_CREDIT
     classID: 224
     script: {fileID: 0}
     flags: 0
@@ -2127,7 +2127,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.z
-    path: BUT_QUIT&
+    path: BUT_CREDIT
     classID: 224
     script: {fileID: 0}
     flags: 0

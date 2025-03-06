@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AchievementTimer : MonoBehaviour
 {
-    public float requiredTime = 200f;
+    public float requiredTime = 10f;
     
     private float elapsedTime = 0f;
     private bool achievementUnlocked = false;
