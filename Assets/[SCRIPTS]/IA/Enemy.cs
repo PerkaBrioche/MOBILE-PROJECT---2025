@@ -377,7 +377,6 @@ public class Enemy : MonoBehaviour
         {
             continue;
         }
-     //   int distance = CalculateManhattanDistance(allyTile, enemyTile);
         shipDistances.Add((ally, pathDist));
     }
     
