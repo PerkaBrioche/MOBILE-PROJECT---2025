@@ -268,6 +268,12 @@ public class TurnManager : MonoBehaviour
             Defeat();
             return true;
         }
+        if(ally.Count == 1 && ally[0].GetComponent<ShipController>().IsMotherShip())
+        {
+            EndGame();
+            Defeat();
+            return true;
+        }
         if (gameWinCondition != GameManager.GameWinCondition.destroyAll)
         {
             return false;
@@ -306,6 +312,7 @@ public class TurnManager : MonoBehaviour
         SoundManager.Instance.PlaySound(SoundManager.SoundList.Lose);
         EndGame();
         LockButtonTurn();
+        ShipManager.Instance.BounceDispawn();
         if (phaseAnimator != null)
             phaseAnimator.SetTrigger("Defeat");
         StartCoroutine(ShowDefeatPanel());
@@ -313,9 +320,15 @@ public class TurnManager : MonoBehaviour
 
     private void EndGame()
     {
+        var musicSource = GameObject.Find("MUSIC SOURCE");
+        if (musicSource != null)
+        {
+            musicSource.GetComponent<AudioSource>().Stop();
+        }
         _isPlayerTurn = false;
         _isEnemyTurn = false;
         _endGame = true;
+       // HideAllHealthBars(false);
         LockButtonTurn();
         LockRETURNButton();
     }

@@ -20,6 +20,14 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this);
         }
+        
+        if (PlayerPrefs.GetInt("Speed") == 0)
+        {
+            PlayerPrefs.SetInt("Speed", 1 );
+        } 
+        
+        ChangeTimeScale(PlayerPrefs.GetInt("Speed"));
+
     }
     
     public void SetCanTouch(bool canTouch)
@@ -49,6 +57,11 @@ public class GameManager : MonoBehaviour
         destroyAll,
         motherShipKill,
         exit,
+    }
+    
+    public void ChangeTimeScale(int newTimeScale)
+    {
+        Time.timeScale = newTimeScale;
     }
     
     [Header("LEVEL PARAMETERS")]

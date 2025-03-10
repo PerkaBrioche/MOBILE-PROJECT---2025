@@ -47,6 +47,8 @@ public class ShipController : MonoBehaviour, bounce.IBounce
     [Foldout("OTHERS")] 
     [SerializeField] private Slider _sliderLifePrewiew;
     [Foldout("OTHERS")] 
+    [SerializeField] private RectTransform _fillprewiew;
+    [Foldout("OTHERS")] 
     [SerializeField] private textController _textController;
 
     
@@ -224,7 +226,11 @@ public class ShipController : MonoBehaviour, bounce.IBounce
         {
             return;
         }
-        _sliderLifePrewiew.value = (runtimeStats.HP - attacker.runtimeStats.ATK);
+        
+        
+        
+       // _fillprewiew.localScale = new Vector2(_sliderLife.value / _sliderLife.maxValue, 1);
+        _sliderLifePrewiew.value = attacker.runtimeStats.ATK + (attacker.runtimeStats.ATK * (1-_fillprewiew.localScale.x) + (_myStats.HP - runtimeStats.HP));
     }
     public void SetNewPosition(TilesController neswtiles)
     {
@@ -506,6 +512,7 @@ public class ShipController : MonoBehaviour, bounce.IBounce
             _sliderLife.value = Mathf.Lerp(originalValue, runtimeStats.HP, alpha);
             yield return null;
         }
+
 
         if (runtimeStats.HP <= 0)
         {

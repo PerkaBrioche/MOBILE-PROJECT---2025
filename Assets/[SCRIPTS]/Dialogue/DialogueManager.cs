@@ -27,6 +27,7 @@ public class DialogueManager : MonoBehaviour
     
     
 
+    private bool _canSkip = false;
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -47,7 +48,7 @@ public class DialogueManager : MonoBehaviour
         if (!active) return;
         if (Input.GetMouseButtonDown(0))
         {
-            NextLine();
+            EndLigne();
         }
     }
 
@@ -73,6 +74,25 @@ public class DialogueManager : MonoBehaviour
         rightImage.sprite = dialogueData.rightSprite;
         index = 0;
         ShowLine();
+    }
+    
+    public void SetCanSkip(bool canSkip)
+    {
+        _canSkip = canSkip;
+    }
+    
+    private void EndLigne()
+    { 
+        if (_canSkip)
+        {
+            NextLine();
+            _canSkip = false;
+        }
+        else
+        {
+            typewriter.SkipTypewriter();
+            _canSkip = true;
+        }
     }
 
     public void ShowLine()

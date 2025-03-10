@@ -9,10 +9,13 @@ public class bounce : MonoBehaviour
     [SerializeField]  private float _bounceForce = 1f;
     [SerializeField] private float _bounceDuration = 0.05f;
     [SerializeField] private float _bounceDecreaseSpeed = 3f;
-    
-    
-    
-    
+
+
+
+    public void ChangeForce( float newForce)
+    {
+        _bounceForce = newForce;
+    }
     private Vector3 originalScale;
     
     public interface IBounce
