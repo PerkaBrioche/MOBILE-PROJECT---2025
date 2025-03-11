@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
   m_Name: Space Berserker
   m_EditorClassIdentifier: 
-  _unitAllyIcon: {fileID: -1859483539367982969, guid: cf6b79d7586ee9d4ba8f041e49276308, type: 3}
+  _unitAllyIcon: {fileID: -1859483539367982969, guid: 7c9801c74c7a8f949bd532cb9558098e, type: 3}
   _unitEnemyIcon: {fileID: -3897670269028065187, guid: b6aa203c7d353ab4ba17a3162bf0244b, type: 3}
   _unitName: Space Berserker
   _unitType: {fileID: 0}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
   m_Name: Space Fortress
   m_EditorClassIdentifier: 
-  _unitAllyIcon: {fileID: 4380906894600332046, guid: 22409ce64f16dbc488a7260f8973269f, type: 3}
+  _unitAllyIcon: {fileID: 4380906894600332046, guid: b56d7c6de84ddcd4b9e708f2b82e61dd, type: 3}
   _unitEnemyIcon: {fileID: 620594133843963748, guid: 3a87cdc741bf995489e4f8714e04ab50, type: 3}
   _unitName: Space Fortress
   _unitType: {fileID: 0}
