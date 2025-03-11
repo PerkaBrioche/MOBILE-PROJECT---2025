@@ -34,8 +34,8 @@ MonoBehaviour:
       ship in our army.\r\n"
   - leftSpeaker: 1
     speakerName: Glorp
-    text: 'The two on your left are Rangers ! It has more attack range than most
-      units, so use it to your advantage to win!
+    text: 'The two on your left are Rangers ! They have more attack range than most
+      units, so use them to your advantage to win!
 
 '
   - leftSpeaker: 0
@@ -53,9 +53,9 @@ MonoBehaviour:
 '
   - leftSpeaker: 1
     speakerName: Glorp
-    text: "The second button ends your turn, so when you finish to use all your units,
-      press it ! (Careful! Tap it only if you\u2019re sure you want to end your turn!
-      )\r\n"
+    text: "The second button ends your turn, so when you finished using all your
+      units, press it ! (Careful! Tap it only if you\u2019re sure you want to end
+      your turn! )\r\n"
   - leftSpeaker: 1
     speakerName: Glorp
     text: "Alright cadet, now that you have the basics, I think now\u2019s a good

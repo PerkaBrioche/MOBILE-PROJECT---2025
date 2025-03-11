@@ -33,7 +33,7 @@ MonoBehaviour:
   - leftSpeaker: 0
     speakerName: Otto
     text: "We won\u2019t hesitate to use it too !\r\n"
-  - leftSpeaker: 0
-    speakerName: Otto
+  - leftSpeaker: 1
+    speakerName: Link
     text: "Be quicker and smarter than them, recruit. \nI\u2019m sure you\u2019ll
       be just fine. Good luck !\r\n\r\n"

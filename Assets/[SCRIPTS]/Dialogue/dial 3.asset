@@ -27,7 +27,7 @@ MonoBehaviour:
       our territory, or we will destroy your mothership with our forces!\r\n"
   - leftSpeaker: 1
     speakerName: Glorp
-    text: "Urgh\u2026.Metalheads. I Hate them! Listen, we gotta destroy their mothership
+    text: "Urgh\u2026.Metalheads. I hate them! Listen, we gotta destroy their mothership
       before they destroy ours!\r\n"
   - leftSpeaker: 1
     speakerName: Glorp
@@ -42,7 +42,7 @@ MonoBehaviour:
   - leftSpeaker: 1
     speakerName: Glorp
     text: 'We equipped you with a new unit to do this task: The rider ! After attacking,
-      he can move again but only for one tile.
+      she can move again but only for one tile.
 
 '
   - leftSpeaker: 1

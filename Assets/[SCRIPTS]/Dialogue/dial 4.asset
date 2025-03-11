@@ -20,14 +20,14 @@ MonoBehaviour:
     text: "Wow, recruit ! You\u2019re really getting the grip of this!\r\n"
   - leftSpeaker: 1
     speakerName: Glorp
-    text: 'Continue like that and we may promote you to a better position haha.
+    text: 'Continue like that and we may promote you to a better position, haha.
 
 '
   - leftSpeaker: 1
     speakerName: Glorp
     text: 'In this mission, the enemy decided to use a special ship: The Tank !
 
-      
+
 
 '
   - leftSpeaker: 1
@@ -35,20 +35,20 @@ MonoBehaviour:
     text: 'This unit is REALLY powerful, but they have to wait 3 turns between each
       attack.
 
-      
 
-      
+
+
 
 '
   - leftSpeaker: 1
     speakerName: Glorp
     text: 'Be reassured, I gave you 2 fortresses to keep up with their power.
 
-      
 
-      
 
-      
+
+
+
 
 '
   - leftSpeaker: 0
@@ -60,6 +60,6 @@ MonoBehaviour:
     text: 'Be sure to show them the power of Groovy tunes, and by that, I mean DESTROY
       THEM !
 
-      
+
 
 '

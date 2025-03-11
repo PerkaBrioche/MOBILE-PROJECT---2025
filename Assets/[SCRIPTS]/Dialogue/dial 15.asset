@@ -23,7 +23,7 @@ MonoBehaviour:
     speakerName: Glorp
     text: 'Are you ready for your final mission, recruit ?
 
-      
+
 
 
 
@@ -40,6 +40,6 @@ MonoBehaviour:
     speakerName: Zitouna
     text: "It doesn\u2019t matter anymore, it\u2019s personal now ! We\u2019ll destroy
       you all !\r\n\n\r\n\n\n"
-  - leftSpeaker: 0
-    speakerName: Zitouna
+  - leftSpeaker: 1
+    speakerName: Glorp
     text: "C\u2019mon recruit ! For one last time, May the Groove be with you !\r\n\r\n\n\r\n\n\n"

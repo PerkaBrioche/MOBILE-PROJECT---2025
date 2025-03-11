@@ -27,7 +27,7 @@ MonoBehaviour:
     text: 'So for this mission, we decided to make you try a new unit, The Berserker
       !
 
-      
+
 
 
 '
@@ -36,9 +36,9 @@ MonoBehaviour:
     text: 'Its power is beyond what you can imagine, the berserker can beat almost
       every unit in a fight !
 
-      
 
-      
+
+
 
 
 '
@@ -52,12 +52,35 @@ MonoBehaviour:
       clown buffoo-\r\n\r\n\n"
   - leftSpeaker: 1
     speakerName: Glorp
-    text: 'Anywaaaaaaaays,think about what you could do with this unit ! I believe
+    text: 'Anywaaaaaaaays, think about what you could do with this unit ! I believe
       in you cadet!
 
-      
 
-      
+
+
+
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: "Oh, wait, I almost forgot ! Cadet, do you see these green tiles ? \n\n\n\n\n\n"
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'They''re called healing tiles, and as such, they''ll heal 15HP to the
+      unit that crosses it.
+
+
+
+
+
+
+'
+  - leftSpeaker: 1
+    speakerName: Glorp
+    text: 'Anywaaaays, let''s go beat up those metalheads ! For real this time !
+
+
+
 
 
 '

@@ -42,7 +42,7 @@ EditorBuildSettings:
     path: Assets/[SCENES]/LD/LD10 - EZ Kill All 4.unity
     guid: 2cdc23da292b0d54f8ec0b08e12b86e6
   - enabled: 1
-    path: Assets/[SCENES]/LD/LD11 - EZ Mothership 4.unity
+    path: Assets/[SCENES]/LD/LD15 - Hard Mothership 4.unity
     guid: 9c1741b905043884f8132af5b07f0035
   - enabled: 1
     path: Assets/[SCENES]/LD/LD12 - Mid Escape 1.unity
@@ -54,7 +54,7 @@ EditorBuildSettings:
     path: Assets/[SCENES]/LD/LD14 - Mid Escape 2.unity
     guid: 1a6272238b423714c90697f8b9b3488a
   - enabled: 1
-    path: Assets/[SCENES]/LD/LD15 - Hard Mothership.unity
+    path: Assets/[SCENES]/LD/LD11 - EZ Mothership.unity
     guid: 53db486814fcede4ab645055d7e46e6c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 4f20d6acdf769024fb1df40972bf4586, type: 2}
