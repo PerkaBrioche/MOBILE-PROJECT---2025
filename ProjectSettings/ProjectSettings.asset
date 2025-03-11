@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Disco Cats
-  productName: INTO THE GROOVE
+  companyName: DiscoCat
+  productName: Into The Groove
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.5803922, g: 0.19215688, b: 0.5921569, a: 1}

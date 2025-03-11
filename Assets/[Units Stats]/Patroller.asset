@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851ac74019a201d4f9e2d44d894ddb99, type: 3}
   m_Name: Patroller
   m_EditorClassIdentifier: 
-  _unitAllyIcon: {fileID: 1010450789034852114, guid: 1d262d2bc5a3e624e8c192f9964bb3a0, type: 3}
-  _unitEnemyIcon: {fileID: 2204708268438558152, guid: a01a2ea5a5c3eed45aee53e753254d81, type: 3}
+  _unitAllyIcon: {fileID: 1010450789034852114, guid: 6403b4fb57657354199cc7721f2eabaa, type: 3}
+  _unitEnemyIcon: {fileID: 2204708268438558152, guid: fcec760eee758474b8562ce0efdcde5d, type: 3}
   _unitName: Patroller
   _unitType: {fileID: 0}
   _piloteAllie: {fileID: 2240825437796041896, guid: fcc4a90abf5152c4a8211c2bd5f8991a, type: 3}
