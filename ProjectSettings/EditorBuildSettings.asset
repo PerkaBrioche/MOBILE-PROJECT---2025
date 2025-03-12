@@ -54,7 +54,7 @@ EditorBuildSettings:
     path: Assets/[SCENES]/LD/LD14 - Mid Escape 2.unity
     guid: 1a6272238b423714c90697f8b9b3488a
   - enabled: 1
-    path: Assets/[SCENES]/LD/LD11 - EZ Mothership.unity
+    path: Assets/[SCENES]/LD/LD15 - Hard Mothership.unity
     guid: 53db486814fcede4ab645055d7e46e6c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 4f20d6acdf769024fb1df40972bf4586, type: 2}

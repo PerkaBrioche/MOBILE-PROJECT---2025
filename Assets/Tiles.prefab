@@ -156,7 +156,7 @@ MonoBehaviour:
   _enemyDetectedTileSprite: {fileID: -5718123564679910689, guid: 3ced1fd1e1bcdfd41907b52fc5f28b67, type: 3}
   _healSpecialTileSprite: {fileID: -8735249444720277, guid: b2609e775178a19418bb4ac060622123, type: 3}
   _damageSpecialTileSprite: {fileID: -1233804234085844942, guid: 21788b305c22e0b4f97ece4316e4bffe, type: 3}
-  _wormHoleSprite: {fileID: -1227594434920785976, guid: 1ee2d74fad7150244b1d7aff26f43b03, type: 3}
+  _wormHoleSprite: {fileID: -5354143578775998201, guid: 455fe8562c2cc304d99faf09027232c7, type: 3}
   _healthParticule: {fileID: 7128000879849997762}
   _damageParticule: {fileID: 8668087981019224455}
   _asteroidSprites:
